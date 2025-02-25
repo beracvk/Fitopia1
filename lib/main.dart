@@ -1,6 +1,12 @@
-import 'package:flutter/material.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart'; 
+import 'package:flutter/material.dart';
+import 'firebase_options.dart
+void main() async {
+WidgetsFlutterBinding.ensureInitialized();  // Flutter uygulamanın başlatılmadan önce gerekli işlemleri yap
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Firebase için gerekli yapılandırma
+  );
   runApp(const MyApp());
 }
 
@@ -120,3 +126,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
