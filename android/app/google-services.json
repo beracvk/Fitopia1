@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "25208138054",
+    "project_id": "fitopia-crew-d9834",
+    "storage_bucket": "fitopia-crew-d9834.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25208138054:android:2b56426aa77b510cd0dd47",
+        "android_client_info": {
+          "package_name": "com.example.fitopiaCrew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJlaQ0Mwa61hEOB5yHQWYOYm8YasyXRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
