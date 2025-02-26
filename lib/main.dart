@@ -1,11 +1,13 @@
-
-import 'package:firebase_core/firebase_core.dart'; 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart
+import 'firebase_options.dart';
+
 void main() async {
-WidgetsFlutterBinding.ensureInitialized();  // Flutter uygulamanın başlatılmadan önce gerekli işlemleri yap
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter uygulamanın başlatılmadan önce gerekli işlemleri yap
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Firebase için gerekli yapılandırma
+    options:
+        DefaultFirebaseOptions
+            .currentPlatform, // Firebase için gerekli yapılandırma
   );
   runApp(const MyApp());
 }
@@ -112,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             const Text('You have pushed the button this many times:'),
             Text(
-              '$_counter'
+              '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
@@ -126,4 +128,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
