@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.green.shade900,
+        backgroundColor: Colors.pink.shade900,
         body: SafeArea(child: Center(
           child: Column(
           mainAxisSize: MainAxisSize.min,
