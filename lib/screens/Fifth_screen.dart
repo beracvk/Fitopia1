@@ -1,10 +1,10 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, avoid_print, unused_import, depend_on_referenced_packages, file_names
 
-import 'package:fitopia2/screens/Sixth_screen.dart';
+import 'package:fitopia2/screens/Sixth_screen.dart'; 
 import 'package:flutter/material.dart';
 
-class FifthScreen extends StatelessWidget {
-  const FifthScreen({super.key});
+class SixthScreen extends StatelessWidget {
+  const SixthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class _UserInputScreenState extends State<UserInputScreen> {
                       SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SixthScreen(),));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ThirdScreen(),));
                           print('Yaş: ${ageController.text}');
                           print('Boy: ${heightController.text}');
                           print('Kilo: ${weightController.text}');

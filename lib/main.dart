@@ -1,18 +1,21 @@
-import 'screens/home_screen.dart' show HomeScreen;
+// ignore_for_file: depend_on_referenced_packages, unused_import
+
+import 'package:fitopia2/screens/Home2-screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fitopia2/screens/Home_screen.dart';
 
 void main() {
-  runApp(
-     MyApp(),
-    );
+  runApp(const MyApp());
 }
 
-// ignore: use_key_in_widget_constructors
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeScreen()
+      debugShowCheckedModeBanner: false,
+      home: Home2Screen(),
     );
   }
 }

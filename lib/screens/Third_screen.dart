@@ -1,10 +1,11 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unused_import, depend_on_referenced_packages
 
-import 'package:fitopia2/screens/Fourth_screen.dart';
+import 'package:fitopia2/screens/fifth_screen.dart';
 import 'package:flutter/material.dart';
 
-class ThirdScreen extends StatelessWidget {
-  const ThirdScreen({super.key});
+
+class FourthScreen extends StatelessWidget {
+  const FourthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class OnboardingScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => FourthScreen(),
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => FifthScreen(),
                       ));
                     },
                     child: const Text(
