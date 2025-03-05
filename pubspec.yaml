@@ -31,13 +31,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.12.0 
-  firebase_auth: ^4.5.0
-  cloud_firestore: ^4.17.5
+  firebase_core: ^3.12.1 
+  firebase_auth: ^5.5.1
+  cloud_firestore: ^5.6.5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   build_runner: ^2.4.15
+  yaml: ^3.0.0 
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -80,9 +82,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: Courgette
-     fonts:
-       - asset: assets/fonts/Courgette-Regular.ttf
+    - family: Courgette
+      fonts:
+        - asset: assets/fonts/Courgette-Regular.ttf
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
