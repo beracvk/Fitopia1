@@ -9,6 +9,7 @@ plugins {
 }
 
 android {
+    ndkVersion = "27.0.12077973"
     namespace = "com.example.fitopia2"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
