@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.fitopia2-mergeDebugResources-26:/values-et/values-et.xml",
+            "outputFile": "com.fitopia1-mergeDebugResources-26:/values-et/values-et.xml",
             "map": [
                 {
                     "source": "/Users/beracevik/.gradle/caches/8.9/transforms/40fab7b44644bd9b3f2b8fa77ae415cc/transformed/core-1.9.0/res/values-et/values-et.xml",
