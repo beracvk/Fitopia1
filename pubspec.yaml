@@ -40,6 +40,7 @@ dependencies:
   build_runner: ^2.4.15
   yaml: ^3.0.0 
   json_annotation: ^4.9.0
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:

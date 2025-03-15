@@ -6,10 +6,10 @@ class FirebaseHomeScreen extends StatefulWidget {
   const FirebaseHomeScreen({super.key});
 
   @override
-  _FirebaseHomeScreenState createState() => _FirebaseHomeScreenState();
+  FirebaseHomeScreenState createState() => FirebaseHomeScreenState();
 }
 
-class _FirebaseHomeScreenState extends State<FirebaseHomeScreen> {
+class FirebaseHomeScreenState extends State<FirebaseHomeScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -45,6 +45,7 @@ class _FirebaseHomeScreenState extends State<FirebaseHomeScreen> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await _auth.signOut();
+              if (!context.mounted) return;
               Navigator.pushReplacementNamed(context, "/login");
             },
           ),

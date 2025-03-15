@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,9 +27,10 @@ class AuthService {
         'createdAt': DateTime.now(),
       });
 
+      logger.i("Kullanıcı başarıyla kaydedildi: ${user.uid}");
       return user;
     } catch (e) {
-      print("Hata: $e");
+      logger.e("Kayıt sırasında hata oluştu: $e");
       return null;
     }
   }
@@ -39,9 +43,10 @@ class AuthService {
         password: password,
       );
 
+      logger.i("Kullanıcı giriş yaptı: ${userCredential.user?.uid}");
       return userCredential.user;
     } catch (e) {
-      print("Hata: $e");
+      logger.e("Giriş sırasında hata oluştu: $e");
       return null;
     }
   }
@@ -53,12 +58,14 @@ class AuthService {
           await _firestore.collection('users').doc(userId).get();
 
       if (doc.exists) {
+        logger.i("Kullanıcı verisi bulundu: ${doc.data()}");
         return doc.data() as Map<String, dynamic>;
       } else {
+        logger.w("Kullanıcı verisi bulunamadı: $userId");
         return null;
       }
     } catch (e) {
-      print("Hata: $e");
+      logger.e("Veri getirme sırasında hata oluştu: $e");
       return null;
     }
   }
