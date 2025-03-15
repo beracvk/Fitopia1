@@ -5,6 +5,8 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+
+
 android {
     ndkVersion = "27.0.12077973"
     namespace = "com.example.fitopia2"

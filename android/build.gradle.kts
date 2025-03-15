@@ -32,6 +32,14 @@ repositories {
     jcenter()  // Alternatif olarak, bu depo kullanılabilir.
 }
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+
 
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
