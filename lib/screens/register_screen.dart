@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fitopia1/firebase_service.dart'; // FirebaseService import edildi
-import 'login_page.dart'; // LoginPage import edilmeli
+import 'login_screen.dart'; // LoginPage import edilmeli
+import '../firebase_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
@@ -20,14 +20,18 @@ class _RegisterPageState extends State<RegisterPage> {
       _passwordController.text,
     );
     if (result == 'Kayıt başarılı') {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      }
     } else {
-      setState(() {
-        _errorMessage = result;
-      });
+      if (mounted) {
+        setState(() {
+          _errorMessage = result;
+        });
+      }
     }
   }
 

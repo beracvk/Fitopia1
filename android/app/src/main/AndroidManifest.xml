@@ -1,6 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.Fitopia1">
     <application
-        android:label="fitopia2"
+        android:label="Fitopia1"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
