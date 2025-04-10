@@ -4,7 +4,7 @@
             "outputFile": "com.fitopia1-mergeDebugResources-26:/values-small-v4/values-small-v4.xml",
             "map": [
                 {
-                    "source": "/Users/beracevik/.gradle/caches/8.9/transforms/dde99a104e17078881f7ec8a42e4ff18/transformed/material-1.8.0/res/values-small-v4/values-small-v4.xml",
+                    "source": "C:\\Users\\ravza\\.gradle\\caches\\8.9\\transforms\\734a21bf0659dcc7e8948ccfa2adb363\\transformed\\material-1.8.0\\res\\values-small-v4\\values-small-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
