@@ -1,6 +1,9 @@
 // ignore_for_file: use_key_in_widget_constructors, deprecated_member_use, file_names
 
 import 'package:fitopia2/screens/Ogle_screen.dart';
+import 'package:fitopia2/screens/aksam_screen.dart';
+import 'package:fitopia2/screens/ara_screen.dart';
+import 'package:fitopia2/screens/kahvalti_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -419,7 +422,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SecondScreen(),
+                        builder: (context) => KahvaltiScreen(),
                       ),
                     );
                   },
@@ -523,7 +526,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SecondScreen(),
+                        builder: (context) => AraScreen(),
                       ),
                     );
                   },
@@ -610,7 +613,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SecondScreen(),
+                        builder: (context) => const AksamScreen(),
                       ),
                     );
                   },
