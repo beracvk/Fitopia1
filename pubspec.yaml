@@ -70,10 +70,10 @@ flutter:
    - assets/images/background.png
    - assets/images/eller.jpg
    - assets/images/background.jpg 
-   - assets/images/alev.jpg
+   - assets/images/alev5.webp
    - assets/images/profil.png
-   - assets/images/koşu.png
-   - assets/images/damla.png
+   - assets/images/koşu5.webp
+   - assets/images/su.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

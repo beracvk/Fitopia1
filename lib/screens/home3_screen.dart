@@ -34,17 +34,17 @@ class HomeScreen extends StatelessWidget {
                   GoalCard(
                     title: 'HEDEF/2.5 Litre',
                     color: const Color.fromARGB(66, 1, 66, 119),
-                    iconAsset: 'assets/images/damla.png',
+                    iconAsset: 'assets/images/su.webp',
                   ),
                   GoalCard(
                     title: 'HEDEF/2000 Kalori',
                     color: const Color.fromARGB(167, 212, 31, 18),
-                    iconAsset: 'assets/images/alev.jpg',
+                    iconAsset: 'assets/images/alev5.webp',
                   ),
                   GoalCard(
                     title: 'HEDEF 10 000 Adım',
                     color: const Color.fromARGB(89, 211, 190, 7),
-                    iconAsset: 'assets/images/koşu.png',
+                    iconAsset: 'assets/images/koşu5.webp',
                   ),
                 ],
               ),

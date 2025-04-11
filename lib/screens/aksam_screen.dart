@@ -15,13 +15,13 @@ class MyApp extends StatelessWidget {
       title: 'Yemek Uygulaması',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const YemekDetayScreen(),
+      home: const AksamScreen(),
     );
   }
 }
 
-class YemekDetayScreen extends StatelessWidget {
-  const YemekDetayScreen({super.key});
+class AksamScreen extends StatelessWidget {
+  const AksamScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
