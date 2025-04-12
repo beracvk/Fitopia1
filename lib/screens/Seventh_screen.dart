@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, duplicate_import, depend_on_referenced_packages, file_names
 
+import 'package:fitopia2/screens/Fourth_screen.dart';
 import 'package:fitopia2/screens/Home2-screen.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
       // Eğer doğrulama başarılıysa, doğru bilgileri giren kullanıcıyı HomeScreen'e yönlendir
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Home2Screen()),
+        MaterialPageRoute(builder: (context) => FifthScreen()),
       );
     }
   }
