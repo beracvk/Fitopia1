@@ -7,6 +7,7 @@ import '../widgets/goal_card.dart';
 import '../widgets/action_card.dart';
 import 'action_card.dart' show ActionCard;
 import 'diyet_plan_page.dart';
+import 'package:fitopia2/screens/diyetplan.dart';
 import 'goal_card.dart' show GoalCard;
 import 'porsiyon_analizi_page.dart';
 import 'egzersiz_plan_page.dart';
@@ -25,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProfileWidget(username: 'Bera'),
+              ProfileWidget(username: 'eda'),
               const SizedBox(height: 50),
 
               Row(
@@ -59,7 +60,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => Diyetplan(),
+                        ),
                       );
                     },
                   ),
@@ -68,7 +71,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),
@@ -85,7 +90,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),
@@ -94,7 +101,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),

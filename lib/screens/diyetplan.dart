@@ -7,10 +7,10 @@ import 'package:fitopia2/screens/kahvalti_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Diyetplan());
 }
 
-class MyApp extends StatelessWidget {
+class Diyetplan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
