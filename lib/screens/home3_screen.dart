@@ -7,6 +7,7 @@ import '../widgets/goal_card.dart';
 import '../widgets/action_card.dart';
 import 'action_card.dart' show ActionCard;
 import 'diyet_plan_page.dart';
+import 'diyetplani.dart';
 import 'goal_card.dart' show GoalCard;
 import 'porsiyon_sayfasi.dart';
 import 'egzersiz_planim.dart';
@@ -60,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DenemeScreen(),
+                          builder: (context) => Diyetplani(),
                         ),
                       );
                     },
