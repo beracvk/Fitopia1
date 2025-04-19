@@ -31,7 +31,7 @@ class PorsiyonAnaliziPage extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset('assets/siyahekranpng.webp), // Görsel buraya eklenecek
-                SizedBox(height: 8), 
+                SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
