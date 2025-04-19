@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, camel_case_types, unused_import, depend_on_referenced_packages
 
 
+import 'package:fitopia2/screens/Fourth_screen.dart';
 import 'package:fitopia2/screens/Home2-screen.dart';
 import 'package:fitopia2/screens/seventh_screen.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
         // Doğru giriş yapıldığında HomeScreen'e yönlendir
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Home2Screen()),
+          MaterialPageRoute(builder: (context) => FifthScreen()),
         );
       } else {
         // Yanlış girişte hata mesajı göster

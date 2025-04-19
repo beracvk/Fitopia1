@@ -4,17 +4,7 @@
             "outputFile": "com.fitopia1-mergeDebugResources-26:/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "/Users/beracevik/.gradle/caches/8.9/transforms/40fab7b44644bd9b3f2b8fa77ae415cc/transformed/core-1.9.0/res/values-v16/values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
-                    }
-                },
-                {
-                    "source": "/Users/beracevik/.gradle/caches/8.9/transforms/70c8b275d4c0ba085873261e6cba6a3c/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "source": "C:\\Users\\ravza\\.gradle\\caches\\8.9\\transforms\\2d573b27bfac58f97ea8944da487281d\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -30,6 +20,16 @@
                         "endLines": "6",
                         "endColumns": "12",
                         "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\ravza\\.gradle\\caches\\8.9\\transforms\\589d871d4578c0424dec0686a91d1dba\\transformed\\core-1.9.0\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
                     }
                 }
             ]
