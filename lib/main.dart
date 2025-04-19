@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fitopia2/screens/firebase_home_screen.dart'; // Firebase'den veri çeken ekranı içe aktar
-import 'firebase_options.dart'; // Firebase yapılandırma dosyası
+import 'package:fitopia2/firebase_options.dart';
+import 'package:fitopia2/screens/home3_screen.dart';
+import 'package:fitopia2/screens/screens/wrapper.dart';
+import 'package:flutter/material.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Flutter başlatılmadan önce işlemleri yap
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Firebase yapılandırması
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   runApp(const MyApp());
@@ -23,8 +24,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:
-          const FirebaseHomeScreen(), //  Firebase'den veri çeken ekran başlangıcı
+      home: const Wrapper(), // burada Wrapper widget’ı kullanılıyor
+      routes: {
+        "/login": (context) => const HomeScreen(), // Login ekran rotası
+      },
     );
   }
 }
