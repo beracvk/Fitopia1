@@ -8,8 +8,8 @@ import '../widgets/action_card.dart';
 import 'action_card.dart' show ActionCard;
 import 'diyet_plan_page.dart';
 import 'goal_card.dart' show GoalCard;
-import 'porsiyon_analizi_page.dart';
-import 'egzersiz_plan_page.dart';
+import 'porsiyon_sayfasi.dart';
+import 'egzersiz_planim.dart';
 import 'motivasyon_page.dart';
 import 'profile_widget.dart' show ProfileWidget;
 
@@ -59,7 +59,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),
@@ -68,7 +70,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),
@@ -85,7 +89,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),
@@ -94,7 +100,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),
