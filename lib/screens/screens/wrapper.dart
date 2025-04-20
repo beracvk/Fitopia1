@@ -12,12 +12,19 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      return const FirebaseHomeScreen(); // Giriş yapılmışsa ana ekran
-    } else {
-      return const HomeScreen(); // Giriş yapılmamışsa login ekranı
-    }
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasData) {
+          return const HomeScreen(); // Kullanıcı oturum açmışsa ana ekran
+        } else {
+          return const HomeScreen(); // Kullanıcı oturum açmamışsa giriş ekranı
+        }
+      },
+    );
   }
 }

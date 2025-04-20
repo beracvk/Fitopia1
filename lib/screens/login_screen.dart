@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  LoginPage({super.key});
+
+    void _addUser() {
+    firestore.collection('users').add({
+      'name': 'Bera',
+      'email': 'bera@example.com',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +30,7 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                _addUser();
                 // Giriş işlemleri burada yapılabilir
               },
               child: const Text('Login'),
