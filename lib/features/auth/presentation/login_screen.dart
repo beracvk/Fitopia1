@@ -1,4 +1,4 @@
-import 'package:fitopia2/screens/Third_screen.dart';
+import 'package:fitopia2/features/onboarding/presentation/pages/Third_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

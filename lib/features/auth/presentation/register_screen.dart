@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart'; // LoginPage import edilmeli
-import '../firebase_service.dart';
+import '../../../firebase_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

@@ -2,17 +2,17 @@
 
 import 'package:fitopia2/screens/deneme_screen.dart';
 import 'package:flutter/material.dart';
-import '../widgets/profile_widget.dart';
-import '../widgets/goal_card.dart';
-import '../widgets/action_card.dart';
-import 'action_card.dart' show ActionCard;
-import 'diyet_plan_page.dart';
-import 'diyetplani.dart';
-import 'goal_card.dart' show GoalCard;
-import 'porsiyon_sayfasi.dart';
-import 'egzersiz_planim.dart';
-import 'motivasyon_page.dart';
-import 'profile_widget.dart' show ProfileWidget;
+import '../../../widgets/profile_widget.dart';
+import '../../../widgets/goal_card.dart';
+import '../../../widgets/action_card.dart';
+import '../../meals/presentations/widgets/action_card.dart' show ActionCard;
+import '../../../screens/diyet_plan_page.dart';
+import '../../../screens/diyetplani.dart';
+import '../../../screens/goal_card.dart' show GoalCard;
+import '../../../screens/porsiyon_sayfasi.dart';
+import '../../../screens/egzersiz_planim.dart';
+import '../../../screens/motivasyon_page.dart';
+import '../../../screens/profile_widget.dart' show ProfileWidget;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

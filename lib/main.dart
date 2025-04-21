@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitopia2/firebase_options.dart';
-import 'package:fitopia2/screens/home3_screen.dart';
-import 'package:fitopia2/screens/screens/wrapper.dart';
+import 'package:fitopia2/features/home/presentation/home3_screen.dart';
+import 'package:fitopia2/features/auth/presentation/wrapper.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
