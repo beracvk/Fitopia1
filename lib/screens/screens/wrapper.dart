@@ -1,11 +1,12 @@
 // ignore_for_file: unused_import
 
-import 'package:fitopia2/screens/firebase_home_screen.dart';
+import 'package:fitopia2/screens/Sixth_screen.dart';
+import 'package:fitopia2/screens/screens/firebase_home_screen.dart';
 import 'package:fitopia2/screens/home3_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_home_screen.dart';
 import 'home_screen.dart'; // Giriş ekranın burada olsun
+import 'package:fitopia2/screens/Third_screen.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
@@ -20,9 +21,9 @@ class Wrapper extends StatelessWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasData) {
-          return const HomeScreen(); // Kullanıcı oturum açmışsa ana ekran
+          return const FirebaseHomeScreen(); // Kullanıcı oturum açmışsa ana ekran
         } else {
-          return const HomeScreen(); // Kullanıcı oturum açmamışsa giriş ekranı
+          return const ThirdScreen(); // Kullanıcı oturum açmamışsa giriş ekranı
         }
       },
     );
