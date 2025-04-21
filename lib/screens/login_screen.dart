@@ -1,7 +1,6 @@
 import 'package:fitopia2/screens/Third_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitopia2/screens/Fourth_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
