@@ -2,7 +2,7 @@
 
 import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
 import 'package:fitopia2/shared/firebase_home_screen.dart';
-import 'package:fitopia2/features/home/presentation/home3_screen.dart';
+import 'package:fitopia2/features/home/presentation/pages/home3_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../screens/screens/home_screen.dart'; // Giriş ekranın burada olsun
