@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fitopia2/services/firebase_options.dart';
 import 'package:fitopia2/features/home/presentation/pages/home3_screen.dart';
 import 'package:fitopia2/features/auth/presentation/wrapper.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
