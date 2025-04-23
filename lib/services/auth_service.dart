@@ -72,4 +72,6 @@ class AuthService {
     Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  signInWithEmail(String trim, String trim2) {}
 }

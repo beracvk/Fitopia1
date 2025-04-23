@@ -1,8 +1,7 @@
 import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
-import 'package:fitopia2/features/onboarding/presentation/pages/Third_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitopia2/services/auth_service.dart';
+import 'package:fitopia2/features/onboarding/presentation/pages/Third_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,11 +11,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  final AuthService _authService = AuthService();
 
   Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
@@ -24,40 +23,21 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _isLoading = true);
     
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+      await _authService.signInWithEmail(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
       );
+      
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const ThirdScreen()),
       );
-    } on FirebaseAuthException catch (e) {
-      if (!mounted) return;
-      _showErrorSnackbar(_getErrorMessage(e.code));
     } catch (e) {
       if (!mounted) return;
-      _showErrorSnackbar('Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.');
+      _showErrorSnackbar(e.toString());
     } finally {
       if (mounted) setState(() => _isLoading = false);
-    }
-  }
-
-  String _getErrorMessage(String code) {
-    switch (code) {
-      case 'user-not-found':
-        return 'Kullanıcı bulunamadı.';
-      case 'wrong-password':
-        return 'Hatalı şifre.';
-      case 'invalid-email':
-        return 'Geçersiz e-posta adresi.';
-      case 'user-disabled':
-        return 'Kullanıcı hesabı devre dışı bırakılmış.';
-      case 'too-many-requests':
-        return 'Çok fazla giriş denemesi. Lütfen daha sonra tekrar deneyin.';
-      default:
-        return 'Giriş hatası: Lütfen bilgilerinizi kontrol edin.';
     }
   }
 
@@ -66,8 +46,17 @@ class _LoginPageState extends State<LoginPage> {
       SnackBar(
         content: Text(message),
         backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
       ),
     );
+  }
+
+  void _navigateToRegister() {
+    // Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterScreen()));
+  }
+
+  void _navigateToForgotPassword() {
+    // Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPasswordScreen()));
   }
 
   @override
@@ -80,30 +69,44 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Giriş Yap")),
-      body: Padding(
+      appBar: AppBar(
+        title: const Text("Giriş Yap"),
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: 24),
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(labelText: 'E-posta'),
+                decoration: const InputDecoration(
+                  labelText: 'E-posta',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.email),
+                ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Lütfen e-posta adresinizi girin';
                   }
-                  if (!value.contains('@')) {
+                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                     return 'Geçerli bir e-posta adresi girin';
                   }
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Şifre'),
+                decoration: const InputDecoration(
+                  labelText: 'Şifre',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.lock),
+                ),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -115,18 +118,42 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: _navigateToForgotPassword,
+                  child: const Text('Şifremi Unuttum'),
+                ),
+              ),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isLoading ? null : _signIn,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
                 child: _isLoading 
-                    ? const CircularProgressIndicator()
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
                     : const Text('Giriş Yap'),
               ),
+              const SizedBox(height: 16),
               TextButton(
-                onPressed: () {
-                  // Şifremi unuttum veya kayıt ol sayfasına yönlendirme
-                },
-                child: const Text('Hesabınız yok mu? Kayıt Olun'),
+                onPressed: _navigateToRegister,
+                child: const Text.rich(
+                  TextSpan(
+                    text: 'Hesabınız yok mu? ',
+                    children: [
+                      TextSpan(
+                        text: 'Kayıt Olun',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
