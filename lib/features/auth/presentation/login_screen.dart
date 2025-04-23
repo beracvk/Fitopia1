@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fitopia2/services/auth_service.dart';
-import 'package:fitopia2/features/onboarding/presentation/pages/Third_screen.dart';
+//import 'package:fitopia2/features/onboarding/presentation/pages/Third_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,29 +18,29 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   final AuthService _authService = AuthService();
 
-  Future<void> _signIn() async {
-    if (!_formKey.currentState!.validate()) return;
+ Future<void> _signIn() async {
+  if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
-    
-    try {
-      await _authService.signInWithEmail(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
-      
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ThirdScreen()),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      _showErrorSnackbar(e.toString());
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
+  setState(() => _isLoading = true);
+
+  try {
+    await _authService.signInWithEmail(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ThirdScreen()),
+    );
+  } catch (e) {
+    if (!mounted) return;
+    _showErrorSnackbar((e as FirebaseAuthException).message ?? "Bilinmeyen hata oluştu");
+  } finally {
+    if (mounted) setState(() => _isLoading = false);
   }
+}
+
 
   void _showErrorSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(

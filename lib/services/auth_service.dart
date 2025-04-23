@@ -73,5 +73,17 @@ class AuthService {
     await _auth.signOut();
   }
 
-  signInWithEmail(String trim, String trim2) {}
+ Future<User?> signInWithEmail(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Giriş başarılı, kullanıcıyı geri döndürüyoruz
+      return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      // Hata fırlat ve UI’da yakalanarak Snackbar gibi gösterilsin.
+      rethrow;
+    }
+  }
 }
