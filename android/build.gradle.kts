@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android") // değiştirmedik ✅
-    id("com.google.gms.google-services") // Firebase için ekledik ✅
+    id("kotlin-android") // değiştirmedik 
+    id("com.google.gms.google-services") // Firebase için ekledik 
 }
 
 android {
