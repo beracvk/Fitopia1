@@ -69,11 +69,12 @@ class AuthService {
       return null;
     }
   }
-    Future<void> signOut() async {
+
+  Future<void> signOut() async {
     await _auth.signOut();
   }
 
- Future<User?> signInWithEmail(String email, String password) async {
+  Future<User?> signInWithEmail(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -81,7 +82,7 @@ class AuthService {
       );
       // Giriş başarılı, kullanıcıyı geri döndürüyoruz
       return userCredential.user;
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       // Hata fırlat ve UI’da yakalanarak Snackbar gibi gösterilsin.
       rethrow;
     }

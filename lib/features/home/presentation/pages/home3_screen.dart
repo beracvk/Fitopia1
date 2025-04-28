@@ -16,7 +16,7 @@ import 'sub_pages/motivasyon_page.dart';
 import 'package:fitopia2/widgets/profile_widget.dart' show ProfileWidget;
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +114,6 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-  
+
   ProfileWidget({required String username}) {}
 }

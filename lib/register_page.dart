@@ -4,17 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:fitopia2/features/auth/presentation/login_screen.dart'; // LoginPage ekranını ekle
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({super.key});
 
   @override
   RegisterPageState createState() => RegisterPageState();
 }
 
-
 class RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String _errorMessage = '';
+  final String _errorMessage = '';
 
   bool isValidEmail(String email) {
     RegExp regExp = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
@@ -26,8 +25,9 @@ class RegisterPageState extends State<RegisterPage> {
       // 🔽 Firebase Auth ile kullanıcıyı oluştur
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim());
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
 
       // 🔽 Kullanıcıyı Firestore'a kaydet — İŞTE BURASI
       String userId = userCredential.user!.uid;
@@ -42,7 +42,7 @@ class RegisterPageState extends State<RegisterPage> {
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       // Hata yönetimi
     } catch (e) {
       // Genel hata yönetimi
@@ -67,16 +67,10 @@ class RegisterPageState extends State<RegisterPage> {
               decoration: InputDecoration(labelText: 'Şifre'),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _register,
-              child: Text('Kayıt Ol'),
-            ),
+            ElevatedButton(onPressed: _register, child: Text('Kayıt Ol')),
             SizedBox(height: 20),
             if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: TextStyle(color: Colors.red),
-              ),
+              Text(_errorMessage, style: TextStyle(color: Colors.red)),
           ],
         ),
       ),
