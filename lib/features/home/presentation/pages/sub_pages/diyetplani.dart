@@ -1,16 +1,16 @@
 // ignore_for_file: use_key_in_widget_constructors, deprecated_member_use, file_names
 
-import 'package:fitopia2/screens/Ogle_screen.dart';
-import 'package:fitopia2/screens/aksam_screen.dart';
-import 'package:fitopia2/screens/ara_screen.dart';
-import 'package:fitopia2/screens/kahvalti_screen.dart';
+import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
+import 'package:fitopia2/features/meals/presentations/aksam_screen.dart';
+import 'package:fitopia2/features/meals/presentations/ara_screen.dart';
+import 'package:fitopia2/features/meals/presentations/kahvalti_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp( Diyetplani());
 }
 
-class MyApp extends StatelessWidget {
+class Diyetplani extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

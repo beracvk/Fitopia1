@@ -1,7 +1,7 @@
 // ignore_for_file: file_names, depend_on_referenced_packages, duplicate_import
 
 import 'package:flutter/material.dart';
-import 'package:fitopia2/screens/second_screen.dart';
+import 'package:fitopia2/features/onboarding/presentation/pages/second_screen.dart';
 
 void main() {
   runApp(const MyApp());
