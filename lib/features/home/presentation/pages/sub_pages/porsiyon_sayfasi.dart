@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(PorsiyonSayfasi());
 
+<<<<<<< HEAD:lib/screens/porsiyon_sayfasi.dart
 class PorsiyonSayfasi extends StatelessWidget {
+=======
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+>>>>>>> b6a621bfc5f4bbb4f31fc0570c2793054d2d6f9d:lib/features/home/presentation/pages/sub_pages/porsiyon_sayfasi.dart
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,6 +22,8 @@ class PorsiyonSayfasi extends StatelessWidget {
 }
 
 class PorsiyonAnaliziPage extends StatelessWidget {
+  const PorsiyonAnaliziPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
