@@ -1,23 +1,20 @@
 // ignore_for_file: unused_import, non_constant_identifier_names, use_super_parameters
 
-import 'package:fitopia2/features/home/presentation/pages/sub_pages/deneme_screen.dart';
-import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
+import 'package:fitopia2/screens/deneme_screen.dart';
 import 'package:flutter/material.dart';
-import '../../../../widgets/profile_widget.dart';
-import 'sub_pages/goal_card.dart';
-import '../../../../widgets/action_card.dart';
-import '../../../meals/presentations/widgets/action_card.dart' show ActionCard;
-import '../../../../screens/diyet_plan_page.dart';
-import 'sub_pages/diyetplani.dart';
-//import 'sub_pages/goal_card.dart' show GoalCard;
-import 'sub_pages/porsiyon_sayfasi.dart';
-import '../../../../screens/egzersiz_planim.dart';
-import 'sub_pages/motivasyon_page.dart';
-// ignore: undefined_shown_name
-import 'package:fitopia2/widgets/profile_widget.dart' show ProfileWidget;
+import '../widgets/profile_widget.dart';
+import '../widgets/goal_card.dart';
+import '../widgets/action_card.dart';
+import 'action_card.dart' show ActionCard;
+import 'diyet_plan_page.dart';
+import 'goal_card.dart' show GoalCard;
+import 'porsiyon_sayfasi.dart';
+import 'egzersiz_planim.dart';
+import 'motivasyon_page.dart';
+import 'profile_widget.dart' show ProfileWidget;
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key, required username}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +59,9 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Diyetplani()),
+                        MaterialPageRoute(
+                          builder: (context) => const DenemeScreen(),
+                        ),
                       );
                     },
                   ),
@@ -72,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DenemeScreen(),
+                          builder: (context) => PorsiyonSayfasi(),
                         ),
                       );
                     },
@@ -115,6 +114,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  ProfileWidget({required String username}) {}
 }

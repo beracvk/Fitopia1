@@ -1,6 +1,6 @@
 // ignore_for_file: file_names, depend_on_referenced_packages
 
-import 'package:fitopia2/features/onboarding/presentation/pages/Fifth_screen.dart';
+import 'package:fitopia2/screens/Fifth_screen.dart';
 import 'package:flutter/material.dart';
 
 class FifthScreen extends StatelessWidget {

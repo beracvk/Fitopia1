@@ -1,17 +1,16 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android") // değiştirmedik 
-    id("com.google.gms.google-services") // Firebase için ekledik 
+    id("kotlin-android")
 }
 
 android {
     compileSdk = 33
     ndkVersion = "27.0.12077973"
 
-    namespace = "com.fitopia1"
+    namespace = "com.fitopia1" // Burada, uygulamanın paket adını yaz.
 
     defaultConfig {
-        applicationId = "com.fitopia1"
+        applicationId = "com.fitopia1" // Kotlin DSL'de `=` ile kullanılır.
         minSdk = 21
         targetSdk = 33
         versionCode = 1
@@ -32,20 +31,18 @@ android {
 repositories {
     google()
     mavenCentral()
+    jcenter()  // Alternatif olarak, bu depo kullanılabilir.
 }
 
 dependencies {
-    // Android temel kütüphaneleri
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
+}
 
-    // 🔥 Firebase BOM
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-
-    // 🔥 Firebase Authentication
-    implementation("com.google.firebase:firebase-auth-ktx")
-
-    // 🔥 Firebase Firestore (isteğe bağlı, veri kaydetmek için)
-    implementation("com.google.firebase:firebase-firestore-ktx")
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
 }

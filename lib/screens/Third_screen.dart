@@ -1,9 +1,8 @@
 // ignore_for_file: file_names, unused_import, depend_on_referenced_packages
 
-import 'package:fitopia2/features/onboarding/presentation/pages/Fourth_screen.dart';
-import 'package:fitopia2/features/onboarding/presentation/pages/Fifth_screen.dart';
+import 'package:fitopia2/screens/Fourth_screen.dart';
+import 'package:fitopia2/screens/fifth_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 
 class FourthScreen extends StatelessWidget {

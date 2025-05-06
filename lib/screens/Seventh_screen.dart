@@ -1,14 +1,18 @@
 // ignore_for_file: library_private_types_in_public_api, duplicate_import, depend_on_referenced_packages, file_names
 
-import 'package:fitopia2/features/onboarding/presentation/pages/Fourth_screen.dart';
+import 'package:fitopia2/screens/Fourth_screen.dart';
 import 'package:flutter/material.dart';
+
 
 class SeventhScreen extends StatelessWidget {
   const SeventhScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: SignUpPage());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SignUpPage(),
+    );
   }
 }
 
@@ -88,9 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'E-posta adresi girin.';
-                      } else if (!RegExp(
-                        r'^[^@]+@[^@]+\.[^@]+',
-                      ).hasMatch(value)) {
+                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                         return 'Geçerli bir e-posta adresi girin.';
                       }
                       return null;
@@ -119,16 +121,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 110, 141, 80),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 70,
-                        vertical: 15,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed:
-                        _signUp, // Doğru bilgilerle giriş yapıldığında yönlendirme
+                    onPressed: _signUp, // Doğru bilgilerle giriş yapıldığında yönlendirme
                     child: const Text(
                       "Hesap Aç",
                       style: TextStyle(color: Colors.white, fontSize: 16),
@@ -140,10 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   // Hesabınla Devam Et
                   const Text(
                     "Hesabınla Devam Et",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 110, 141, 80),
-                      fontSize: 16,
-                    ),
+                    style: TextStyle(color: Color.fromARGB(255, 110, 141, 80), fontSize: 16),
                   ),
                   const SizedBox(height: 30),
 
@@ -151,10 +146,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(62, 173, 245, 153),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 15,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -162,10 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () {
                       // Google ile giriş işlemi
                     },
-                    child: const Text(
-                      "GOOGLE",
-                      style: TextStyle(color: Colors.red),
-                    ),
+                    child: const Text("GOOGLE", style: TextStyle(color: Colors.red)),
                   ),
                 ],
               ),
@@ -197,20 +186,19 @@ class _SignUpPageState extends State<SignUpPage> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
-        suffixIcon:
-            isPassword
-                ? IconButton(
-                  icon: Icon(
-                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                )
-                : null,
+        suffixIcon: isPassword
+            ? IconButton(
+                icon: Icon(
+                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                  });
+                },
+              )
+            : null,
       ),
       style: const TextStyle(color: Colors.white),
       validator: validator,

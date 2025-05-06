@@ -1,13 +1,15 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
     id("kotlin-android")
-    id("com.google.gms.google-services") // 🔥 Firebase için gerekli
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+
+
 android {
-    namespace = "com.example.fitopia2"
     ndkVersion = "27.0.12077973"
+    namespace = "com.example.fitopia2"
     compileSdk = flutter.compileSdkVersion
 
     compileOptions {
@@ -15,14 +17,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+    sourceSets {
+        // Bu bloğu doğru bir şekilde yapılandırıyoruz.
+        getByName("main") {
+            manifest.srcFile("android/app/src/main/AndroidManifest.xml")  // Manifest dosyasına doğru referans
+        }
     }
 
-    sourceSets {
-        getByName("main") {
-            manifest.srcFile("android/app/src/main/AndroidManifest.xml")
-        }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     defaultConfig {
@@ -42,15 +45,4 @@ android {
 
 flutter {
     source = "../.."
-}
-
-dependencies {
-    // 🔥 Firebase BOM (versiyon uyumu için çok önemli)
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-
-    // 🔥 Firebase Authentication
-    implementation("com.google.firebase:firebase-auth-ktx")
-
-    // 🔥 Firebase Firestore
-    implementation("com.google.firebase:firebase-firestore-ktx")
 }

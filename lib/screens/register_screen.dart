@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart'; // LoginPage import edilmeli
-import '../../../services/firebase_service.dart';
+import '../firebase_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -23,7 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       }
     } else {

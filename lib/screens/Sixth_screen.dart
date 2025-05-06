@@ -1,13 +1,12 @@
 // ignore_for_file: file_names, library_private_types_in_public_api, camel_case_types, unused_import, depend_on_referenced_packages
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitopia2/features/onboarding/presentation/pages/Fourth_screen.dart';
+
+import 'package:fitopia2/screens/Fourth_screen.dart';
 import 'package:fitopia2/screens/Home2-screen.dart';
-import 'package:fitopia2/features/auth/presentation/pages/Seventh_screen.dart';
-import 'package:fitopia2/features/auth/presentation/pages/Eighth_screen.dart';
+import 'package:fitopia2/screens/seventh_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart'; // Eğer kullanılıyorsa
-import 'package:fitopia2/services/auth_service.dart';
+import 'package:fitopia2/screens/eighth_screen.dart'; // Eğer kullanılıyorsa
+
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({super.key});
@@ -25,40 +24,24 @@ class _ThirdScreenState extends State<ThirdScreen> {
   bool _obscureText = true;
 
   // Doğru e-posta ve şifre
-  //final String correctEmail = "ravzakas5@gmail.com";
-  //final String correctPassword = "123456";
+  final String correctEmail = "ravzakas5@gmail.com";
+  final String correctPassword = "123456";
 
   // Giriş doğrulama
-  void _login() async {
+  void _login() {
     if (_formKey.currentState!.validate()) {
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-       if (!mounted) return;
-          Navigator.push(context, MaterialPageRoute(builder: (_) => FifthScreen()));
-      } on FirebaseAuthException catch (e) {
-        String message;
-        switch (e.code) {
-          case 'user-not-found':
-            message = 'Kullanıcı bulunamadı.';
-            break;
-          case 'wrong-password':
-            message = 'Hatalı şifre.';
-            break;
-          case 'invalid-email':
-            message = 'Geçersiz e-posta adresi.';
-            break;
-          case 'network-request-failed':
-            message = 'İnternet bağlantısı yok.';
-            break;
-          default:
-            message = 'Giriş yapılamadı. Hata: ${e.message}';
-        }
-        ScaffoldMessenger.of(
+      if (_emailController.text == correctEmail &&
+          _passwordController.text == correctPassword) {
+        // Doğru giriş yapıldığında HomeScreen'e yönlendir
+        Navigator.pushReplacement(
           context,
-        ).showSnackBar(SnackBar(content: Text(message)));
+          MaterialPageRoute(builder: (context) => FifthScreen()),
+        );
+      } else {
+        // Yanlış girişte hata mesajı göster
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Hatalı e-posta veya şifre!")),
+        );
       }
     }
   }
@@ -107,9 +90,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'E-posta adresini girin.';
-                    } else if (!RegExp(
-                      r'^[^@]+@[^@]+\.[^@]+',
-                    ).hasMatch(value)) {
+                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                       return 'Geçerli bir e-posta adresi girin.';
                     }
                     return null;
@@ -132,7 +113,9 @@ class _ThirdScreenState extends State<ThirdScreen> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
+                        _obscureText
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: Colors.white,
                       ),
                       onPressed: () {
@@ -156,10 +139,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EighthScreen()),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EighthScreen(),));
                     },
                     child: const Text(
                       "Şifreni mi unuttun?",
@@ -171,10 +151,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 110, 141, 80),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 90,
-                      vertical: 15,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 15),
                   ),
                   onPressed: _login,
                   child: const Text(
@@ -187,48 +164,31 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Hesabın mı yok?",
-                      style: TextStyle(color: Colors.green, fontSize: 18.0),
-                    ),
+                    const Text("Hesabın mı yok?",
+                        style: TextStyle(color: Colors.green, fontSize: 18.0)),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SeventhScreen(),
-                          ),
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SeventhScreen(),));
                       },
-                      child: const Text(
-                        "Hesap aç",
-                        style: TextStyle(color: Colors.red, fontSize: 18.0),
-                      ),
+                      child: const Text("Hesap aç",
+                          style: TextStyle(color: Colors.red, fontSize: 18.0)),
                     ),
                   ],
                 ),
                 const SizedBox(height: 40),
-                const Text(
-                  "Hesabınla Devam Et",
-                  style: TextStyle(color: Colors.green, fontSize: 18.0),
-                ),
+                const Text("Hesabınla Devam Et",
+                    style: TextStyle(color: Colors.green, fontSize: 18.0)),
                 const SizedBox(height: 30),
                 // Google ile giriş
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(62, 173, 245, 153),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 50,
-                      vertical: 15,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   ),
                   onPressed: () {
                     // Google ile giriş işlemi
                   },
-                  child: const Text(
-                    "GOOGLE",
-                    style: TextStyle(color: Colors.red),
-                  ),
+                  child: const Text("GOOGLE", style: TextStyle(color: Colors.red)),
                 ),
               ],
             ),
