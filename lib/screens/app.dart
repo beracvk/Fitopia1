@@ -1,7 +1,7 @@
 // ignore_for_file: use_super_parameters, unused_import, prefer_typing_uninitialized_variables, undefined_shown_name
 
 import 'package:flutter/material.dart';
-import '../features/home/presentation/pages/home3_screen.dart' as feature_home;
+import '../features/home/presentation/pages/sub_pages/home3_screen.dart' as feature_home;
 import 'screen/home3_screen.dart';
 import 'screens/home3_screen.dart';
 import 'config/theme.dart';

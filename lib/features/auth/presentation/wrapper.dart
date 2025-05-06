@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitopia2/features/home/presentation/pages/home3_screen.dart';
+import 'package:fitopia2/screens/screens/home3_screen.dart';
 import 'package:fitopia2/shared/firebase_home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fitopia2/features/onboarding/presentation/pages/home_screen.dart';
 // Giriş yapılınca yönlenecek ekran
 // Giriş ekranı
 
@@ -20,7 +21,7 @@ class Wrapper extends StatelessWidget {
         } else if (snapshot.hasData) {
           return const FirebaseHomeScreen(); // Giriş yapılmışsa
         } else {
-          return const HomeScreen(username: null); // Giriş yapılmamışsa
+          return const HomeScreen(); // Giriş yapılmamışsa
         }
       },
     );

@@ -3,16 +3,16 @@
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/deneme_screen.dart';
 import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
 import 'package:flutter/material.dart';
-import '../../../../widgets/profile_widget.dart';
-import 'sub_pages/goal_card.dart';
-import '../../../../widgets/action_card.dart';
-import '../../../meals/presentations/widgets/action_card.dart' show ActionCard;
-import '../../../../screens/diyet_plan_page.dart';
-import 'sub_pages/diyetplani.dart';
+import '../../../../../widgets/profile_widget.dart';
+import 'goal_card.dart';
+import '../../../../../widgets/action_card.dart';
+import '../../../../meals/presentations/widgets/action_card.dart' show ActionCard;
+import '../../../../../screens/diyet_plan_page.dart';
+import 'diyetplani.dart';
 //import 'sub_pages/goal_card.dart' show GoalCard;
-import 'sub_pages/porsiyon_sayfasi.dart';
-import '../../../../screens/egzersiz_planim.dart';
-import 'sub_pages/motivasyon_page.dart';
+import 'porsiyon_sayfasi.dart';
+import '../../../../../screens/egzersiz_planim.dart';
+import 'motivasyon_page.dart';
 // ignore: undefined_shown_name
 import 'package:fitopia2/widgets/profile_widget.dart' show ProfileWidget;
 
