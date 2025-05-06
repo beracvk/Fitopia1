@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PorsiyonSayfasi(),
+                          builder: (context) => const DenemeScreen(),
                         ),
                       );
                     },

@@ -1,15 +1,13 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
 
-void main() => runApp(PorsiyonSayfasi());
+void main() => runApp(MyApp());
 
-class PorsiyonSayfasi extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Porsiyon Analizim',
-      home: PorsiyonSayfasi(),
+      home: PorsiyonAnaliziPage(),
       debugShowCheckedModeBanner: false,
     );
   }
