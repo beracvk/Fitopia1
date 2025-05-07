@@ -13,7 +13,11 @@ class RegisterPage extends StatefulWidget {
 class RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final String _errorMessage = '';
+  final TextEditingController _fullNameController =
+      TextEditingController(); // 🔹 Ad soyad
+  final TextEditingController _usernameController =
+      TextEditingController(); // 🔹 Kullanıcı adı
+  String _errorMessage = '';
 
   bool isValidEmail(String email) {
     RegExp regExp = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
@@ -22,56 +26,74 @@ class RegisterPageState extends State<RegisterPage> {
 
   void _register() async {
     try {
-      // 🔽 Firebase Auth ile kullanıcıyı oluştur
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
 
-      // 🔽 Kullanıcıyı Firestore'a kaydet — İŞTE BURASI
       String userId = userCredential.user!.uid;
+
+      // 🔹 Firestore’a kullanıcı bilgilerini kaydet
       await FirebaseFirestore.instance.collection('users').doc(userId).set({
         'email': _emailController.text.trim(),
+        'fullName': _fullNameController.text.trim(),
+        'username': _usernameController.text.trim(),
         'createdAt': DateTime.now(),
       });
 
-      // 🔽 Kayıt başarılıysa login sayfasına yönlendir
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
-    } on FirebaseAuthException {
-      // Hata yönetimi
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message ?? 'Bir hata oluştu';
+      });
     } catch (e) {
-      // Genel hata yönetimi
+      setState(() {
+        _errorMessage = 'Bir hata oluştu';
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Kayıt Ol')),
+      appBar: AppBar(title: const Text('Kayıt Ol')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'E-posta'),
-            ),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Şifre'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(onPressed: _register, child: Text('Kayıt Ol')),
-            SizedBox(height: 20),
-            if (_errorMessage.isNotEmpty)
-              Text(_errorMessage, style: TextStyle(color: Colors.red)),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: _fullNameController,
+                decoration: const InputDecoration(labelText: 'Ad Soyad'),
+              ),
+              TextField(
+                controller: _usernameController,
+                decoration: const InputDecoration(labelText: 'Kullanıcı Adı'),
+              ),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'E-posta'),
+              ),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Şifre'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _register,
+                child: const Text('Kayıt Ol'),
+              ),
+              const SizedBox(height: 20),
+              if (_errorMessage.isNotEmpty)
+                Text(_errorMessage, style: const TextStyle(color: Colors.red)),
+            ],
+          ),
         ),
       ),
     );
