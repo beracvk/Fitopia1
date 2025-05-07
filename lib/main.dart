@@ -1,8 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitopia2/screens/screens/firebase_home_screen.dart';
 import 'package:fitopia2/services/firebase_options.dart';
-import 'package:fitopia2/features/home/presentation/pages/sub_pages/home3_screen.dart';
-import 'package:fitopia2/features/auth/presentation/wrapper.dart';
 import 'package:flutter/material.dart';
+
+// Ekranlar
+import 'package:fitopia2/features/auth/presentation/wrapper.dart';
+import 'package:fitopia2/features/auth/presentation/login_screen.dart';
+import 'package:fitopia2/features/auth/presentation/register_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,14 +22,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Firebase App',
+      title: 'Fitopia',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Wrapper(), // burada Wrapper widget’ı kullanılıyor
+      // 🔍 Giriş yapılmış mı kontrol eden başlangıç ekranı
+      home: const Wrapper(),
+
+      // 📍 Rotalar tanımı
       routes: {
-        "/login":
-            (context) => const HomeScreen(username: null), // Login ekran rotası
+        "/login": (context) => const LoginPage(),
+        "/register": (context) => const RegisterPage(),
+        "/home": (context) => const FirebaseHomeScreen(), // Ana ekran
       },
     );
   }
