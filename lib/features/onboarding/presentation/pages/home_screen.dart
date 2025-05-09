@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.arrow_forward_ios_rounded,
-                  color: Color.fromARGB(255, 110, 141, 80),
+                  color: Colors.black,
                   size: 30,
                 ),
               ),

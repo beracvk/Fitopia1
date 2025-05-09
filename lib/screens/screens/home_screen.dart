@@ -13,7 +13,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? username;
   bool isLoading = true;
-  bool isLoggedIn = false;
 
   @override
   void initState() {
@@ -31,12 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
               .get();
       setState(() {
         username = doc['username'];
-        isLoggedIn = true;
-        isLoading = false;
-      });
-    } else {
-      setState(() {
-        isLoggedIn = false;
         isLoading = false;
       });
     }
@@ -48,35 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    if (!isLoggedIn) {
-      // 🔹 Giriş yapılmamışsa kullanıcıya butonlar göster
-      return Scaffold(
-        appBar: AppBar(title: const Text("Hoş Geldiniz")),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Devam etmek için giriş yap veya kayıt ol."),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login');
-                },
-                child: const Text("Giriş Yap"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: const Text("Kayıt Ol"),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    // 🔹 Giriş yapılmışsa profil göster
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -87,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ProfileWidget(username: username ?? 'Kullanıcı'),
               const SizedBox(height: 50),
 
-              // ... Diğer kartlar ve içerikler
+              // ... Diğer kartlar ve satırlar
             ],
           ),
         ),

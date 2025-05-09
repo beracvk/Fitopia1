@@ -45,6 +45,8 @@ class FirebaseHomeScreenState extends State<FirebaseHomeScreen> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await _auth.signOut();
+              if (!context.mounted) return;
+              Navigator.pushReplacementNamed(context, "/login");
             },
           ),
         ],

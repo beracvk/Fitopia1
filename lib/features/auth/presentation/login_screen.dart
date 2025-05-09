@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fitopia2/services/auth_service.dart';
+//import 'package:fitopia2/features/onboarding/presentation/pages/Third_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,30 +18,29 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   final AuthService _authService = AuthService();
 
-  Future<void> _signIn() async {
-    if (!_formKey.currentState!.validate()) return;
+ Future<void> _signIn() async {
+  if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
+  setState(() => _isLoading = true);
 
-    try {
-      await _authService.signInWithEmail(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
-      if (!mounted) return;
-
-      // ✅ Successful login - navigate to home page
-      Navigator.pushReplacementNamed(context, "/home");
-    } on FirebaseAuthException catch (e) {
-      if (!mounted) return;
-      _showErrorSnackbar(e.message ?? "Bilinmeyen hata oluştu");
-    } catch (e) {
-      if (!mounted) return;
-      _showErrorSnackbar("Bir hata oluştu.");
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
+  try {
+    await _authService.signInWithEmail(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ThirdScreen()),
+    );
+  } catch (e) {
+    if (!mounted) return;
+    _showErrorSnackbar((e as FirebaseAuthException).message ?? "Bilinmeyen hata oluştu");
+  } finally {
+    if (mounted) setState(() => _isLoading = false);
   }
+}
+
 
   void _showErrorSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -52,12 +53,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _navigateToRegister() {
-    // TODO: Implement register navigation
-    // Navigator.pushNamed(context, "/register");
+    // Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterScreen()));
   }
 
   void _navigateToForgotPassword() {
-    // TODO: Implement forgot password navigation
     // Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPasswordScreen()));
   }
 
@@ -71,7 +70,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Giriş Yap")),
+      appBar: AppBar(
+        title: const Text("Giriş Yap"),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -92,9 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                   if (value == null || value.isEmpty) {
                     return 'Lütfen e-posta adresinizi girin';
                   }
-                  if (!RegExp(
-                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                  ).hasMatch(value)) {
+                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                     return 'Geçerli bir e-posta adresi girin';
                   }
                   return null;
@@ -133,14 +133,13 @@ class _LoginPageState extends State<LoginPage> {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child:
-                    _isLoading
-                        ? const SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                        : const Text('Giriş Yap'),
+                child: _isLoading 
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Giriş Yap'),
               ),
               const SizedBox(height: 16),
               TextButton(
