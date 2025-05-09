@@ -8,6 +8,8 @@ import 'package:fitopia2/features/auth/presentation/pages/Eighth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart'; // Eğer kullanılıyorsa
 import 'package:fitopia2/services/auth_service.dart';
+import 'package:fitopia2/features/home/presentation/pages/sub_pages/home3_screen.dart';
+
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({super.key});
@@ -36,8 +38,17 @@ class _ThirdScreenState extends State<ThirdScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-       if (!mounted) return;
-          Navigator.push(context, MaterialPageRoute(builder: (_) => FifthScreen()));
+
+        if (!mounted) return;
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder:
+                (_) =>
+                    const HomeScreen(username: 'Bera'), // veya dinamik username
+          ),
+        );
       } on FirebaseAuthException catch (e) {
         String message;
         switch (e.code) {

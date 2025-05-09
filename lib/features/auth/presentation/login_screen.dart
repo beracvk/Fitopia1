@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fitopia2/services/auth_service.dart';
+
 //import 'package:fitopia2/features/onboarding/presentation/pages/Third_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const ThirdScreen()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   } catch (e) {
     if (!mounted) return;

@@ -1,7 +1,14 @@
 // ignore_for_file: library_private_types_in_public_api, duplicate_import, depend_on_referenced_packages, file_names
-
-import 'package:fitopia2/features/onboarding/presentation/pages/Fourth_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:fitopia2/features/auth/presentation/login_screen.dart';
+//import 'package:fitopia2/features/onboarding/presentation/pages/Fifth_screen.dart';
+//import 'package:fitopia2/features/onboarding/presentation/pages/Fourth_screen.dart';
 import 'package:flutter/material.dart';
+//import 'package:fitopia2/shared/firebase_home_screen.dart';
+//import 'package:fitopia2/features/auth/presentation/register_page.dart';
+import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
+
 
 class SeventhScreen extends StatelessWidget {
   const SeventhScreen({super.key});
@@ -27,13 +34,42 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // Kullanıcı adı, e-posta ve şifre doğrulaması
-  void _signUp() {
+  void _signUp() async {
     if (_formKey.currentState!.validate()) {
-      // Eğer doğrulama başarılıysa, doğru bilgileri giren kullanıcıyı HomeScreen'e yönlendir
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => FifthScreen()),
-      );
+      try {
+        final credential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            );
+
+        // Firestore'a kullanıcı verisini kaydet
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set({
+              'email': _emailController.text.trim(),
+              'fullName': _usernameController.text.trim(),
+              'createdAt': DateTime.now(),
+            });
+
+        // Kayıt başarılıysa anasayfaya yönlendir
+        if (!mounted) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => ThirdScreen()),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message ?? 'Kayıt sırasında bir hata oluştu'),
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Beklenmeyen hata: $e')));
+      }
     }
   }
 

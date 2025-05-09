@@ -11,6 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final String _errorMessage = '';
@@ -33,8 +34,8 @@ class RegisterPageState extends State<RegisterPage> {
       String userId = userCredential.user!.uid;
       await FirebaseFirestore.instance.collection('users').doc(userId).set({
         'email': _emailController.text.trim(),
+        'fullName': _fullNameController.text.trim(),
         'createdAt': DateTime.now(),
-        //kullanıcı adı ve şifre firebase eklenecek
       });
 
       // 🔽 Kayıt başarılıysa login sayfasına yönlendir
@@ -59,6 +60,10 @@ class RegisterPageState extends State<RegisterPage> {
         child: Column(
           children: [
             TextField(
+              controller: _fullNameController,
+              decoration: InputDecoration(labelText: 'Ad Soyad'),
+            ),
+            TextField(
               controller: _emailController,
               decoration: InputDecoration(labelText: 'E-posta'),
             ),
@@ -67,6 +72,7 @@ class RegisterPageState extends State<RegisterPage> {
               obscureText: true,
               decoration: InputDecoration(labelText: 'Şifre'),
             ),
+
             SizedBox(height: 20),
             ElevatedButton(onPressed: _register, child: Text('Kayıt Ol')),
             SizedBox(height: 20),

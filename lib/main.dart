@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       home: const Wrapper(), // burada Wrapper widget’ı kullanılıyor
       routes: {
         "/login":
-            (context) => const HomeScreen(username: null), // Login ekran rotası
+            (context) => const HomeScreen(username: 'bera'), // Login ekran rotası
       },
     );
   }
