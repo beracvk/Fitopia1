@@ -34,6 +34,7 @@ class RegisterPageState extends State<RegisterPage> {
       await FirebaseFirestore.instance.collection('users').doc(userId).set({
         'email': _emailController.text.trim(),
         'createdAt': DateTime.now(),
+        //kullanıcı adı ve şifre firebase eklenecek
       });
 
       // 🔽 Kayıt başarılıysa login sayfasına yönlendir
