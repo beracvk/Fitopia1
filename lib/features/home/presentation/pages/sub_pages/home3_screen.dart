@@ -7,7 +7,6 @@ import '../../../../../widgets/profile_widget.dart';
 import 'goal_card.dart';
 import '../../../../../widgets/action_card.dart';
 import '../../../../meals/presentations/widgets/action_card.dart' show ActionCard;
-import '../../../../../screens/diyet_plan_page.dart';
 import 'diyetplani.dart';
 //import 'sub_pages/goal_card.dart' show GoalCard;
 import 'porsiyon_sayfasi.dart';
