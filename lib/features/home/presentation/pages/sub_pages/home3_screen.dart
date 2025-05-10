@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   GoalCard(
                     title: 'HEDEF/2.5 Litre',
-                    color: const Color.fromARGB(66, 1, 66, 119),
+                    color: const Color.fromARGB(124, 1, 66, 119),
                     iconAsset: 'assets/images/su.webp',
                   ),
                   GoalCard(
@@ -49,13 +49,13 @@ class HomeScreen extends StatelessWidget {
                   ),
                   GoalCard(
                     title: 'HEDEF 10 000 Adım',
-                    color: const Color.fromARGB(89, 211, 190, 7),
+                    color: const Color.fromARGB(136, 211, 190, 7),
                     iconAsset: 'assets/images/koşu5.webp',
                   ),
                 ],
               ),
 
-              const SizedBox(height: 100),
+              const SizedBox(height: 80),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
