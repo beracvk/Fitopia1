@@ -1,11 +1,13 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const FigmaToCodeApp());
+  runApp(const FigmaToCodeApp2());
 }
 
-class FigmaToCodeApp extends StatelessWidget {
-  const FigmaToCodeApp({super.key});
+class FigmaToCodeApp2 extends StatelessWidget {
+  const FigmaToCodeApp2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +15,12 @@ class FigmaToCodeApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
       ),
-      home: Scaffold(body: ListView(children: [Iphone169()])),
+      home: Scaffold(body: ListView(children: [FigmaToCodeApp2()])),
     );
   }
 }
 
-class Iphone169 extends StatelessWidget {
+class FigmaToCodeApp3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
