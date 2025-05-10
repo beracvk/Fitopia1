@@ -1,12 +1,9 @@
-// ignore_for_file: use_super_parameters, unused_import, prefer_typing_uninitialized_variables, undefined_shown_name
-
 import 'package:flutter/material.dart';
-import '../features/home/presentation/pages/sub_pages/home3_screen.dart' as feature_home;
-import 'screen/home3_screen.dart';
-import 'screens/home3_screen.dart';
-import 'config/theme.dart';
+import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart'; // ThirdScreen
+// veya LoginPage kullanıyorsan onu import et
 
 class MyApp extends StatelessWidget {
+  // ignore: use_super_parameters
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -14,11 +11,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Health Tracker',
-      home: const feature_home.HomeScreen(username: null),
+      theme: ThemeData.light(),
+      home: const ThirdScreen(), // 🔁 ilk sayfa giriş ekranı
     );
   }
-}
-
-mixin AppTheme {
-  var lightTheme;
 }

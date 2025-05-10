@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import '../../../../../widgets/profile_widget.dart';
 import 'goal_card.dart';
 import '../../../../../widgets/action_card.dart';
-import '../../../../meals/presentations/widgets/action_card.dart' show ActionCard;
+import '../../../../meals/presentations/widgets/action_card.dart'
+    show ActionCard;
 import 'diyetplani.dart';
 //import 'sub_pages/goal_card.dart' show GoalCard;
 import 'porsiyon_sayfasi.dart';
@@ -16,7 +17,9 @@ import 'motivasyon_page.dart';
 import 'package:fitopia2/widgets/profile_widget.dart' show ProfileWidget;
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key, required username}) : super(key: key);
+  final String username;
+
+  const HomeScreen({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProfileWidget(username: 'Bera'),
+              ProfileWidget(username: username),
               const SizedBox(height: 50),
 
               Row(
@@ -70,9 +73,7 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => DenemeScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => DenemeScreen()),
                       );
                     },
                   ),
@@ -115,5 +116,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  ProfileWidget({required String username}) {}
 }
