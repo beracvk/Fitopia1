@@ -2,7 +2,6 @@
 
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/deneme_screen.dart';
 import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
-import 'package:fitopia2/screens/porsiyon_analizi_page.dart';
 import 'package:flutter/material.dart';
 import '../../../../../widgets/profile_widget.dart';
 import 'goal_card.dart';
@@ -39,29 +38,29 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   GoalCard(
                     title: 'HEDEF/2.5 Litre',
-                    color: const Color.fromARGB(124, 1, 66, 119),
+                    color: const Color.fromARGB(66, 1, 66, 119),
                     iconAsset: 'assets/images/su.webp',
                   ),
                   GoalCard(
                     title: 'HEDEF/2000 Kalori',
-                    color: const Color.fromARGB(218, 202, 25, 12),
+                    color: const Color.fromARGB(167, 212, 31, 18),
                     iconAsset: 'assets/images/alev5.webp',
                   ),
                   GoalCard(
                     title: 'HEDEF 10 000 Adım',
-                    color: const Color.fromARGB(136, 211, 190, 7),
+                    color: const Color.fromARGB(89, 211, 190, 7),
                     iconAsset: 'assets/images/koşu5.webp',
                   ),
                 ],
               ),
 
-              const SizedBox(height: 80),
+              const SizedBox(height: 60),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ActionCard(
-                    title: 'Öğün Planı',
+                    title: 'Diyet Planı',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -74,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FigmaToCodeApp3()),
+                        MaterialPageRoute(builder: (context) => DenemeScreen()),
                       );
                     },
                   ),
@@ -92,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const FigmaToCodeApp(),
+                          builder: (context) => const DenemeScreen(),
                         ),
                       );
                     },
