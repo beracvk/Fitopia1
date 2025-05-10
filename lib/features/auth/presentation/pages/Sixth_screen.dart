@@ -56,6 +56,7 @@ void _login() async {
 
       // Ana sayfaya yönlendir
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
           builder: (_) => HomeScreen(username: username),
@@ -80,6 +81,7 @@ void _login() async {
           message = 'Giriş yapılamadı. Hata: ${e.message}';
       }
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
     }
   }
