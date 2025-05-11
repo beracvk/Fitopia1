@@ -33,10 +33,10 @@ class HomePage extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                left: 131,
+                left: 145,
                 top: 7,
                 child: Text(
-                  'Diyet Planım',
+                  'Öğün Planı',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
@@ -183,7 +183,7 @@ class HomePage extends StatelessWidget {
               ),
               Positioned(
                 left: 31,
-                top: 240,
+                top: 250,
                 child: Container(
                   width: 332,
                   height: 68,
