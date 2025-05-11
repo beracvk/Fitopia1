@@ -16,20 +16,24 @@ class GoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100, // Genişlik ayarı
-      height: 180, // Yükseklik ayarı
+      height: 250, // Yükseklik ayarı
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(iconAsset, width: 45), // İkon resmi
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
             title,
-            style: const TextStyle(fontSize: 14),
             textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'SourceSerif',
+              fontSize: 16,
+            )
+        
           ),
         ],
       ),

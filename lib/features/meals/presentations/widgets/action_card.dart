@@ -24,18 +24,20 @@ class ActionCard extends StatelessWidget {
         width: cardWidth,
         height: 178,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(85, 22, 81, 24),
-          borderRadius: BorderRadius.circular(5),
+          color: Color(0xFFD1DEBD),
+          borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.all(36.5),
         child: Align(
           alignment: Alignment.center,
           child: Text(
             title,
+            textAlign: TextAlign.center,
             style: const TextStyle(
-              color: Color.fromARGB(255, 18, 110, 19),
-              fontSize: 26,
+              color: Color(0xFF606C38),
+              fontSize: 25,
               fontWeight: FontWeight.bold,
+              fontFamily: 'SourceSerif',
             ),
           ),
         ),

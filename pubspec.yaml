@@ -87,7 +87,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Courgette
+    - family: SourceSerif
+      fonts:
+        - asset: assets/fonts/SourceSerif.ttf
+    - family: Courgette-Regular
       fonts:
         - asset: assets/fonts/Courgette-Regular.ttf
 

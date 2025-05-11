@@ -25,6 +25,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(15.0),
@@ -39,17 +40,17 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   GoalCard(
                     title: 'HEDEF/2.5 Litre',
-                    color: const Color.fromARGB(124, 1, 66, 119),
+                    color: Color(0xFFBAD7DF),
                     iconAsset: 'assets/images/su.webp',
                   ),
                   GoalCard(
                     title: 'HEDEF/2000 Kalori',
-                    color: const Color.fromARGB(218, 202, 25, 12),
+                    color:  Color(0xFFF34336),
                     iconAsset: 'assets/images/alev5.webp',
                   ),
                   GoalCard(
                     title: 'HEDEF 10 000 Adım',
-                    color: const Color.fromARGB(136, 211, 190, 7),
+                    color: Color(0xFFFFD95F),
                     iconAsset: 'assets/images/koşu5.webp',
                   ),
                 ],
