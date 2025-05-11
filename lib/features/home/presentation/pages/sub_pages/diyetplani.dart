@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF),
       body: SingleChildScrollView(
         child: Container(
           width: 393,
@@ -39,8 +40,9 @@ class HomePage extends StatelessWidget {
                   'Öğün Planı',
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'SourceSerif',
                     color: Colors.black,
-                    fontSize: 24,
+                    fontSize: 26,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -52,6 +54,7 @@ class HomePage extends StatelessWidget {
                   'Cuma, 14 şubat',
                   textAlign: TextAlign.center,
                   style: TextStyle(
+                    fontFamily: 'SourceSerif',
                     color: const Color(0xFF196F3D),
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
@@ -72,6 +75,7 @@ class HomePage extends StatelessWidget {
                       TextSpan(
                         text: '200\n',
                         style: TextStyle(
+                          fontFamily: 'SourceSerif',
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -80,6 +84,7 @@ class HomePage extends StatelessWidget {
                       TextSpan(
                         text: 'Alınan',
                         style: TextStyle(
+                          fontFamily: 'SourceSerif',
                           color: const Color(0xFF196F3D),
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -99,6 +104,7 @@ class HomePage extends StatelessWidget {
                       TextSpan(
                         text: '100\n',
                         style: TextStyle(
+                          fontFamily: 'SourceSerif',
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -107,6 +113,7 @@ class HomePage extends StatelessWidget {
                       TextSpan(
                         text: 'Yakılan',
                         style: TextStyle(
+                          fontFamily: 'SourceSerif',
                           color: const Color(0xFF196F3D),
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -118,12 +125,12 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: 269,
-                top: 200,
+                left: 275,
+                top: 220,
                 child: Container(
                   transform: Matrix4.identity()..translate(0.0, 0.0)..rotateZ(3.14),
-                  width: 137,
-                  height: 128,
+                  width: 150,
+                  height: 150,
                   decoration: ShapeDecoration(
                     color: Colors.white,
                     shape: OvalBorder(side: BorderSide(width: 1)),
@@ -139,6 +146,7 @@ class HomePage extends StatelessWidget {
                       TextSpan(
                         text: '1278\n',
                         style: TextStyle(
+                          fontFamily: 'SourceSerif',
                           color: Colors.black,
                           fontSize: 36,
                           fontWeight: FontWeight.w400,
@@ -147,6 +155,7 @@ class HomePage extends StatelessWidget {
                       TextSpan(
                         text: 'Kalan',
                         style: TextStyle(
+                          fontFamily: 'SourceSerif',
                           color: const Color(0xFF196F3D),
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
@@ -183,9 +192,10 @@ class HomePage extends StatelessWidget {
               ),
               Positioned(
                 left: 31,
+                right: 10,
                 top: 250,
                 child: Container(
-                  width: 332,
+                  width: 360,
                   height: 68,
                   clipBehavior: Clip.antiAlias,
                   decoration: ShapeDecoration(
@@ -203,6 +213,7 @@ class HomePage extends StatelessWidget {
                           'Karbonhidrat',
                           textAlign: TextAlign.center,
                           style: TextStyle(
+                            fontFamily: 'SourceSerif',
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -211,11 +222,13 @@ class HomePage extends StatelessWidget {
                       ),
                       Positioned(
                         left: 149,
+                        right: 150,
                         top: 10,
                         child: Text(
                           'Protein',
                           textAlign: TextAlign.center,
                           style: TextStyle(
+                            fontFamily: 'SourceSerif',
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -229,6 +242,7 @@ class HomePage extends StatelessWidget {
                           'Yağlar',
                           textAlign: TextAlign.center,
                           style: TextStyle(
+                            fontFamily: 'SourceSerif',
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -290,6 +304,7 @@ class HomePage extends StatelessWidget {
                           '0/100g',
                           textAlign: TextAlign.center,
                           style: TextStyle(
+                            fontFamily: 'SourceSerif',
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -303,6 +318,7 @@ class HomePage extends StatelessWidget {
                           '0/91g',
                           textAlign: TextAlign.center,
                           style: TextStyle(
+                            fontFamily: 'SourceSerif',
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -316,6 +332,7 @@ class HomePage extends StatelessWidget {
                           '0/69g',
                           textAlign: TextAlign.center,
                           style: TextStyle(
+                            fontFamily: 'SourceSerif',
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -328,7 +345,7 @@ class HomePage extends StatelessWidget {
               ),
               // Öğle Yemeği Button
               Positioned(
-                left: 211,
+                right: 3,
                 top: 360,
                 child: GestureDetector(
                   onTap: () {
@@ -358,6 +375,7 @@ class HomePage extends StatelessWidget {
                             'Öğle Yemeği',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -388,6 +406,7 @@ class HomePage extends StatelessWidget {
                             'Ton balığı, salata, süzme peynir',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -401,6 +420,7 @@ class HomePage extends StatelessWidget {
                             '322,2 kcal',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: const Color(0xFF808080),
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -415,7 +435,7 @@ class HomePage extends StatelessWidget {
               ),
               // Kahvaltı Button
               Positioned(
-                left: 17,
+                left: 24,
                 top: 360,
                 child: GestureDetector(
                   onTap: () {
@@ -445,6 +465,7 @@ class HomePage extends StatelessWidget {
                             'Kahvaltı',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -475,6 +496,7 @@ class HomePage extends StatelessWidget {
                             'Yulap lapası, muz, fıstık \nezmesi,tarçın',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -488,6 +510,7 @@ class HomePage extends StatelessWidget {
                             '312,2 kcal',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: const Color(0xFF808080),
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -510,6 +533,7 @@ class HomePage extends StatelessWidget {
                     '\n',
                     textAlign: TextAlign.right,
                     style: TextStyle(
+                      fontFamily: 'SourceSerif',
                       color: Colors.black,
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
@@ -519,7 +543,7 @@ class HomePage extends StatelessWidget {
               ),
               // Ara Öğün Button
               Positioned(
-                left: 17,
+                left: 24,
                 top: 600,
                 child: GestureDetector(
                   onTap: () {
@@ -549,6 +573,7 @@ class HomePage extends StatelessWidget {
                             'Ara Öğün',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -579,6 +604,7 @@ class HomePage extends StatelessWidget {
                             'Elma',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -592,6 +618,7 @@ class HomePage extends StatelessWidget {
                             '63,5 kcal',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: const Color(0xFF808080),
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -606,7 +633,7 @@ class HomePage extends StatelessWidget {
               ),
               // Akşam Yemeği Button
               Positioned(
-                left: 214,
+                right: 3,
                 top: 600,
                 child: GestureDetector(
                   onTap: () {
@@ -631,11 +658,12 @@ class HomePage extends StatelessWidget {
                       children: [
                         Positioned(
                           left: 18,
-                          top: 15,
+                          top: 10,
                           child: Text(
                             'Akşam Yemeği',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -666,6 +694,7 @@ class HomePage extends StatelessWidget {
                             'Fırında Somon, fırında\n patates, sebze salatası',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: Colors.black,
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -679,6 +708,7 @@ class HomePage extends StatelessWidget {
                             '359,2 kcal',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontFamily: 'SourceSerif',
                               color: const Color(0xFF808080),
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
