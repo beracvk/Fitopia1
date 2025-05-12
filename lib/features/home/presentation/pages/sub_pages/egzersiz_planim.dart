@@ -16,18 +16,19 @@ class FigmaToCodeApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
       ),
-      home: Scaffold(body: ListView(children: [Iphone1611()])),
+      home: const FullScreenPage(),
     );
   }
 }
 
-class Iphone1611 extends StatelessWidget {
+class FullScreenPage extends StatelessWidget {
+  const FullScreenPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          width: 393,
+          width: 414,
           height: 852,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(color: Colors.white),
@@ -39,7 +40,7 @@ class Iphone1611 extends StatelessWidget {
                 child: Opacity(
                   opacity: 0.05,
                   child: Container(
-                    width: 393,
+                    width: 414,
                     height: 81,
                     decoration: ShapeDecoration(
                       color: const Color(0xFF902C2F),
@@ -56,8 +57,8 @@ class Iphone1611 extends StatelessWidget {
                 child: Opacity(
                   opacity: 0.30,
                   child: Container(
-                    width: 393,
-                    height: 180,
+                    width: 414,
+                    height: 250,
                     decoration: ShapeDecoration(
                       color: const Color(0xFFFBB7B2),
                       shape: RoundedRectangleBorder(
@@ -84,7 +85,7 @@ class Iphone1611 extends StatelessWidget {
                 top: 31,
                 child: SizedBox(
                   width: 158,
-                  height: 19,
+                  height: 25,
                   child: Text(
                     'Egzersiz Planım',
                     textAlign: TextAlign.center,
@@ -205,7 +206,7 @@ class Iphone1611 extends StatelessWidget {
                 top: 447,
                 child: Container(
                   width: 163,
-                  height: 39,
+                  height: 45,
                   decoration: ShapeDecoration(
                     color: const Color(0xFF902C2F),
                     shape: RoundedRectangleBorder(
@@ -231,18 +232,16 @@ class Iphone1611 extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: 141,
+                left: 160,
                 top: 456,
                 child: SizedBox(
-                  width: 78,
-                  height: 15,
                   child: Text(
                     'Duraklat',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 18,
-                      fontFamily: 'Source Serif Pro',
+                      fontFamily: 'SourceSerif',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -270,7 +269,7 @@ class Iphone1611 extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 10,
+                      fontSize: 17,
                       fontFamily: 'Source Serif Pro',
                       fontWeight: FontWeight.w700,
                     ),
@@ -288,7 +287,7 @@ class Iphone1611 extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 10,
+                      fontSize: 17,
                       fontFamily: 'Source Serif Pro',
                       fontWeight: FontWeight.w700,
                     ),
