@@ -1,14 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api, duplicate_import, depend_on_referenced_packages, file_names
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:fitopia2/features/auth/presentation/login_screen.dart';
-//import 'package:fitopia2/features/onboarding/presentation/pages/Fifth_screen.dart';
-//import 'package:fitopia2/features/onboarding/presentation/pages/Fourth_screen.dart';
 import 'package:flutter/material.dart';
-//import 'package:fitopia2/shared/firebase_home_screen.dart';
-//import 'package:fitopia2/features/auth/presentation/register_page.dart';
-import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
-
+import 'package:fitopia2/features/auth/presentation/wrapper.dart';
 
 class SeventhScreen extends StatelessWidget {
   const SeventhScreen({super.key});
@@ -55,9 +49,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
         // Kayıt başarılıysa anasayfaya yönlendir
         if (!mounted) return;
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => ThirdScreen()),
+          MaterialPageRoute(builder: (_) => const Wrapper()),
+          (route) => false,
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
