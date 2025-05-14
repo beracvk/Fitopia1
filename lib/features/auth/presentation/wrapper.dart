@@ -18,8 +18,15 @@ class Wrapper extends StatelessWidget {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
-        } else if (snapshot.hasData) {
-          return const FirebaseHomeScreen(); // Giriş yapılmışsa
+        }
+        if (snapshot.hasData) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => const FirebaseHomeScreen()),
+              (route) => false,
+            );
+          });
+          return const SizedBox(); // boş bir widget döndür
         } else {
           return const HomeScreen(); // Giriş yapılmamışsa
         }

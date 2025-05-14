@@ -12,7 +12,7 @@ import '../../../../meals/presentations/widgets/action_card.dart'
 import 'diyetplani.dart';
 //import 'sub_pages/goal_card.dart' show GoalCard;
 import 'porsiyon_sayfasi.dart';
-import '../../../../../screens/egzersiz_planim.dart';
+import 'egzersiz_planim.dart';
 import 'motivasyon_page.dart';
 // ignore: undefined_shown_name
 import 'package:fitopia2/widgets/profile_widget.dart' show ProfileWidget;
