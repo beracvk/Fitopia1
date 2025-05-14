@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ActionCard(
-                    title: 'Öğün Planı',
+                    title: 'Beslenme Planı',
                     onTap: () {
                       Navigator.push(
                         context,
