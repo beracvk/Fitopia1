@@ -203,7 +203,7 @@ class GlassCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: const Color.fromARGB(150, 255, 255, 255), // %60 saydam beyaz
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(29),
         boxShadow: [
           BoxShadow(
             color: const Color.fromARGB(60, 0, 0, 0),

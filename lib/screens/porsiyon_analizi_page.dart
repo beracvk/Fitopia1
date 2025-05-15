@@ -50,7 +50,7 @@ class FigmaToCodeApp3 extends StatelessWidget {
                       Positioned(
                         left: -218,
                         top: -330,
-                        child: Container(width: 736, height: 831),
+                        child: SizedBox(width: 736, height: 831),
                       ),
                       Positioned(
                         left: 15,

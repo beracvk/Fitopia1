@@ -403,7 +403,7 @@ class HomePage extends StatelessWidget {
                           left: 6,
                           top: 142,
                           child: Text(
-                            'Ton balığı, salata, süzme peynir',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
@@ -417,7 +417,7 @@ class HomePage extends StatelessWidget {
                           left: 60,
                           top: 169,
                           child: Text(
-                            '322,2 kcal',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
@@ -493,7 +493,7 @@ class HomePage extends StatelessWidget {
                           left: 24,
                           top: 134,
                           child: Text(
-                            'Yulap lapası, muz, fıstık \nezmesi,tarçın',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
@@ -507,7 +507,7 @@ class HomePage extends StatelessWidget {
                           left: 60,
                           top: 168,
                           child: Text(
-                            '312,2 kcal',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
@@ -601,7 +601,7 @@ class HomePage extends StatelessWidget {
                           left: 72,
                           top: 144,
                           child: Text(
-                            'Elma',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
@@ -615,7 +615,7 @@ class HomePage extends StatelessWidget {
                           left: 63,
                           top: 172,
                           child: Text(
-                            '63,5 kcal',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
@@ -691,7 +691,7 @@ class HomePage extends StatelessWidget {
                           left: 27,
                           top: 146,
                           child: Text(
-                            'Fırında Somon, fırında\n patates, sebze salatası',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
@@ -705,7 +705,7 @@ class HomePage extends StatelessWidget {
                           left: 60,
                           top: 177,
                           child: Text(
-                            '359,2 kcal',
+                            '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'SourceSerif',
