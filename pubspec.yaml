@@ -73,6 +73,8 @@ flutter:
    - assets/images/background.jpg 
    - assets/images/koşu5.webp
    - assets/images/su.webp
+   - assets/images/nutrition.jpg
+   - assets/images/nutrition2.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

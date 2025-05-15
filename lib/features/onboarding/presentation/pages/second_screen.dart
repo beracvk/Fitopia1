@@ -17,7 +17,7 @@ class SecondScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [Text('Hadi Başlayalım!',
         style: TextStyle(
-          fontFamily: "Courgette",
+          fontFamily: "Courgette-Regular",
           color: Colors.white,
           fontSize: 40.0,
         ),

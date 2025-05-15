@@ -40,7 +40,7 @@ class OnboardingScreen extends StatelessWidget {
                 Text(
                   "Hedeflerine\nuygun önerilerle\nsağlıklı beslenmeyi\nkeşfet.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: "Courgette",
+                  style: TextStyle(fontFamily: "Courgette-Regular",
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 110, 141, 80),

@@ -108,7 +108,6 @@ void _login() async {
                 Text(
                   "Hesabına Giriş Yap",
                   style: TextStyle(
-                    fontFamily: "Courgette-Regular",
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 110, 141, 80),
@@ -215,7 +214,7 @@ void _login() async {
                   children: [
                     const Text(
                       "Hesabın mı yok?",
-                      style: TextStyle(color: Colors.green, fontSize: 18.0),
+                      style: TextStyle(color:  Color.fromARGB(255, 110, 141, 80)),
                     ),
                     TextButton(
                       onPressed: () {
@@ -236,7 +235,7 @@ void _login() async {
                 const SizedBox(height: 40),
                 const Text(
                   "Hesabınla Devam Et",
-                  style: TextStyle(color: Colors.green, fontSize: 18.0),
+                  style: TextStyle(color: Color.fromARGB(255, 110, 141, 80)),
                 ),
                 const SizedBox(height: 30),
                 // Google ile giriş
