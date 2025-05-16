@@ -119,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => FigmaToCodeApp3(),
+                                      builder: (context) => FigmaToCodeApp2(),
                                     ),
                                   );
                                 },
@@ -129,12 +129,16 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
 
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
 
                       // 🏃 Aksiyon kartları - 2
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
+                          SizedBox(
+                            width:
+                                MediaQuery.of(context).size.width *
+                                0.45, // üstteki kutularla aynı genişlik
                             child: GlassCard(
                               child: ActionCard(
                                 title: 'Egzersiz Planı',
@@ -144,25 +148,6 @@ class HomeScreen extends StatelessWidget {
                                     MaterialPageRoute(
                                       builder:
                                           (context) => const FigmaToCodeApp(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: GlassCard(
-                              child: ActionCard(
-                                title: 'Yapılacaklar',
-                                
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) => const DenemeScreen(),
                                     ),
                                   );
                                 },

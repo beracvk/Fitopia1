@@ -1,13 +1,14 @@
 // ignore_for_file: use_key_in_widget_constructors, deprecated_member_use, file_names
 
+import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
 import 'package:fitopia2/features/meals/presentations/aksam_screen.dart';
 import 'package:fitopia2/features/meals/presentations/ara_screen.dart';
 import 'package:fitopia2/features/meals/presentations/kahvalti_screen.dart';
-import 'package:flutter/material.dart';
 
 void main() {
-  runApp( Diyetplani());
+  runApp(Diyetplani());
 }
 
 class Diyetplani extends StatelessWidget {
@@ -24,707 +25,259 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
-      body: SingleChildScrollView(
-        child: Container(
-          width: 393,
-          height: 852,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: Colors.white),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 145,
-                top: 7,
-                child: Text(
+      body: Stack(
+        children: [
+          // Arka plan görseli veya düz renk
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/bg.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(color: Color.fromARGB(77, 255, 255, 255)),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: Container(color: Color.fromARGB(25, 255, 255, 255)),
+          ),
+
+          SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
                   'Öğün Planı',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'SourceSerif',
-                    color: Colors.black,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
                 ),
-              ),
-              Positioned(
-                left: 153,
-                top: 37,
-                child: Text(
-                  'Cuma, 14 şubat',
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 8),
+                const Text(
+                  'Cuma, 14 Şubat',
                   style: TextStyle(
                     fontFamily: 'SourceSerif',
-                    color: const Color(0xFF196F3D),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF196F3D),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-              Positioned(
-                left: 148,
-                top: 57,
-                child: Container(height: 30),
-              ),
-              Positioned(
-                left: 33,
-                top: 111,
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '200\n',
-                        style: TextStyle(
-                          fontFamily: 'SourceSerif',
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Alınan',
-                        style: TextStyle(
-                          fontFamily: 'SourceSerif',
-                          color: const Color(0xFF196F3D),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _StatCard(label: 'Alınan', value: '200'),
+                    _StatCard(label: 'Kalan', value: '1278', large: true),
+                    _StatCard(label: 'Yakılan', value: '100'),
+                  ],
                 ),
-              ),
-              Positioned(
-                left: 311,
-                top: 106,
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '100\n',
-                        style: TextStyle(
-                          fontFamily: 'SourceSerif',
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Yakılan',
-                        style: TextStyle(
-                          fontFamily: 'SourceSerif',
-                          color: const Color(0xFF196F3D),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
+                const SizedBox(height: 24),
+
+                // Makro
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFAF0E6),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Positioned(
-                left: 275,
-                top: 220,
-                child: Container(
-                  transform: Matrix4.identity()..translate(0.0, 0.0)..rotateZ(3.14),
-                  width: 150,
-                  height: 150,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(side: BorderSide(width: 1)),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 162,
-                top: 103,
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '1278\n',
-                        style: TextStyle(
-                          fontFamily: 'SourceSerif',
-                          color: Colors.black,
-                          fontSize: 36,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Kalan',
-                        style: TextStyle(
-                          fontFamily: 'SourceSerif',
-                          color: const Color(0xFF196F3D),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Positioned(
-                left: 35,
-                top: 211,
-                child: Container(
-                  width: 326,
-                  height: 67,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(),
-                ),
-              ),
-              Positioned(
-                left: 33,
-                top: 214,
-                child: Container(
-                  width: 334,
-                  height: 64,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 31,
-                right: 10,
-                top: 250,
-                child: Container(
-                  width: 360,
-                  height: 68,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFFAF0E6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 23,
-                        top: 10,
-                        child: Text(
-                          'Karbonhidrat',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'SourceSerif',
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 149,
-                        right: 150,
-                        top: 10,
-                        child: Text(
-                          'Protein',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'SourceSerif',
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 259,
-                        top: 10,
-                        child: Text(
-                          'Yağlar',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'SourceSerif',
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 30,
-                        top: 31,
-                        child: Container(
-                          width: 49,
-                          height: 5,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 148,
-                        top: 31,
-                        child: Container(
-                          width: 49,
-                          height: 5,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 254,
-                        top: 31,
-                        child: Container(
-                          width: 49,
-                          height: 5,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 34,
-                        top: 39,
-                        child: Text(
-                          '0/100g',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'SourceSerif',
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 155,
-                        top: 39,
-                        child: Text(
-                          '0/91g',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'SourceSerif',
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 261,
-                        top: 43,
-                        child: Text(
-                          '0/69g',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'SourceSerif',
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const [
+                      _MakroBox(title: 'Karbonhidrat', value: '0/100g'),
+                      _MakroBox(title: 'Protein', value: '0/91g'),
+                      _MakroBox(title: 'Yağlar', value: '0/69g'),
                     ],
                   ),
                 ),
-              ),
-              // Öğle Yemeği Button
-              Positioned(
-                right: 3,
-                top: 360,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OgleScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 169,
-                    height: 186,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF6DDCC),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+                const SizedBox(height: 30),
+
+                // Öğün kutuları
+                Wrap(
+                  spacing: 20,
+                  runSpacing: 20,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    _MealCard(
+                      title: 'Kahvaltı',
+                      imagePath: 'assets/images/breakfast.jpg',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => KahvaltiScreen()),
                       ),
                     ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 29,
-                          top: 8,
-                          child: Text(
-                            'Öğle Yemeği',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 36,
-                          top: 39,
-                          child: Container(
-                            width: 99,
-                            height: 95,
-                            decoration: ShapeDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage("https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg"),
-                                fit: BoxFit.cover,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 6,
-                          top: 142,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 60,
-                          top: 169,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: const Color(0xFF808080),
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              shadows: [Shadow(offset: Offset(0, 4), blurRadius: 4, color: Color(0xFF000000).withOpacity(0.25))],
-                            ),
-                          ),
-                        ),
-                      ],
+                    _MealCard(
+                      title: 'Öğle Yemeği',
+                      imagePath: 'assets/images/lunch.jpg',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => OgleScreen()),
+                      ),
                     ),
-                  ),
+                    _MealCard(
+                      title: 'Ara Öğün',
+                      imagePath: 'assets/images/snack.jpg',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => AraScreen()),
+                      ),
+                    ),
+                    _MealCard(
+                      title: 'Akşam Yemeği',
+                      imagePath: 'assets/images/dinner.jpg',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => AksamScreen()),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              // Kahvaltı Button
-              Positioned(
-                left: 24,
-                top: 360,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => KahvaltiScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 169,
-                    height: 186,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF6DDCC),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 47,
-                          top: 7,
-                          child: Text(
-                            'Kahvaltı',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 36,
-                          top: 37,
-                          child: Container(
-                            width: 99,
-                            height: 95,
-                            decoration: ShapeDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage("https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg"),
-                                fit: BoxFit.cover,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 24,
-                          top: 134,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 60,
-                          top: 168,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: const Color(0xFF808080),
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              shadows: [Shadow(offset: Offset(0, 4), blurRadius: 4, color: Color(0xFF000000).withOpacity(0.25))],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                const SizedBox(height: 32),
+
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF6E8D50),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                ),
-              ),
-              Positioned(
-                left: 171,
-                top: 502,
-                child: SizedBox(
-                  width: 15,
-                  height: 4,
-                  child: Text(
-                    '\n',
-                    textAlign: TextAlign.right,
+                  child: const Text(
+                    '“Yedikleriniz ilacınız, '
+                   ' ilacınız yedikleriniz olsun.”'
+
+                    ,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontFamily: 'SourceSerif',
-                      color: Colors.black,
-                      fontSize: 11,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 ),
-              ),
-              // Ara Öğün Button
-              Positioned(
-                left: 24,
-                top: 600,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AraScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 169,
-                    height: 192,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF6DDCC),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 42,
-                          top: 10,
-                          child: Text(
-                            'Ara Öğün',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 36,
-                          top: 41,
-                          child: Container(
-                            width: 99,
-                            height: 95,
-                            decoration: ShapeDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage("https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg"),
-                                fit: BoxFit.cover,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 72,
-                          top: 144,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 63,
-                          top: 172,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: const Color(0xFF808080),
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              shadows: [Shadow(offset: Offset(0, 4), blurRadius: 4, color: Color(0xFF000000).withOpacity(0.25))],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              // Akşam Yemeği Button
-              Positioned(
-                right: 3,
-                top: 600,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AksamScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 169,
-                    height: 195,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF6DDCC),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 18,
-                          top: 10,
-                          child: Text(
-                            'Akşam Yemeği',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 36,
-                          top: 45,
-                          child: Container(
-                            width: 99,
-                            height: 95,
-                            decoration: ShapeDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage("https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg"),
-                                fit: BoxFit.cover,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 27,
-                          top: 146,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: Colors.black,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 60,
-                          top: 177,
-                          child: Text(
-                            '',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'SourceSerif',
-                              color: const Color(0xFF808080),
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              shadows: [Shadow(offset: Offset(0, 4), blurRadius: 4, color: Color(0xFF000000).withOpacity(0.25))],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+                const SizedBox(height: 40),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  final String label;
+  final String value;
+  final bool large;
+
+  const _StatCard({required this.label, required this.value, this.large = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: large ? 28 : 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF196F3D),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _MealCard extends StatelessWidget {
+  final String title;
+  final String imagePath;
+  final VoidCallback onTap;
+
+  const _MealCard({required this.title, required this.imagePath, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: Stack(
+          children: [
+            Image.asset(
+              imagePath,
+              width: 160,
+              height: 180,
+              fit: BoxFit.cover,
+            ),
+            Container(
+              width: 160,
+              height: 180,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                color: Colors.black.withOpacity(0.3),
+              ),
+            ),
+            Positioned(
+              bottom: 12,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontFamily: 'SourceSerif',
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _MakroBox extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const _MakroBox({required this.title, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 13,
+            color: Colors.grey,
+          ),
+        ),
+      ],
     );
   }
 }

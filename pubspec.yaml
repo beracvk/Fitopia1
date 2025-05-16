@@ -42,6 +42,11 @@ flutter:
    - assets/images/nutrition.jpg
    - assets/images/nutrition2.jpg
    - assets/images/nutrition3.jpg
+   - assets/images/exercise.jpg
+   - assets/images/dinner.jpg
+   - assets/images/breakfast.jpg
+   - assets/images/lunch.jpg
+   - assets/images/snack.jpg
    - .env                    # ✅ Gemini API anahtarını buradan okuyacağız
 
   fonts:
