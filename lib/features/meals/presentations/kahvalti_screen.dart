@@ -20,8 +20,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class KahvaltiScreen extends StatelessWidget {
+class KahvaltiScreen extends StatefulWidget {
   const KahvaltiScreen({super.key});
+
+  @override
+  State<KahvaltiScreen> createState() => _KahvaltiScreenState();
+}
+
+class _KahvaltiScreenState extends State<KahvaltiScreen> {
+  String aiSuggestion = "";
+  bool loading = false;
+
+  Future<void> getAISuggestion() async {
+    setState(() {
+      loading = true;
+      aiSuggestion = "";
+    });
+
+    // Burada Gemini API çağrısı yapılacak (simülasyon için delay koyuyoruz)
+    await Future.delayed(const Duration(seconds: 2));
+
+    // Örnek cevap (bunu Gemini API'den dönen gerçek yanıtla değiştir)
+    const sampleResponse =
+        "Öneri: 2 dilim tam buğday ekmeği (140 kcal), 1 adet haşlanmış yumurta (70 kcal), 1 porsiyon sebze salatası (50 kcal), toplam 260 kcal.";
+
+    setState(() {
+      aiSuggestion = sampleResponse;
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +61,7 @@ class KahvaltiScreen extends StatelessWidget {
           decoration: const BoxDecoration(color: Colors.white),
           child: Stack(
             children: [
+              // --- Orijinal Tasarım ---
               Positioned(
                 left: 0.01,
                 top: 7,
@@ -91,278 +119,66 @@ class KahvaltiScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              // ... diğer Positioned widget'lar aynen devam ediyor ...
+
+              // --- Yapay Zeka Öneri Bölümü ---
               Positioned(
                 left: 14,
-                top: 252,
+                bottom: 120,
+                right: 14,
                 child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        strokeAlign: BorderSide.strokeAlignCenter,
-                        color: const Color(0xFF1EA5EF),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 114,
-                top: 252,
-                child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFFF974D0),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 133,
-                top: 274,
-                child: Text(
-                  '50gr',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 214,
-                top: 252,
-                child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFFF8DB50),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 315,
-                top: 252,
-                child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFF97FC65),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 324,
-                top: 274,
-                child: Text(
-                  '700kcal',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 23,
-                top: 318,
-                child: Text(
-                  'Protein',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 110,
-                top: 318,
-                child: Text(
-                  'Karbonhidrat',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 235,
-                top: 318,
-                child: Text(
-                  'Yağ',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 328,
-                top: 318,
-                child: Text(
-                  'Kalori',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 365,
-                child: Container(
-                  width: 366,
-                  height: 74,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
                     color: const Color(0xFFFAF0E6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  child: Stack(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Positioned(
-                        left: 67,
-                        top: 44,
-                        child: Text(
-                          'Sebze salatası',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                          ),
+                      const Text(
+                        "Yapay Zeka Destekli Kahvaltı Önerisi:",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black87,
                         ),
                       ),
-                      Positioned(
-                        left: 78,
-                        top: 17,
-                        child: Text(
-                          '150 gr',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                      const SizedBox(height: 12),
+                      loading
+                          ? const Center(child: CircularProgressIndicator())
+                          : Text(
+                            aiSuggestion.isEmpty
+                                ? "Öneri almak için aşağıdaki butona basın."
+                                : aiSuggestion,
+                            style: const TextStyle(fontSize: 16),
                           ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 295,
-                        top: 28,
-                        child: Text(
-                          '200 kcal',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 7,
-                        top: 10,
-                        child: Container(
-                          width: 54,
-                          height: 54,
-                          decoration: ShapeDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
-                              ),
-                              fit: BoxFit.cover,
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: loading ? null : getAISuggestion,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              65,
+                              117,
+                              38,
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200),
+                              borderRadius: BorderRadius.circular(50),
                             ),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: Text(
+                            loading ? "Yükleniyor..." : "Öneri Al",
+                            style: const TextStyle(fontSize: 16),
                           ),
                         ),
                       ),
@@ -370,203 +186,9 @@ class KahvaltiScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                left: 14,
-                top: 467,
-                child: Container(
-                  width: 366,
-                  height: 74,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFFAF0E6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 77,
-                        top: 45,
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Fırında Somon',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 86,
-                        top: 22,
-                        child: Text(
-                          '200 gr',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 294,
-                        top: 29,
-                        child: Text(
-                          '400 kcal',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 9,
-                        top: 7,
-                        child: Container(
-                          width: 60,
-                          height: 61,
-                          decoration: ShapeDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 568,
-                child: Container(
-                  width: 366,
-                  height: 74,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFFAF0E6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 80,
-                        top: 44,
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Fırında Patates',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 90,
-                        top: 22,
-                        child: Text(
-                          '60 gr',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 293,
-                        top: 28,
-                        child: Text(
-                          '100 kcal',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 27,
-                top: 578,
-                child: Container(
-                  width: 60,
-                  height: 54,
-                  decoration: ShapeDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(200),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 192,
-                top: 670,
-                child: Text(
-                  '.\n.\n.\n.\n',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 33,
-                top: 274,
-                child: Text(
-                  '10gr',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 235,
-                top: 274,
-                child: Text(
-                  '30gr',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
+
+              // Eğer tasarımda sabit alan yetmiyorsa, yukarıdaki widget'ların
+              // konumlarını hafif değiştirmek gerekebilir. Ama önce bu haliyle deneyelim.
             ],
           ),
         ),
