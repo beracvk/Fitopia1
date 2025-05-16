@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // User Registration Method
+  // 🔐 Kullanıcı Kaydı
   Future<String> registerUser(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
@@ -27,15 +29,35 @@ class FirebaseService {
     }
   }
 
-  // Register Database (Simulated example)
+  // 💾 Simülasyon Veritabanı Kaydı (örnek)
   Future<String> registerDb(String email, String password) async {
-    // Bu metod örnek olarak eklenmiştir, Firebase DB işlemleri buraya eklenecektir.
     try {
-      // Firebase DB işlemleri yapılabilir. Burada bir örnek olası kullanım.
-      await Future.delayed(Duration(seconds: 2)); // Simulate DB interaction
+      await Future.delayed(Duration(seconds: 2)); // Simulated DB interaction
       return 'Veritabanı kaydı başarılı';
     } catch (e) {
       return 'Veritabanı kaydında hata oluştu: $e';
+    }
+  }
+
+  // 📄 Firestore'dan Kullanıcı Tercihlerini Alma
+  Future<Map<String, dynamic>?> getUserPreferences(String userId) async {
+    try {
+      final docSnapshot =
+          await _firestore
+              .collection('users')
+              .doc(userId)
+              .collection('preferences')
+              .doc('main')
+              .get();
+
+      if (docSnapshot.exists) {
+        return docSnapshot.data();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Hata: $e');
+      return null;
     }
   }
 }
