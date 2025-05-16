@@ -29,12 +29,6 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           // 🌄 Arka plan görseli
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/nutrition2.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
 
           // 🟫 Saydam karartma katmanı
           Positioned.fill(
@@ -78,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                             child: GlassCard(
                               child: GoalCard(
                                 title: '2000 Kalori',
-                                color: const Color(0xFFFFA726),
+                                color: const Color.fromARGB(255, 245, 104, 85),
                                 iconAsset: 'assets/images/alev5.webp',
                               ),
                             ),
