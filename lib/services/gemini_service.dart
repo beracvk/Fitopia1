@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GeminiService {
-  final String apiKey = 'API_KEYİNİ_BURAYA_YAPIŞTIR';
+  final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
 
   Future<String> generateText(String prompt) async {
     final url = Uri.parse(
