@@ -10,8 +10,7 @@ import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart'; //
 import 'package:fitopia2/services/auth_service.dart';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/home3_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-
+import 'package:fitopia2/features/home/presentation/pages/sub_pages/Fifth_screen.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({super.key});
@@ -33,61 +32,61 @@ class _ThirdScreenState extends State<ThirdScreen> {
   //final String correctPassword = "123456";
 
   // Giriş doğrulama
-void _login() async {
-  if (_formKey.currentState!.validate()) {
-    try {
-      final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        final userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            );
 
-      if (!mounted) return;
+        if (!mounted) return;
 
-      // Kullanıcı UID’sini al
-      final userId = userCredential.user!.uid;
+        // Kullanıcı UID’sini al
+        final userId = userCredential.user!.uid;
 
-      // Firestore'dan kullanıcı verisini al
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .get();
+        // Firestore'dan kullanıcı verisini al
+        final userDoc =
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userId)
+                .get();
 
-      final username = userDoc.data()?['fullName'] ?? 'Kullanıcı';
+        final username = userDoc.data()?['fullName'] ?? 'Kullanıcı';
 
-      // Ana sayfaya yönlendir
-      Navigator.pushReplacement(
+        // Ana sayfaya yönlendir
+        Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(builder: (_) => FifthScreen()),
+        );
+      } on FirebaseAuthException catch (e) {
+        String message;
+        switch (e.code) {
+          case 'user-not-found':
+            message = 'Kullanıcı bulunamadı.';
+            break;
+          case 'wrong-password':
+            message = 'Hatalı şifre.';
+            break;
+          case 'invalid-email':
+            message = 'Geçersiz e-posta adresi.';
+            break;
+          case 'network-request-failed':
+            message = 'İnternet bağlantısı yok.';
+            break;
+          default:
+            message = 'Giriş yapılamadı. Hata: ${e.message}';
+        }
+
         // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(
-          builder: (_) => HomeScreen(username: username),
-        ),
-      );
-    } on FirebaseAuthException catch (e) {
-      String message;
-      switch (e.code) {
-        case 'user-not-found':
-          message = 'Kullanıcı bulunamadı.';
-          break;
-        case 'wrong-password':
-          message = 'Hatalı şifre.';
-          break;
-        case 'invalid-email':
-          message = 'Geçersiz e-posta adresi.';
-          break;
-        case 'network-request-failed':
-          message = 'İnternet bağlantısı yok.';
-          break;
-        default:
-          message = 'Giriş yapılamadı. Hata: ${e.message}';
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
       }
-
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
     }
   }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +213,9 @@ void _login() async {
                   children: [
                     const Text(
                       "Hesabın mı yok?",
-                      style: TextStyle(color:  Color.fromARGB(255, 110, 141, 80)),
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 110, 141, 80),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
