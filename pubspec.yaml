@@ -57,3 +57,4 @@ flutter:
     - family: Courgette-Regular
       fonts:
         - asset: assets/fonts/Courgette-Regular.ttf
+        - asset: assets/fonts/username.otf

@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import, non_constant_identifier_names, use_super_parameters
 
+import 'dart:ui';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/deneme_screen.dart';
 import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
 import 'package:fitopia2/screens/porsiyon_analizi_page.dart';
@@ -26,142 +27,167 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false, // klavye açıldığında layout bozulmasın
-      body: Stack(
-        children: [
-          // 🌄 Arka plan görseli
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/yesil9.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Hoş geldin + profil
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                        );
+                      },
+                      child: const Icon(Icons.account_circle, size: 40),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        'Hoş geldin $username!',
+                        style: const TextStyle(
+                          fontSize: 29,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 35),
 
-          // 🟫 Saydam karartma katmanı
-          Positioned.fill(
-            child: Container(
-              color: const Color.fromARGB(77, 0, 0, 0), // %30 siyah
+                // Hedef kartları
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Expanded(
+                      child: GoalCard(
+                        title: 'HEDEF\n2.5 Litre',
+                        icon: Icons.water_drop,
+                        color: Color.fromARGB(225, 123, 207, 252),
+                      ),
+                    ),
+                    SizedBox(width: 40),
+                    Expanded(
+                      child: GoalCard(
+                        title: 'HEDEF\n2000 Kalori',
+                        icon: Icons.local_fire_department,
+                        color: Color.fromARGB(168, 255, 2, 2),
+                      ),
+                    ),
+                    SizedBox(width: 40),
+                    Expanded(
+                      child: GoalCard(
+                        title: 'HEDEF\n10 000 Adım',
+                        icon: Icons.directions_walk,
+                        color: Color.fromARGB(193, 247, 240, 144),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 35),
+
+                // Yönlendirmeli butonlar - İlk koddaki navigasyonlar ile güncellendi
+                FrostedActionButton(
+                  title: 'Beslenme\nPlanı',
+                  backgroundColor: const Color.fromARGB(175, 255, 255, 255),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Diyetplani()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 35),
+                FrostedActionButton(
+                  title: 'Egzersiz\nPlanı',
+                  backgroundColor: const Color.fromARGB(175, 255, 255, 255),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const FigmaToCodeApp()),
+                    );
+                  },
+                ),
+                const SizedBox(height: 35),
+                FrostedActionButton(
+                  title: 'Porsiyon\nAnalizi',
+                  backgroundColor: const Color.fromARGB(155, 255, 255, 255),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FigmaToCodeApp2()),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
 
-          // 📦 İçerik alanı
-          SafeArea(
-            bottom: false, // 🔥 Alt boşluk bırakmasın
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height,
-                ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      ProfileWidget(username: username),
-                      const SizedBox(height: 20),
+class GoalCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final Color color;
 
-                      // 🎯 Hedef kartları
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: GlassCard(
-                              child: GoalCard(
-                                title: '2.5 Litre Su',
-                                color: const Color.fromARGB(172, 156, 217, 247),
-                                iconAsset: 'assets/images/su.webp',
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Flexible(
-                            child: GlassCard(
-                              child: GoalCard(
-                                title: '2000 Kalori',
-                                color: const Color.fromARGB(132, 251, 168, 136),
-                                iconAsset: 'assets/images/alev5.webp',
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Flexible(
-                            child: GlassCard(
-                              child: GoalCard(
-                                title: '10.000 Adım',
-                                color: const Color.fromARGB(181, 249, 240, 161),
-                                iconAsset: 'assets/images/koşu5.webp',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+  const GoalCard({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.color,
+  });
 
-                      const SizedBox(height: 40),
+  @override
+  Widget build(BuildContext context) {
+    final lines = title.split('\n');
+    final firstLine = lines[0]; // "HEDEF"
+    final secondLine = lines.length > 1 ? lines[1] : '';
 
-                      // 🍽️ Aksiyon kartları - 1
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GlassCard(
-                              child: ActionCard(
-                                title: 'Beslenme Planı',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Diyetplani(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: GlassCard(
-                              child: ActionCard(
-                                title: 'Porsiyon Analizi',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FigmaToCodeApp2(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // 🏃 Aksiyon kartları - 2
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width:
-                                MediaQuery.of(context).size.width *
-                                0.45, // üstteki kutularla aynı genişlik
-                            child: GlassCard(
-                              child: ActionCard(
-                                title: 'Egzersiz Planı',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) => const FigmaToCodeApp(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 20),
-                    ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 80),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, size: 43),
+          const SizedBox(height: 8),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: '$firstLine\n',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,  // Kalın
+                    fontSize: 18,
+                    color: Colors.black87,        // Koyu gri
                   ),
                 ),
-              ),
+                TextSpan(
+                  text: secondLine,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w300,  // İnce
+                    fontSize: 17,
+                    color: Color.fromARGB(230, 0, 0, 0), // Daha koyu gri
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -170,28 +196,48 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// 💠 Saydam kart widget'ı
-class GlassCard extends StatelessWidget {
-  final Widget child;
+class FrostedActionButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+  final Color backgroundColor;
 
-  const GlassCard({super.key, required this.child});
+  const FrostedActionButton({
+    super.key,
+    required this.title,
+    required this.onTap,
+    this.backgroundColor = const Color.fromARGB(83, 148, 148, 148),
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(150, 255, 255, 255), // %60 saydam beyaz
-        borderRadius: BorderRadius.circular(29),
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(60, 0, 0, 0),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+    return GestureDetector(
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 7.0, sigmaY: 7.0),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 25),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: const Color.fromARGB(58, 41, 31, 31), width: 1),
+            ),
+            child: Center(
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
-        ],
+        ),
       ),
-      child: Padding(padding: const EdgeInsets.all(8.0), child: child),
     );
   }
 }
