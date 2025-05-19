@@ -25,6 +25,7 @@ class _UserInputScreenState extends State<UserInputScreen> {
   final TextEditingController heightController = TextEditingController();
   final TextEditingController weightController = TextEditingController();
   final TextEditingController targetWeightController = TextEditingController();
+  final TextEditingController genderController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +51,8 @@ class _UserInputScreenState extends State<UserInputScreen> {
                   ),
                   child: Column(
                     children: [
+                       _buildInputField('Cinsiyetiniz', genderController),
+                      SizedBox(height: 10),
                       _buildInputField('Yaşınız', ageController),
                       SizedBox(height: 10),
                       _buildInputField('Boyunuz', heightController),
@@ -61,6 +64,7 @@ class _UserInputScreenState extends State<UserInputScreen> {
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => ThirdScreen(),));
+                          print('Cinsiyet: ${genderController.text}');
                           print('Yaş: ${ageController.text}');
                           print('Boy: ${heightController.text}');
                           print('Kilo: ${weightController.text}');
