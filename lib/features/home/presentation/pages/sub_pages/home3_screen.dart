@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                             child: GlassCard(
                               child: GoalCard(
                                 title: '2.5 Litre Su',
-                                color: const Color(0xFF81D4FA),
+                                color: const Color.fromARGB(172, 156, 217, 247),
                                 iconAsset: 'assets/images/su.webp',
                               ),
                             ),
@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                             child: GlassCard(
                               child: GoalCard(
                                 title: '2000 Kalori',
-                                color: const Color.fromARGB(255, 245, 104, 85),
+                                color: const Color.fromARGB(132, 251, 168, 136),
                                 iconAsset: 'assets/images/alev5.webp',
                               ),
                             ),
@@ -82,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                             child: GlassCard(
                               child: GoalCard(
                                 title: '10.000 Adım',
-                                color: const Color(0xFFFFF59D),
+                                color: const Color.fromARGB(181, 249, 240, 161),
                                 iconAsset: 'assets/images/koşu5.webp',
                               ),
                             ),
