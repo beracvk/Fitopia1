@@ -82,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                       child: GoalCard(
                         title: 'HEDEF\n2000 Kalori',
                         icon: Icons.local_fire_department,
-                        color: Color.fromARGB(168, 255, 2, 2),
+                        color: Color.fromARGB(171, 243, 5, 5),
                       ),
                     ),
                     SizedBox(width: 40),
@@ -90,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                       child: GoalCard(
                         title: 'HEDEF\n10 000 Adım',
                         icon: Icons.directions_walk,
-                        color: Color.fromARGB(193, 247, 240, 144),
+                        color: Color.fromARGB(181, 247, 240, 144),
                       ),
                     ),
                   ],
