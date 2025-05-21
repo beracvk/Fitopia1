@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -14,560 +15,545 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Yemek Uygulaması',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        fontFamily: 'Roboto',
+      ),
       home: const AksamScreen(),
     );
   }
 }
 
-class AksamScreen extends StatelessWidget {
+class AksamScreen extends StatefulWidget {
   const AksamScreen({super.key});
+
+  @override
+  State<AksamScreen> createState() => _AksamScreenState();
+}
+
+class _AksamScreenState extends State<AksamScreen> with TickerProviderStateMixin {
+  String aiSuggestion = "";
+  bool loading = false;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  final Random _random = Random();
+
+  final List<Map<String, dynamic>> _aksamYemegiOnerileri = [
+    {
+      'baslik': 'Izgara Tavuk Menüsü',
+      'aciklama': 'Izgara tavuk göğsü, bulgur pilavı ve mevsim salatası ile dengeli akşam yemeği',
+      'malzemeler': [
+        {'ad': 'Izgara tavuk göğsü', 'miktar': '150g', 'kalori': 230, 'ikon': '🍗'},
+        {'ad': 'Bulgur pilavı', 'miktar': '1 porsiyon', 'kalori': 180, 'ikon': '🍚'},
+        {'ad': 'Mevsim salatası', 'miktar': '1 kase', 'kalori': 45, 'ikon': '🥗'},
+      ],
+      'toplamKalori': 455,
+      'renk': Colors.red,
+    },
+    {
+      'baslik': 'Somon Balık Tabağı',
+      'aciklama': 'Fırında somon, patates püresi ve buharda brokoli ile omega-3 açısından zengin',
+      'malzemeler': [
+        {'ad': 'Fırında somon balığı', 'miktar': '120g', 'kalori': 280, 'ikon': '🐟'},
+        {'ad': 'Patates püresi', 'miktar': '1 porsiyon', 'kalori': 210, 'ikon': '🥔'},
+        {'ad': 'Buharda brokoli', 'miktar': '100g', 'kalori': 35, 'ikon': '🥦'},
+      ],
+      'toplamKalori': 525,
+      'renk': Colors.teal,
+    },
+    {
+      'baslik': 'Köfte ve Makarna',
+      'aciklama': 'Ev yapımı köfte, makarna ve domates sosu ile geleneksel lezzet',
+      'malzemeler': [
+        {'ad': 'Ev yapımı köfte', 'miktar': '4 adet', 'kalori': 320, 'ikon': '🍖'},
+        {'ad': 'Spagetti makarna', 'miktar': '80g', 'kalori': 280, 'ikon': '🍝'},
+        {'ad': 'Domates sosu', 'miktar': '1 porsiyon', 'kalori': 65, 'ikon': '🍅'},
+      ],
+      'toplamKalori': 665,
+      'renk': Colors.brown,
+    },
+    {
+      'baslik': 'Vejeteryan Güveç',
+      'aciklama': 'Sebze güveci, quinoa ve humus ile bitki bazlı protein kaynağı',
+      'malzemeler': [
+        {'ad': 'Karışık sebze güveci', 'miktar': '1 porsiyon', 'kalori': 150, 'ikon': '🍲'},
+        {'ad': 'Quinoa', 'miktar': '80g', 'kalori': 120, 'ikon': '🌾'},
+        {'ad': 'Humus', 'miktar': '60g', 'kalori': 180, 'ikon': '🥜'},
+      ],
+      'toplamKalori': 450,
+      'renk': Colors.green,
+    },
+    {
+      'baslik': 'Dana Etli Pilav',
+      'aciklama': 'Kuşbaşı dana eti, pilav ve cacık ile Türk mutfağının klasiği',
+      'malzemeler': [
+        {'ad': 'Kuşbaşı dana eti', 'miktar': '100g', 'kalori': 250, 'ikon': '🥩'},
+        {'ad': 'Tereyağlı pilav', 'miktar': '1 porsiyon', 'kalori': 220, 'ikon': '🍚'},
+        {'ad': 'Cacık', 'miktar': '1 kase', 'kalori': 85, 'ikon': '🥒'},
+      ],
+      'toplamKalori': 555,
+      'renk': Colors.orange,
+    },
+  ];
+
+  Map<String, dynamic> _mevcutOneri = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack));
+    
+    _rastgeleOneriGetir();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _rastgeleOneriGetir() {
+    setState(() {
+      _mevcutOneri = _aksamYemegiOnerileri[_random.nextInt(_aksamYemegiOnerileri.length)];
+    });
+  }
+
+  Future<void> getAISuggestion() async {
+    setState(() {
+      loading = true;
+      aiSuggestion = "";
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    _rastgeleOneriGetir();
+    _animationController.reset();
+    _animationController.forward();
+
+    setState(() {
+      aiSuggestion = "suggestion_ready";
+      loading = false;
+    });
+  }
+
+  Widget _buildMalzemeItem(Map<String, dynamic> malzeme, int index) {
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: Offset(1.0, 0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(index * 0.1, 1.0, curve: Curves.easeOutBack),
+          )),
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(
+                  color: _mevcutOneri['renk']?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: (_mevcutOneri['renk'] ?? Colors.grey).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        malzeme['ikon'] ?? '🍽',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          malzeme['ad'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          malzeme['miktar'],
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: (_mevcutOneri['renk'] ?? Colors.grey).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '${malzeme['kalori']} kcal',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: _mevcutOneri['renk'] ?? Colors.grey[700],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: 393,
-          height: 852,
-          clipBehavior: Clip.antiAlias,
-          decoration: const BoxDecoration(color: Colors.white),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0.01,
-                top: 7,
-                child: SizedBox(
-                  width: 300,
-                  height: 101,
-                  child: Text(
-                    'Akşam Yemeği',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 65, 117, 38),
-                      fontSize: 36,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 220,
-                top: 70,
-                child: Container(
-                  width: 150,
-                  height: 150,
-                  decoration: ShapeDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 80,
-                child: Text(
-                  ' Fırında Somon, fırında\n patates, sebze salatası\n(brokoli, karnıbahar, ka-\n bak, patlıcan).',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 252,
-                child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        strokeAlign: BorderSide.strokeAlignCenter,
-                        color: const Color(0xFF1EA5EF),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 114,
-                top: 252,
-                child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFFF974D0),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 133,
-                top: 274,
-                child: Text(
-                  '50gr',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 214,
-                top: 252,
-                child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFFF8DB50),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 315,
-                top: 252,
-                child: Container(
-                  width: 65,
-                  height: 62,
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: OvalBorder(
-                      side: BorderSide(
-                        width: 1,
-                        color: const Color(0xFF97FC65),
-                      ),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 324,
-                top: 274,
-                child: Text(
-                  '700kcal',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 23,
-                top: 318,
-                child: Text(
-                  'Protein',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 110,
-                top: 318,
-                child: Text(
-                  'Karbonhidrat',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 235,
-                top: 318,
-                child: Text(
-                  'Yağ',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 328,
-                top: 318,
-                child: Text(
-                  'Kalori',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        color: Color(0xFF000000).withOpacity(0.25),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 365,
-                child: Container(
-                  width: 366,
-                  height: 74,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFFAF0E6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 67,
-                        top: 44,
-                        child: Text(
-                          'Sebze salatası',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 78,
-                        top: 17,
-                        child: Text(
-                          '150 gr',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 295,
-                        top: 28,
-                        child: Text(
-                          '200 kcal',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 7,
-                        top: 10,
-                        child: Container(
-                          width: 54,
-                          height: 54,
-                          decoration: ShapeDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 467,
-                child: Container(
-                  width: 366,
-                  height: 74,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFFAF0E6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 77,
-                        top: 45,
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Fırında Somon',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 86,
-                        top: 22,
-                        child: Text(
-                          '200 gr',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 294,
-                        top: 29,
-                        child: Text(
-                          '400 kcal',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 9,
-                        top: 7,
-                        child: Container(
-                          width: 60,
-                          height: 61,
-                          decoration: ShapeDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(200),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 14,
-                top: 568,
-                child: Container(
-                  width: 366,
-                  height: 74,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFFAF0E6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 80,
-                        top: 44,
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Fırında Patates',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 90,
-                        top: 22,
-                        child: Text(
-                          '60 gr',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 293,
-                        top: 28,
-                        child: Text(
-                          '100 kcal',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 27,
-                top: 578,
-                child: Container(
-                  width: 60,
-                  height: 54,
-                  decoration: ShapeDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(200),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 192,
-                top: 670,
-                child: Text(
-                  '.\n.\n.\n.\n',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 33,
-                top: 274,
-                child: Text(
-                  '10gr',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 235,
-                top: 274,
-                child: Text(
-                  '30gr',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.red.withOpacity(0.1),
+              Colors.white,
+              Colors.red.withOpacity(0.05),
             ],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'İyi Akşamlar! 🌆',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Akşam Yemeği',
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFD32F2F),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.red, Colors.deepOrange],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.red.withOpacity(0.3),
+                            blurRadius: 15,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.dinner_dining,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 40),
+
+                // Current Suggestion Card
+                if (_mevcutOneri.isNotEmpty)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          (_mevcutOneri['renk'] ?? Colors.red).withOpacity(0.1),
+                          (_mevcutOneri['renk'] ?? Colors.red).withOpacity(0.05),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                        color: (_mevcutOneri['renk'] ?? Colors.red).withOpacity(0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: (_mevcutOneri['renk'] ?? Colors.red).withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Icon(
+                                Icons.star,
+                                color: _mevcutOneri['renk'] ?? Colors.red,
+                                size: 24,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Günün Önerisi',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    _mevcutOneri['baslik'] ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _mevcutOneri['aciklama'] ?? '',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                const SizedBox(height: 30),
+
+                // AI Suggestion Button
+                Container(
+                  width: double.infinity,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFD32F2F), Color(0xFFB71C1C)],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFD32F2F).withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    onPressed: loading ? null : getAISuggestion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: loading
+                        ? const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                'Hazırlanıyor...',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          )
+                        : const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.psychology,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                'Yapay Zeka Önerisi Al',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                // AI Suggestion Results
+                if (aiSuggestion.isNotEmpty && !loading && _mevcutOneri.isNotEmpty)
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: SlideTransition(
+                      position: _slideAnimation,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.purple.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.psychology,
+                                  color: Colors.purple,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                'AI Destekli Akşam Yemeği Rehberi',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          
+                          // Malzemeler Listesi
+                          ...(_mevcutOneri['malzemeler'] as List<dynamic>?)
+                              ?.asMap()
+                              .entries
+                              .map((entry) => _buildMalzemeItem(entry.value, entry.key))
+                              .toList() ?? [],
+
+                          // Toplam Kalori
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  (_mevcutOneri['renk'] ?? Colors.red).withOpacity(0.1),
+                                  (_mevcutOneri['renk'] ?? Colors.red).withOpacity(0.05),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: (_mevcutOneri['renk'] ?? Colors.red).withOpacity(0.3),
+                                width: 2,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.local_fire_department,
+                                  color: _mevcutOneri['renk'] ?? Colors.red,
+                                  size: 28,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'Toplam: ${_mevcutOneri['toplamKalori']} kcal',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: _mevcutOneri['renk'] ?? Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
       ),
