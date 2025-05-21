@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'dart:math'; // ← Bu import'u ekledik
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Yemek Uygulaması',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+        fontFamily: 'Roboto',
+      ),
       home: const KahvaltiScreen(),
     );
   }
@@ -28,248 +31,103 @@ class KahvaltiScreen extends StatefulWidget {
   State<KahvaltiScreen> createState() => _KahvaltiScreenState();
 }
 
-class _KahvaltiScreenState extends State<KahvaltiScreen> {
+class _KahvaltiScreenState extends State<KahvaltiScreen> with TickerProviderStateMixin {
   String aiSuggestion = "";
   bool loading = false;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
 
-  // ← Yeni eklenen değişkenler
   final Random _random = Random();
 
   final List<Map<String, dynamic>> _kahvaltiOnerileri = [
     {
-      'aciklama':
-          'Fırında Somon, fırında patates, sebze salatası (brokoli, karnıbahar, kabak, patlıcan).',
+      'baslik': 'Sağlıklı Somon Tabağı',
+      'aciklama': 'Fırında somon, patates ve taze sebze salatası ile besleyici başlangıç',
       'malzemeler': [
-        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
-        {'ad': 'Haşlanmış yumurta', 'miktar': '1 adet', 'kalori': 70},
-        {'ad': 'Sebze salatası', 'miktar': '1 porsiyon', 'kalori': 50},
+        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140, 'ikon': '🍞'},
+        {'ad': 'Haşlanmış yumurta', 'miktar': '1 adet', 'kalori': 70, 'ikon': '🥚'},
+        {'ad': 'Sebze salatası', 'miktar': '1 porsiyon', 'kalori': 50, 'ikon': '🥗'},
       ],
       'toplamKalori': 260,
+      'renk': Colors.green,
     },
     {
-      'aciklama':
-          'Yulaf lapası, taze meyveler ve cevizle besleyici bir başlangıç.',
+      'baslik': 'Yulaf Lapası Özel',
+      'aciklama': 'Yulaf lapası, taze meyveler ve cevizle besleyici bir başlangıç',
       'malzemeler': [
-        {'ad': 'Yulaf lapası', 'miktar': '1 kase', 'kalori': 150},
-        {'ad': 'Muz', 'miktar': '1 orta boy', 'kalori': 105},
-        {'ad': 'Ceviz', 'miktar': '1 avuç', 'kalori': 185},
+        {'ad': 'Yulaf lapası', 'miktar': '1 kase', 'kalori': 150, 'ikon': '🥣'},
+        {'ad': 'Muz', 'miktar': '1 orta boy', 'kalori': 105, 'ikon': '🍌'},
+        {'ad': 'Ceviz', 'miktar': '1 avuç', 'kalori': 185, 'ikon': '🌰'},
       ],
       'toplamKalori': 440,
+      'renk': Colors.amber,
     },
     {
-      'aciklama': 'Avokado tost, cherry domates ve roka ile vitamin dolu.',
+      'baslik': 'Avokado Toast Delight',
+      'aciklama': 'Avokado tost, cherry domates ve roka ile vitamin dolu lezzet',
       'malzemeler': [
-        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
-        {'ad': 'Avokado', 'miktar': '1/2 adet', 'kalori': 160},
-        {'ad': 'Cherry domates ve roka', 'miktar': '1 porsiyon', 'kalori': 25},
+        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140, 'ikon': '🍞'},
+        {'ad': 'Avokado', 'miktar': '1/2 adet', 'kalori': 160, 'ikon': '🥑'},
+        {'ad': 'Cherry domates ve roka', 'miktar': '1 porsiyon', 'kalori': 25, 'ikon': '🍅'},
       ],
       'toplamKalori': 325,
+      'renk': Colors.lightGreen,
     },
     {
-      'aciklama':
-          'Peynirli omlet, ıspanak ve mantar ile protein açısından zengin.',
+      'baslik': 'Protein Omlet',
+      'aciklama': 'Peynirli omlet, ıspanak ve mantar ile protein açısından zengin',
       'malzemeler': [
-        {'ad': 'Yumurta', 'miktar': '2 adet', 'kalori': 140},
-        {'ad': 'Beyaz peynir', 'miktar': '50g', 'kalori': 125},
-        {'ad': 'Ispanak ve mantar', 'miktar': '1 porsiyon', 'kalori': 30},
+        {'ad': 'Yumurta', 'miktar': '2 adet', 'kalori': 140, 'ikon': '🥚'},
+        {'ad': 'Beyaz peynir', 'miktar': '50g', 'kalori': 125, 'ikon': '🧀'},
+        {'ad': 'Ispanak ve mantar', 'miktar': '1 porsiyon', 'kalori': 30, 'ikon': '🍄'},
       ],
       'toplamKalori': 295,
+      'renk': Colors.orange,
     },
     {
-      'aciklama': 'Yunan usulü yoğurt, bal ve granola ile probiyotik destek.',
+      'baslik': 'Yunan Yoğurt Bowl',
+      'aciklama': 'Yunan usulü yoğurt, bal ve granola ile probiyotik destek',
       'malzemeler': [
-        {'ad': 'Yunan yoğurdu', 'miktar': '200g', 'kalori': 130},
-        {'ad': 'Bal', 'miktar': '1 yemek kaşığı', 'kalori': 64},
-        {'ad': 'Granola', 'miktar': '30g', 'kalori': 120},
+        {'ad': 'Yunan yoğurdu', 'miktar': '200g', 'kalori': 130, 'ikon': '🥛'},
+        {'ad': 'Bal', 'miktar': '1 yemek kaşığı', 'kalori': 64, 'ikon': '🍯'},
+        {'ad': 'Granola', 'miktar': '30g', 'kalori': 120, 'ikon': '🥣'},
       ],
       'toplamKalori': 314,
-    },
-    {
-      'aciklama': 'Smoothie bowl, çilek, muz ve chia tohumu ile antioksidan.',
-      'malzemeler': [
-        {'ad': 'Smoothie', 'miktar': '1 kase', 'kalori': 180},
-        {'ad': 'Chia tohumu', 'miktar': '1 yemek kaşığı', 'kalori': 60},
-        {'ad': 'Taze meyveler', 'miktar': '1 porsiyon', 'kalori': 50},
-      ],
-      'toplamKalori': 290,
-    },
-    {
-      'aciklama': 'Menemen, tam buğday ekmeği ile Türk usulü lezzet.',
-      'malzemeler': [
-        {'ad': 'Yumurta', 'miktar': '2 adet', 'kalori': 140},
-        {'ad': 'Domates ve biber', 'miktar': '1 porsiyon', 'kalori': 40},
-        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
-      ],
-      'toplamKalori': 320,
-    },
-    {
-      'aciklama': 'Lor peynirli pankek, taze böğürtlen ile hafif ve lezzetli.',
-      'malzemeler': [
-        {'ad': 'Küçük pankek', 'miktar': '2 adet', 'kalori': 200},
-        {'ad': 'Lor peyniri', 'miktar': '100g', 'kalori': 98},
-        {'ad': 'Böğürtlen', 'miktar': '1 avuç', 'kalori': 40},
-      ],
-      'toplamKalori': 338,
-    },
-    {
-      'aciklama':
-          'Chia tohumu pudingi, hindistan cevizi ve mango ile tropikal.',
-      'malzemeler': [
-        {'ad': 'Chia tohumu', 'miktar': '2 yemek kaşığı', 'kalori': 120},
-        {'ad': 'Hindistan cevizi sütü', 'miktar': '200ml', 'kalori': 90},
-        {'ad': 'Mango dilimi', 'miktar': '1 porsiyon', 'kalori': 80},
-      ],
-      'toplamKalori': 290,
-    },
-    {
-      'aciklama': 'Fıstık ezmeli tost, muz dilimleri ve bal ile enerji verici.',
-      'malzemeler': [
-        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
-        {'ad': 'Fıstık ezmesi', 'miktar': '2 yemek kaşığı', 'kalori': 190},
-        {'ad': 'Küçük muz', 'miktar': '1 adet', 'kalori': 90},
-      ],
-      'toplamKalori': 420,
-    },
-    {
-      'aciklama':
-          'Türk kahvaltısı tabağı, peynir, zeytin, domates ve salatalık.',
-      'malzemeler': [
-        {'ad': 'Beyaz peynir', 'miktar': '60g', 'kalori': 150},
-        {'ad': 'Siyah zeytin', 'miktar': '10 adet', 'kalori': 50},
-        {'ad': 'Domates-salatalık', 'miktar': '1 porsiyon', 'kalori': 30},
-        {'ad': 'Ekmek', 'miktar': '1 dilim', 'kalori': 70},
-      ],
-      'toplamKalori': 300,
-    },
-    {
-      'aciklama':
-          'Acai bowl, granola, hindistan cevizi ve çilek ile süper gıda.',
-      'malzemeler': [
-        {'ad': 'Acai püresi', 'miktar': '100g', 'kalori': 70},
-        {'ad': 'Granola', 'miktar': '30g', 'kalori': 120},
-        {'ad': 'Hindistan cevizi', 'miktar': '1 porsiyon', 'kalori': 40},
-        {'ad': 'Çilek', 'miktar': '1 porsiyon', 'kalori': 30},
-      ],
-      'toplamKalori': 260,
-    },
-    {
-      'aciklama': 'Quinoa tabağı, haşlanmış yumurta ve avokado ile protein.',
-      'malzemeler': [
-        {'ad': 'Pişmiş quinoa', 'miktar': '1/2 kase', 'kalori': 110},
-        {'ad': 'Haşlanmış yumurta', 'miktar': '1 adet', 'kalori': 70},
-        {'ad': 'Avokado', 'miktar': '1/4 adet', 'kalori': 80},
-      ],
-      'toplamKalori': 260,
-    },
-    {
-      'aciklama': 'Somon füme, labne peyniri ve dereotu ile lüks başlangıç.',
-      'malzemeler': [
-        {'ad': 'Somon füme', 'miktar': '50g', 'kalori': 120},
-        {'ad': 'Labne', 'miktar': '100g', 'kalori': 80},
-        {'ad': 'Çavdar ekmeği', 'miktar': '1 dilim', 'kalori': 90},
-      ],
-      'toplamKalori': 290,
-    },
-    {
-      'aciklama': 'Vegan tofu scramble, nutritional yeast ve sebzeler ile.',
-      'malzemeler': [
-        {'ad': 'Tofu', 'miktar': '100g', 'kalori': 80},
-        {'ad': 'Nutritional yeast', 'miktar': '1 porsiyon', 'kalori': 20},
-        {'ad': 'Karışık sebze', 'miktar': '1 porsiyon', 'kalori': 40},
-        {'ad': 'Tam buğday ekmeği', 'miktar': '1 dilim', 'kalori': 70},
-      ],
-      'toplamKalori': 210,
-    },
-    {
-      'aciklama': 'Keto kahvaltısı, scrambled egg, bacon ve avokado ile.',
-      'malzemeler': [
-        {'ad': 'Yumurta', 'miktar': '2 adet', 'kalori': 140},
-        {'ad': 'Bacon', 'miktar': '2 dilim', 'kalori': 86},
-        {'ad': 'Avokado', 'miktar': '1/2 adet', 'kalori': 160},
-        {'ad': 'Çedar peyniri', 'miktar': '30g', 'kalori': 113},
-      ],
-      'toplamKalori': 499,
-    },
-    {
-      'aciklama': 'Overnight oats, vanilyalı protein tozu ve meyveler ile.',
-      'malzemeler': [
-        {'ad': 'Yulaf', 'miktar': '40g', 'kalori': 150},
-        {'ad': 'Protein tozu', 'miktar': '1 ölçek', 'kalori': 120},
-        {'ad': 'Badem sütü', 'miktar': '200ml', 'kalori': 60},
-        {'ad': 'Meyveler', 'miktar': '1 porsiyon', 'kalori': 50},
-      ],
-      'toplamKalori': 380,
-    },
-    {
-      'aciklama': 'Ricotta peynirli krep, bal ve ceviz ile İtalyan usulü.',
-      'malzemeler': [
-        {'ad': 'İnce krep', 'miktar': '2 adet', 'kalori': 160},
-        {'ad': 'Ricotta', 'miktar': '100g', 'kalori': 174},
-        {'ad': 'Bal', 'miktar': '1 tatlı kaşığı', 'kalori': 21},
-        {'ad': 'Ceviz', 'miktar': '1 porsiyon', 'kalori': 50},
-      ],
-      'toplamKalori': 405,
-    },
-    {
-      'aciklama':
-          'Green smoothie, ıspanak, elma, muz ve chia tohumu ile detoks.',
-      'malzemeler': [
-        {'ad': 'Ispanak', 'miktar': '1 avuç', 'kalori': 7},
-        {'ad': 'Elma', 'miktar': '1 adet', 'kalori': 80},
-        {'ad': 'Muz', 'miktar': '1/2 adet', 'kalori': 50},
-        {'ad': 'Chia tohumu', 'miktar': '1 porsiyon', 'kalori': 60},
-      ],
-      'toplamKalori': 197,
-    },
-    {
-      'aciklama':
-          'Benedict eggs, İngiliz çöreği üzerinde poached egg ve hollandaise.',
-      'malzemeler': [
-        {'ad': 'İngiliz çöreği', 'miktar': '1 adet', 'kalori': 140},
-        {'ad': 'Poached egg', 'miktar': '2 adet', 'kalori': 140},
-        {'ad': 'Hollandaise sos', 'miktar': '1 porsiyon', 'kalori': 100},
-      ],
-      'toplamKalori': 380,
+      'renk': Colors.purple,
     },
   ];
 
   Map<String, dynamic> _mevcutOneri = {};
-  String _mevcutAciklama =
-      ' Fırında Somon, fırında\n patates, sebze salatası\n(brokoli, karnıbahar, ka-\n bak, patlıcan).';
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutBack));
+    
     _rastgeleOneriGetir();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   void _rastgeleOneriGetir() {
     setState(() {
-      _mevcutOneri =
-          _kahvaltiOnerileri[_random.nextInt(_kahvaltiOnerileri.length)];
-      _mevcutAciklama = _formatAciklama(_mevcutOneri['aciklama']);
+      _mevcutOneri = _kahvaltiOnerileri[_random.nextInt(_kahvaltiOnerileri.length)];
     });
-  }
-
-  String _formatAciklama(String aciklama) {
-    // Uzun metni satırlara böl
-    if (aciklama.length > 40) {
-      List<String> words = aciklama.split(' ');
-      String formatted = '';
-      String currentLine = '';
-
-      for (String word in words) {
-        if ((currentLine + word).length > 25) {
-          formatted += currentLine.trim() + '\n ';
-          currentLine = word + ' ';
-        } else {
-          currentLine += word + ' ';
-        }
-      }
-      formatted += currentLine.trim();
-      return ' ' + formatted;
-    }
-    return ' ' + aciklama;
   }
 
   Future<void> getAISuggestion() async {
@@ -278,182 +136,424 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
       aiSuggestion = "";
     });
 
-    // 2 saniye bekleme (orijinal kodunuzdaki gibi)
     await Future.delayed(const Duration(seconds: 2));
 
-    // ← Burada rastgele öneri alıyoruz
     _rastgeleOneriGetir();
+    _animationController.reset();
+    _animationController.forward();
 
     setState(() {
-      aiSuggestion = _buildMalzemelerListesi();
+      aiSuggestion = "suggestion_ready";
       loading = false;
     });
   }
 
-  String _buildMalzemelerListesi() {
-    if (_mevcutOneri.isEmpty) return '';
-
-    String liste = '';
-    List<dynamic> malzemeler = _mevcutOneri['malzemeler'] ?? [];
-
-    for (var malzeme in malzemeler) {
-      liste +=
-          '• ${malzeme['ad']} (${malzeme['miktar']}) - ${malzeme['kalori']} kcal\n';
-    }
-
-    liste += '\nToplam: ${_mevcutOneri['toplamKalori']} kcal';
-
-    return liste;
+  Widget _buildMalzemeItem(Map<String, dynamic> malzeme, int index) {
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: Offset(1.0, 0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(index * 0.1, 1.0, curve: Curves.easeOutBack),
+          )),
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(
+                  color: _mevcutOneri['renk']?.withOpacity(0.2) ?? Colors.grey.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: (_mevcutOneri['renk'] ?? Colors.grey).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: Text(
+                        malzeme['ikon'] ?? '🍽',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          malzeme['ad'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          malzeme['miktar'],
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: (_mevcutOneri['renk'] ?? Colors.grey).withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '${malzeme['kalori']} kcal',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: _mevcutOneri['renk'] ?? Colors.grey[700],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: 393,
-          height: 852,
-          clipBehavior: Clip.antiAlias,
-          decoration: const BoxDecoration(color: Colors.white),
-          child: Stack(
-            children: [
-              // --- Orijinal Tasarım ---
-              Positioned(
-                left: 0.01,
-                top: 7,
-                child: SizedBox(
-                  width: 300,
-                  height: 101,
-                  child: Text(
-                    'Kahvaltı',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 65, 117, 38),
-                      fontSize: 36,
-                      fontWeight: FontWeight.w600,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.orange.withOpacity(0.1),
+              Colors.white,
+              Colors.orange.withOpacity(0.05),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Günaydın! 🌅',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Kahvaltı Zamanı',
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2E7D32),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 220,
-                top: 70,
-                child: Container(
-                  width: 150,
-                  height: 150,
-                  decoration: ShapeDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://www.yerevdekor.com/images_kucuk/f71/duz-duvar-kagidi-siyah-101-51210_13471_1.jpg",
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.orange, Colors.deepOrange],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.orange.withOpacity(0.3),
+                            blurRadius: 15,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
                       ),
-                      fit: BoxFit.cover,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    shadows: const [
-                      BoxShadow(
-                        color: Color(0x3F000000),
-                        blurRadius: 4,
-                        offset: Offset(0, 4),
-                        spreadRadius: 0,
+                      child: const Icon(
+                        Icons.restaurant_menu,
+                        color: Colors.white,
+                        size: 30,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-              // ← Burada dinamik açıklama gösteriliyor
-              Positioned(
-                left: 14,
-                top: 80,
-                child: Text(
-                  _mevcutAciklama,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
 
-              // --- Yapay Zeka Öneri Bölümü ---
-              Positioned(
-                left: 14,
-                bottom: 120,
-                right: 14,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
+                const SizedBox(height: 40),
+
+                // Current Suggestion Card
+                if (_mevcutOneri.isNotEmpty)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          (_mevcutOneri['renk'] ?? Colors.green).withOpacity(0.1),
+                          (_mevcutOneri['renk'] ?? Colors.green).withOpacity(0.05),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                        color: (_mevcutOneri['renk'] ?? Colors.green).withOpacity(0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: (_mevcutOneri['renk'] ?? Colors.green).withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Icon(
+                                Icons.star,
+                                color: _mevcutOneri['renk'] ?? Colors.green,
+                                size: 24,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Günün Önerisi',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    _mevcutOneri['baslik'] ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _mevcutOneri['aciklama'] ?? '',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                const SizedBox(height: 30),
+
+                // AI Suggestion Button
+                Container(
+                  width: double.infinity,
+                  height: 60,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFAF0E6),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF4CAF50), Color(0xFF2E7D32)],
+                    ),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: const Color(0xFF4CAF50).withOpacity(0.4),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Yapay Zeka Destekli Kahvaltı Önerisi:",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.black87,
-                        ),
+                  child: ElevatedButton(
+                    onPressed: loading ? null : getAISuggestion,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      const SizedBox(height: 12),
-                      loading
-                          ? const Center(child: CircularProgressIndicator())
-                          : Container(
-                            constraints: BoxConstraints(maxHeight: 200),
-                            child: SingleChildScrollView(
-                              child: Text(
-                                aiSuggestion.isEmpty
-                                    ? "Öneri almak için aşağıdaki butona basın."
-                                    : aiSuggestion,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  height: 1.4,
+                    ),
+                    child: loading
+                        ? const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 12),
+                              Text(
+                                'Hazırlanıyor...',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          )
+                        : const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.psychology,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                'Yapay Zeka Önerisi Al',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: loading ? null : getAISuggestion,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              65,
-                              117,
-                              38,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                          ),
-                          child: Text(
-                            loading ? "Yükleniyor..." : "Öneri Al",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
-              ),
-            ],
+
+                const SizedBox(height: 30),
+
+                // AI Suggestion Results
+                if (aiSuggestion.isNotEmpty && !loading && _mevcutOneri.isNotEmpty)
+                  FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: SlideTransition(
+                      position: _slideAnimation,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.purple.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.psychology,
+                                  color: Colors.purple,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                'AI Destekli Kahvaltı Rehberi',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          
+                          // Malzemeler Listesi
+                          ...(_mevcutOneri['malzemeler'] as List<dynamic>?)
+                              ?.asMap()
+                              .entries
+                              .map((entry) => _buildMalzemeItem(entry.value, entry.key))
+                              .toList() ?? [],
+
+                          // Toplam Kalori
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  (_mevcutOneri['renk'] ?? Colors.green).withOpacity(0.1),
+                                  (_mevcutOneri['renk'] ?? Colors.green).withOpacity(0.05),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: (_mevcutOneri['renk'] ?? Colors.green).withOpacity(0.3),
+                                width: 2,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.local_fire_department,
+                                  color: _mevcutOneri['renk'] ?? Colors.green,
+                                  size: 28,
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  'Toplam: ${_mevcutOneri['toplamKalori']} kcal',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: _mevcutOneri['renk'] ?? Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
       ),
