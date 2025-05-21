@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'dart:math'; // ← Bu import'u ekledik
 
 void main() {
   runApp(const MyApp());
@@ -31,21 +32,108 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
   String aiSuggestion = "";
   bool loading = false;
 
+  // ← Yeni eklenen değişkenler
+  final Random _random = Random();
+
+  final List<Map<String, dynamic>> _kahvaltiOnerileri = [
+    {
+      'aciklama':
+          'Fırında Somon, fırında patates, sebze salatası (brokoli, karnıbahar, kabak, patlıcan).',
+      'oneri':
+          'Öneri: 2 dilim tam buğday ekmeği (140 kcal), 1 adet haşlanmış yumurta (70 kcal), 1 porsiyon sebze salatası (50 kcal), toplam 260 kcal.',
+    },
+    {
+      'aciklama':
+          'Yulaf lapası, taze meyveler ve cevizle besleyici bir başlangıç.',
+      'oneri':
+          'Öneri: 1 kase yulaf lapası (150 kcal), 1 orta boy muz (105 kcal), 1 avuç ceviz (185 kcal), toplam 440 kcal.',
+    },
+    {
+      'aciklama': 'Avokado tost, cherry domates ve roka ile vitamin dolu.',
+      'oneri':
+          'Öneri: 2 dilim tam buğday ekmeği (140 kcal), 1/2 avokado (160 kcal), cherry domates ve roka (25 kcal), toplam 325 kcal.',
+    },
+    {
+      'aciklama':
+          'Peynirli omlet, ıspanak ve mantar ile protein açısından zengin.',
+      'oneri':
+          'Öneri: 2 adet yumurta (140 kcal), 50g beyaz peynir (125 kcal), ıspanak ve mantar (30 kcal), toplam 295 kcal.',
+    },
+    {
+      'aciklama': 'Yunan usulü yoğurt, bal ve granola ile probiyotik destek.',
+      'oneri':
+          'Öneri: 200g Yunan yoğurdu (130 kcal), 1 yemek kaşığı bal (64 kcal), 30g granola (120 kcal), toplam 314 kcal.',
+    },
+    {
+      'aciklama': 'Smoothie bowl, çilek, muz ve chia tohumu ile antioksidan.',
+      'oneri':
+          'Öneri: 1 kase smoothie (180 kcal), 1 yemek kaşığı chia tohumu (60 kcal), taze meyveler (50 kcal), toplam 290 kcal.',
+    },
+    {
+      'aciklama': 'Menemen, tam buğday ekmeği ile Türk usulü lezzet.',
+      'oneri':
+          'Öneri: 2 adet yumurta (140 kcal), domates, biber (40 kcal), 2 dilim tam buğday ekmeği (140 kcal), toplam 320 kcal.',
+    },
+    {
+      'aciklama': 'Lor peynirli pankek, taze böğürtlen ile hafif ve lezzetli.',
+      'oneri':
+          'Öneri: 2 adet küçük pankek (200 kcal), 100g lor peyniri (98 kcal), 1 avuç böğürtlen (40 kcal), toplam 338 kcal.',
+    },
+  ];
+
+  Map<String, dynamic> _mevcutOneri = {};
+  String _mevcutAciklama =
+      ' Fırında Somon, fırında\n patates, sebze salatası\n(brokoli, karnıbahar, ka-\n bak, patlıcan).';
+
+  @override
+  void initState() {
+    super.initState();
+    _rastgeleOneriGetir();
+  }
+
+  void _rastgeleOneriGetir() {
+    setState(() {
+      _mevcutOneri =
+          _kahvaltiOnerileri[_random.nextInt(_kahvaltiOnerileri.length)];
+      _mevcutAciklama = _formatAciklama(_mevcutOneri['aciklama']);
+    });
+  }
+
+  String _formatAciklama(String aciklama) {
+    // Uzun metni satırlara böl
+    if (aciklama.length > 40) {
+      List<String> words = aciklama.split(' ');
+      String formatted = '';
+      String currentLine = '';
+
+      for (String word in words) {
+        if ((currentLine + word).length > 25) {
+          formatted += currentLine.trim() + '\n ';
+          currentLine = word + ' ';
+        } else {
+          currentLine += word + ' ';
+        }
+      }
+      formatted += currentLine.trim();
+      return ' ' + formatted;
+    }
+    return ' ' + aciklama;
+  }
+
   Future<void> getAISuggestion() async {
     setState(() {
       loading = true;
       aiSuggestion = "";
     });
 
-    // Burada Gemini API çağrısı yapılacak (simülasyon için delay koyuyoruz)
+    // 2 saniye bekleme (orijinal kodunuzdaki gibi)
     await Future.delayed(const Duration(seconds: 2));
 
-    // Örnek cevap (bunu Gemini API'den dönen gerçek yanıtla değiştir)
-    const sampleResponse =
-        "Öneri: 2 dilim tam buğday ekmeği (140 kcal), 1 adet haşlanmış yumurta (70 kcal), 1 porsiyon sebze salatası (50 kcal), toplam 260 kcal.";
+    // ← Burada rastgele öneri alıyoruz
+    _rastgeleOneriGetir();
 
     setState(() {
-      aiSuggestion = sampleResponse;
+      aiSuggestion = _mevcutOneri['oneri'] ?? '';
       loading = false;
     });
   }
@@ -107,11 +195,12 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
                   ),
                 ),
               ),
+              // ← Burada dinamik açıklama gösteriliyor
               Positioned(
                 left: 14,
                 top: 80,
                 child: Text(
-                  ' Fırında Somon, fırında\n patates, sebze salatası\n(brokoli, karnıbahar, ka-\n bak, patlıcan).',
+                  _mevcutAciklama,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -119,7 +208,6 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
                   ),
                 ),
               ),
-              // ... diğer Positioned widget'lar aynen devam ediyor ...
 
               // --- Yapay Zeka Öneri Bölümü ---
               Positioned(
@@ -186,9 +274,6 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
                   ),
                 ),
               ),
-
-              // Eğer tasarımda sabit alan yetmiyorsa, yukarıdaki widget'ların
-              // konumlarını hafif değiştirmek gerekebilir. Ama önce bu haliyle deneyelim.
             ],
           ),
         ),

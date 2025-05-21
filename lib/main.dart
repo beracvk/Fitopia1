@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitopia2/services/firebase_options.dart';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/home3_screen.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
       home: const Wrapper(), // burada Wrapper widget’ı kullanılıyor
       routes: {
         "/login":
-            (context) => const HomeScreen(username: 'bera'), // Login ekran rotası
+            (context) =>
+                const HomeScreen(username: 'bera'), // Login ekran rotası
       },
     );
   }
