@@ -39,137 +39,197 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
     {
       'aciklama':
           'Fırında Somon, fırında patates, sebze salatası (brokoli, karnıbahar, kabak, patlıcan).',
-      'oneri':
-          'Öneri: 2 dilim tam buğday ekmeği (140 kcal), 1 adet haşlanmış yumurta (70 kcal), 1 porsiyon sebze salatası (50 kcal), toplam 260 kcal.',
+      'malzemeler': [
+        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
+        {'ad': 'Haşlanmış yumurta', 'miktar': '1 adet', 'kalori': 70},
+        {'ad': 'Sebze salatası', 'miktar': '1 porsiyon', 'kalori': 50},
+      ],
+      'toplamKalori': 260,
     },
     {
       'aciklama':
           'Yulaf lapası, taze meyveler ve cevizle besleyici bir başlangıç.',
-      'oneri':
-          'Öneri: 1 kase yulaf lapası (150 kcal), 1 orta boy muz (105 kcal), 1 avuç ceviz (185 kcal), toplam 440 kcal.',
+      'malzemeler': [
+        {'ad': 'Yulaf lapası', 'miktar': '1 kase', 'kalori': 150},
+        {'ad': 'Muz', 'miktar': '1 orta boy', 'kalori': 105},
+        {'ad': 'Ceviz', 'miktar': '1 avuç', 'kalori': 185},
+      ],
+      'toplamKalori': 440,
     },
     {
       'aciklama': 'Avokado tost, cherry domates ve roka ile vitamin dolu.',
-      'oneri':
-          'Öneri: 2 dilim tam buğday ekmeği (140 kcal), 1/2 avokado (160 kcal), cherry domates ve roka (25 kcal), toplam 325 kcal.',
+      'malzemeler': [
+        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
+        {'ad': 'Avokado', 'miktar': '1/2 adet', 'kalori': 160},
+        {'ad': 'Cherry domates ve roka', 'miktar': '1 porsiyon', 'kalori': 25},
+      ],
+      'toplamKalori': 325,
     },
     {
       'aciklama':
           'Peynirli omlet, ıspanak ve mantar ile protein açısından zengin.',
-      'oneri':
-          'Öneri: 2 adet yumurta (140 kcal), 50g beyaz peynir (125 kcal), ıspanak ve mantar (30 kcal), toplam 295 kcal.',
+      'malzemeler': [
+        {'ad': 'Yumurta', 'miktar': '2 adet', 'kalori': 140},
+        {'ad': 'Beyaz peynir', 'miktar': '50g', 'kalori': 125},
+        {'ad': 'Ispanak ve mantar', 'miktar': '1 porsiyon', 'kalori': 30},
+      ],
+      'toplamKalori': 295,
     },
     {
       'aciklama': 'Yunan usulü yoğurt, bal ve granola ile probiyotik destek.',
-      'oneri':
-          'Öneri: 200g Yunan yoğurdu (130 kcal), 1 yemek kaşığı bal (64 kcal), 30g granola (120 kcal), toplam 314 kcal.',
+      'malzemeler': [
+        {'ad': 'Yunan yoğurdu', 'miktar': '200g', 'kalori': 130},
+        {'ad': 'Bal', 'miktar': '1 yemek kaşığı', 'kalori': 64},
+        {'ad': 'Granola', 'miktar': '30g', 'kalori': 120},
+      ],
+      'toplamKalori': 314,
     },
     {
       'aciklama': 'Smoothie bowl, çilek, muz ve chia tohumu ile antioksidan.',
-      'oneri':
-          'Öneri: 1 kase smoothie (180 kcal), 1 yemek kaşığı chia tohumu (60 kcal), taze meyveler (50 kcal), toplam 290 kcal.',
+      'malzemeler': [
+        {'ad': 'Smoothie', 'miktar': '1 kase', 'kalori': 180},
+        {'ad': 'Chia tohumu', 'miktar': '1 yemek kaşığı', 'kalori': 60},
+        {'ad': 'Taze meyveler', 'miktar': '1 porsiyon', 'kalori': 50},
+      ],
+      'toplamKalori': 290,
     },
     {
       'aciklama': 'Menemen, tam buğday ekmeği ile Türk usulü lezzet.',
-      'oneri':
-          'Öneri: 2 adet yumurta (140 kcal), domates, biber (40 kcal), 2 dilim tam buğday ekmeği (140 kcal), toplam 320 kcal.',
+      'malzemeler': [
+        {'ad': 'Yumurta', 'miktar': '2 adet', 'kalori': 140},
+        {'ad': 'Domates ve biber', 'miktar': '1 porsiyon', 'kalori': 40},
+        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
+      ],
+      'toplamKalori': 320,
     },
     {
       'aciklama': 'Lor peynirli pankek, taze böğürtlen ile hafif ve lezzetli.',
-      'oneri':
-          'Öneri: 2 adet küçük pankek (200 kcal), 100g lor peyniri (98 kcal), 1 avuç böğürtlen (40 kcal), toplam 338 kcal.',
+      'malzemeler': [
+        {'ad': 'Küçük pankek', 'miktar': '2 adet', 'kalori': 200},
+        {'ad': 'Lor peyniri', 'miktar': '100g', 'kalori': 98},
+        {'ad': 'Böğürtlen', 'miktar': '1 avuç', 'kalori': 40},
+      ],
+      'toplamKalori': 338,
     },
     {
       'aciklama':
-          'Çiya tohumu pudingi, hindistan cevizi ve mango ile tropikal.',
-      'oneri':
-          'Öneri: 2 yemek kaşığı chia tohumu (120 kcal), 200ml hindistan cevizi sütü (90 kcal), mango dilimi (80 kcal), toplam 290 kcal.',
+          'Chia tohumu pudingi, hindistan cevizi ve mango ile tropikal.',
+      'malzemeler': [
+        {'ad': 'Chia tohumu', 'miktar': '2 yemek kaşığı', 'kalori': 120},
+        {'ad': 'Hindistan cevizi sütü', 'miktar': '200ml', 'kalori': 90},
+        {'ad': 'Mango dilimi', 'miktar': '1 porsiyon', 'kalori': 80},
+      ],
+      'toplamKalori': 290,
     },
     {
       'aciklama': 'Fıstık ezmeli tost, muz dilimleri ve bal ile enerji verici.',
-      'oneri':
-          'Öneri: 2 dilim tam buğday ekmeği (140 kcal), 2 yemek kaşığı fıstık ezmesi (190 kcal), 1 küçük muz (90 kcal), toplam 420 kcal.',
+      'malzemeler': [
+        {'ad': 'Tam buğday ekmeği', 'miktar': '2 dilim', 'kalori': 140},
+        {'ad': 'Fıstık ezmesi', 'miktar': '2 yemek kaşığı', 'kalori': 190},
+        {'ad': 'Küçük muz', 'miktar': '1 adet', 'kalori': 90},
+      ],
+      'toplamKalori': 420,
     },
     {
       'aciklama':
           'Türk kahvaltısı tabağı, peynir, zeytin, domates ve salatalık.',
-      'oneri':
-          'Öneri: 60g beyaz peynir (150 kcal), 10 adet siyah zeytin (50 kcal), domates-salatalık (30 kcal), 1 dilim ekmek (70 kcal), toplam 300 kcal.',
+      'malzemeler': [
+        {'ad': 'Beyaz peynir', 'miktar': '60g', 'kalori': 150},
+        {'ad': 'Siyah zeytin', 'miktar': '10 adet', 'kalori': 50},
+        {'ad': 'Domates-salatalık', 'miktar': '1 porsiyon', 'kalori': 30},
+        {'ad': 'Ekmek', 'miktar': '1 dilim', 'kalori': 70},
+      ],
+      'toplamKalori': 300,
     },
     {
       'aciklama':
           'Acai bowl, granola, hindistan cevizi ve çilek ile süper gıda.',
-      'oneri':
-          'Öneri: 100g acai püresi (70 kcal), 30g granola (120 kcal), hindistan cevizi (40 kcal), çilek (30 kcal), toplam 260 kcal.',
+      'malzemeler': [
+        {'ad': 'Acai püresi', 'miktar': '100g', 'kalori': 70},
+        {'ad': 'Granola', 'miktar': '30g', 'kalori': 120},
+        {'ad': 'Hindistan cevizi', 'miktar': '1 porsiyon', 'kalori': 40},
+        {'ad': 'Çilek', 'miktar': '1 porsiyon', 'kalori': 30},
+      ],
+      'toplamKalori': 260,
     },
     {
       'aciklama': 'Quinoa tabağı, haşlanmış yumurta ve avokado ile protein.',
-      'oneri':
-          'Öneri: 1/2 kase pişmiş quinoa (110 kcal), 1 haşlanmış yumurta (70 kcal), 1/4 avokado (80 kcal), toplam 260 kcal.',
+      'malzemeler': [
+        {'ad': 'Pişmiş quinoa', 'miktar': '1/2 kase', 'kalori': 110},
+        {'ad': 'Haşlanmış yumurta', 'miktar': '1 adet', 'kalori': 70},
+        {'ad': 'Avokado', 'miktar': '1/4 adet', 'kalori': 80},
+      ],
+      'toplamKalori': 260,
     },
     {
       'aciklama': 'Somon füme, labne peyniri ve dereotu ile lüks başlangıç.',
-      'oneri':
-          'Öneri: 50g somon füme (120 kcal), 100g labne (80 kcal), 1 dilim çavdar ekmeği (90 kcal), toplam 290 kcal.',
+      'malzemeler': [
+        {'ad': 'Somon füme', 'miktar': '50g', 'kalori': 120},
+        {'ad': 'Labne', 'miktar': '100g', 'kalori': 80},
+        {'ad': 'Çavdar ekmeği', 'miktar': '1 dilim', 'kalori': 90},
+      ],
+      'toplamKalori': 290,
     },
     {
       'aciklama': 'Vegan tofu scramble, nutritional yeast ve sebzeler ile.',
-      'oneri':
-          'Öneri: 100g tofu (80 kcal), nutritional yeast (20 kcal), karışık sebze (40 kcal), 1 dilim tam buğday ekmeği (70 kcal), toplam 210 kcal.',
+      'malzemeler': [
+        {'ad': 'Tofu', 'miktar': '100g', 'kalori': 80},
+        {'ad': 'Nutritional yeast', 'miktar': '1 porsiyon', 'kalori': 20},
+        {'ad': 'Karışık sebze', 'miktar': '1 porsiyon', 'kalori': 40},
+        {'ad': 'Tam buğday ekmeği', 'miktar': '1 dilim', 'kalori': 70},
+      ],
+      'toplamKalori': 210,
     },
     {
       'aciklama': 'Keto kahvaltısı, scrambled egg, bacon ve avokado ile.',
-      'oneri':
-          'Öneri: 2 yumurta (140 kcal), 2 dilim bacon (86 kcal), 1/2 avokado (160 kcal), 30g çedar peyniri (113 kcal), toplam 499 kcal.',
+      'malzemeler': [
+        {'ad': 'Yumurta', 'miktar': '2 adet', 'kalori': 140},
+        {'ad': 'Bacon', 'miktar': '2 dilim', 'kalori': 86},
+        {'ad': 'Avokado', 'miktar': '1/2 adet', 'kalori': 160},
+        {'ad': 'Çedar peyniri', 'miktar': '30g', 'kalori': 113},
+      ],
+      'toplamKalori': 499,
     },
     {
       'aciklama': 'Overnight oats, vanilyalı protein tozu ve meyveler ile.',
-      'oneri':
-          'Öneri: 40g yulaf (150 kcal), 1 ölçek protein tozu (120 kcal), 200ml badem sütü (60 kcal), meyveler (50 kcal), toplam 380 kcal.',
+      'malzemeler': [
+        {'ad': 'Yulaf', 'miktar': '40g', 'kalori': 150},
+        {'ad': 'Protein tozu', 'miktar': '1 ölçek', 'kalori': 120},
+        {'ad': 'Badem sütü', 'miktar': '200ml', 'kalori': 60},
+        {'ad': 'Meyveler', 'miktar': '1 porsiyon', 'kalori': 50},
+      ],
+      'toplamKalori': 380,
     },
     {
       'aciklama': 'Ricotta peynirli krep, bal ve ceviz ile İtalyan usulü.',
-      'oneri':
-          'Öneri: 2 ince krep (160 kcal), 100g ricotta (174 kcal), 1 tatlı kaşığı bal (21 kcal), ceviz (50 kcal), toplam 405 kcal.',
+      'malzemeler': [
+        {'ad': 'İnce krep', 'miktar': '2 adet', 'kalori': 160},
+        {'ad': 'Ricotta', 'miktar': '100g', 'kalori': 174},
+        {'ad': 'Bal', 'miktar': '1 tatlı kaşığı', 'kalori': 21},
+        {'ad': 'Ceviz', 'miktar': '1 porsiyon', 'kalori': 50},
+      ],
+      'toplamKalori': 405,
     },
     {
       'aciklama':
           'Green smoothie, ıspanak, elma, muz ve chia tohumu ile detoks.',
-      'oneri':
-          'Öneri: 1 avuç ıspanak (7 kcal), 1 elma (80 kcal), 1/2 muz (50 kcal), chia tohumu (60 kcal), toplam 197 kcal.',
+      'malzemeler': [
+        {'ad': 'Ispanak', 'miktar': '1 avuç', 'kalori': 7},
+        {'ad': 'Elma', 'miktar': '1 adet', 'kalori': 80},
+        {'ad': 'Muz', 'miktar': '1/2 adet', 'kalori': 50},
+        {'ad': 'Chia tohumu', 'miktar': '1 porsiyon', 'kalori': 60},
+      ],
+      'toplamKalori': 197,
     },
     {
       'aciklama':
           'Benedict eggs, İngiliz çöreği üzerinde poached egg ve hollandaise.',
-      'oneri':
-          'Öneri: 1 İngiliz çöreği (140 kcal), 2 poached egg (140 kcal), hollandaise sos (100 kcal), toplam 380 kcal.',
-    },
-    {
-      'aciklama':
-          'Shakshuka, domates sosunda pişmiş yumurta, Ortadoğu lezzeti.',
-      'oneri':
-          'Öneri: 2 yumurta (140 kcal), domates sosu (60 kcal), biber (20 kcal), 1 dilim pita (80 kcal), toplam 300 kcal.',
-    },
-    {
-      'aciklama':
-          'Müsli, taze meyveler ve yoğurt ile klasik Avrupa kahvaltısı.',
-      'oneri':
-          'Öneri: 50g müsli (185 kcal), 150g yoğurt (90 kcal), karışık meyveler (80 kcal), toplam 355 kcal.',
-    },
-    {
-      'aciklama': 'Protein waffle, meyve ve Yunan yoğurdu ile fit kahvaltı.',
-      'oneri':
-          'Öneri: 1 protein waffle (180 kcal), 100g Yunan yoğurdu (65 kcal), taze çilek (40 kcal), toplam 285 kcal.',
-    },
-    {
-      'aciklama': 'Baba ganoush, tam buğday pita ve sebzeler ile Lübnan usulü.',
-      'oneri':
-          'Öneri: 3 yemek kaşığı baba ganoush (120 kcal), 1 tam buğday pita (80 kcal), çiğ sebze (30 kcal), toplam 230 kcal.',
-    },
-    {
-      'aciklama': 'Coconut yogurt bowl, granola ve exotic meyveler ile.',
-      'oneri':
-          'Öneri: 150g hindistan cevizi yoğurdu (120 kcal), granola (100 kcal), kivi-mango (70 kcal), toplam 290 kcal.',
+      'malzemeler': [
+        {'ad': 'İngiliz çöreği', 'miktar': '1 adet', 'kalori': 140},
+        {'ad': 'Poached egg', 'miktar': '2 adet', 'kalori': 140},
+        {'ad': 'Hollandaise sos', 'miktar': '1 porsiyon', 'kalori': 100},
+      ],
+      'toplamKalori': 380,
     },
   ];
 
@@ -225,9 +285,25 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
     _rastgeleOneriGetir();
 
     setState(() {
-      aiSuggestion = _mevcutOneri['oneri'] ?? '';
+      aiSuggestion = _buildMalzemelerListesi();
       loading = false;
     });
+  }
+
+  String _buildMalzemelerListesi() {
+    if (_mevcutOneri.isEmpty) return '';
+
+    String liste = '';
+    List<dynamic> malzemeler = _mevcutOneri['malzemeler'] ?? [];
+
+    for (var malzeme in malzemeler) {
+      liste +=
+          '• ${malzeme['ad']} (${malzeme['miktar']}) - ${malzeme['kalori']} kcal\n';
+    }
+
+    liste += '\nToplam: ${_mevcutOneri['toplamKalori']} kcal';
+
+    return liste;
   }
 
   @override
@@ -333,11 +409,19 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
                       const SizedBox(height: 12),
                       loading
                           ? const Center(child: CircularProgressIndicator())
-                          : Text(
-                            aiSuggestion.isEmpty
-                                ? "Öneri almak için aşağıdaki butona basın."
-                                : aiSuggestion,
-                            style: const TextStyle(fontSize: 16),
+                          : Container(
+                            constraints: BoxConstraints(maxHeight: 200),
+                            child: SingleChildScrollView(
+                              child: Text(
+                                aiSuggestion.isEmpty
+                                    ? "Öneri almak için aşağıdaki butona basın."
+                                    : aiSuggestion,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
                           ),
                       const SizedBox(height: 12),
                       SizedBox(
@@ -358,7 +442,10 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
                           ),
                           child: Text(
                             loading ? "Yükleniyor..." : "Öneri Al",
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
