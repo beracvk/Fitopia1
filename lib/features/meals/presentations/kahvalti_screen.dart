@@ -79,6 +79,98 @@ class _KahvaltiScreenState extends State<KahvaltiScreen> {
       'oneri':
           'Öneri: 2 adet küçük pankek (200 kcal), 100g lor peyniri (98 kcal), 1 avuç böğürtlen (40 kcal), toplam 338 kcal.',
     },
+    {
+      'aciklama':
+          'Çiya tohumu pudingi, hindistan cevizi ve mango ile tropikal.',
+      'oneri':
+          'Öneri: 2 yemek kaşığı chia tohumu (120 kcal), 200ml hindistan cevizi sütü (90 kcal), mango dilimi (80 kcal), toplam 290 kcal.',
+    },
+    {
+      'aciklama': 'Fıstık ezmeli tost, muz dilimleri ve bal ile enerji verici.',
+      'oneri':
+          'Öneri: 2 dilim tam buğday ekmeği (140 kcal), 2 yemek kaşığı fıstık ezmesi (190 kcal), 1 küçük muz (90 kcal), toplam 420 kcal.',
+    },
+    {
+      'aciklama':
+          'Türk kahvaltısı tabağı, peynir, zeytin, domates ve salatalık.',
+      'oneri':
+          'Öneri: 60g beyaz peynir (150 kcal), 10 adet siyah zeytin (50 kcal), domates-salatalık (30 kcal), 1 dilim ekmek (70 kcal), toplam 300 kcal.',
+    },
+    {
+      'aciklama':
+          'Acai bowl, granola, hindistan cevizi ve çilek ile süper gıda.',
+      'oneri':
+          'Öneri: 100g acai püresi (70 kcal), 30g granola (120 kcal), hindistan cevizi (40 kcal), çilek (30 kcal), toplam 260 kcal.',
+    },
+    {
+      'aciklama': 'Quinoa tabağı, haşlanmış yumurta ve avokado ile protein.',
+      'oneri':
+          'Öneri: 1/2 kase pişmiş quinoa (110 kcal), 1 haşlanmış yumurta (70 kcal), 1/4 avokado (80 kcal), toplam 260 kcal.',
+    },
+    {
+      'aciklama': 'Somon füme, labne peyniri ve dereotu ile lüks başlangıç.',
+      'oneri':
+          'Öneri: 50g somon füme (120 kcal), 100g labne (80 kcal), 1 dilim çavdar ekmeği (90 kcal), toplam 290 kcal.',
+    },
+    {
+      'aciklama': 'Vegan tofu scramble, nutritional yeast ve sebzeler ile.',
+      'oneri':
+          'Öneri: 100g tofu (80 kcal), nutritional yeast (20 kcal), karışık sebze (40 kcal), 1 dilim tam buğday ekmeği (70 kcal), toplam 210 kcal.',
+    },
+    {
+      'aciklama': 'Keto kahvaltısı, scrambled egg, bacon ve avokado ile.',
+      'oneri':
+          'Öneri: 2 yumurta (140 kcal), 2 dilim bacon (86 kcal), 1/2 avokado (160 kcal), 30g çedar peyniri (113 kcal), toplam 499 kcal.',
+    },
+    {
+      'aciklama': 'Overnight oats, vanilyalı protein tozu ve meyveler ile.',
+      'oneri':
+          'Öneri: 40g yulaf (150 kcal), 1 ölçek protein tozu (120 kcal), 200ml badem sütü (60 kcal), meyveler (50 kcal), toplam 380 kcal.',
+    },
+    {
+      'aciklama': 'Ricotta peynirli krep, bal ve ceviz ile İtalyan usulü.',
+      'oneri':
+          'Öneri: 2 ince krep (160 kcal), 100g ricotta (174 kcal), 1 tatlı kaşığı bal (21 kcal), ceviz (50 kcal), toplam 405 kcal.',
+    },
+    {
+      'aciklama':
+          'Green smoothie, ıspanak, elma, muz ve chia tohumu ile detoks.',
+      'oneri':
+          'Öneri: 1 avuç ıspanak (7 kcal), 1 elma (80 kcal), 1/2 muz (50 kcal), chia tohumu (60 kcal), toplam 197 kcal.',
+    },
+    {
+      'aciklama':
+          'Benedict eggs, İngiliz çöreği üzerinde poached egg ve hollandaise.',
+      'oneri':
+          'Öneri: 1 İngiliz çöreği (140 kcal), 2 poached egg (140 kcal), hollandaise sos (100 kcal), toplam 380 kcal.',
+    },
+    {
+      'aciklama':
+          'Shakshuka, domates sosunda pişmiş yumurta, Ortadoğu lezzeti.',
+      'oneri':
+          'Öneri: 2 yumurta (140 kcal), domates sosu (60 kcal), biber (20 kcal), 1 dilim pita (80 kcal), toplam 300 kcal.',
+    },
+    {
+      'aciklama':
+          'Müsli, taze meyveler ve yoğurt ile klasik Avrupa kahvaltısı.',
+      'oneri':
+          'Öneri: 50g müsli (185 kcal), 150g yoğurt (90 kcal), karışık meyveler (80 kcal), toplam 355 kcal.',
+    },
+    {
+      'aciklama': 'Protein waffle, meyve ve Yunan yoğurdu ile fit kahvaltı.',
+      'oneri':
+          'Öneri: 1 protein waffle (180 kcal), 100g Yunan yoğurdu (65 kcal), taze çilek (40 kcal), toplam 285 kcal.',
+    },
+    {
+      'aciklama': 'Baba ganoush, tam buğday pita ve sebzeler ile Lübnan usulü.',
+      'oneri':
+          'Öneri: 3 yemek kaşığı baba ganoush (120 kcal), 1 tam buğday pita (80 kcal), çiğ sebze (30 kcal), toplam 230 kcal.',
+    },
+    {
+      'aciklama': 'Coconut yogurt bowl, granola ve exotic meyveler ile.',
+      'oneri':
+          'Öneri: 150g hindistan cevizi yoğurdu (120 kcal), granola (100 kcal), kivi-mango (70 kcal), toplam 290 kcal.',
+    },
   ];
 
   Map<String, dynamic> _mevcutOneri = {};
