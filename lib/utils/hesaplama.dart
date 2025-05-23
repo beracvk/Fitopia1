@@ -13,6 +13,7 @@ String gunlukKaloriIhtiyaci(
   required double boy,
   required int yas,
   required String cinsiyet,
+  required String aktiviteLevel,
 }) {
   double bmr;
 

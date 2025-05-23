@@ -32,13 +32,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
-  // Firebase service ve kullanıcı hedefleri için değişkenler
+  // Firebase service
   final FirebaseService _firebaseService = FirebaseService();
 
   // Hesaplanmış hedefler
-  String personalizedSu = '2.5L';
-  String personalizedKalori = '2000';
-  String personalizedAdim = '10K';
+  double personalizedSu = 2.5;
+  int personalizedKalori = 2000;
+  int personalizedAdim = 10000;
 
   // Yükleme durumu
   bool isLoading = true;
@@ -82,50 +82,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         return;
       }
 
-      final data = await _firebaseService.getUserPreferences(userId);
-      if (data != null && mounted) {
-        final boy = (data['boy'] as num?)?.toDouble() ?? 0.0;
-        final kilo = (data['kilo'] as num?)?.toDouble() ?? 0.0;
-        final yas = (data['yas'] as num?)?.toInt() ?? 0;
-        final cinsiyet = data['cinsiyet'] as String? ?? 'erkek';
-        final aktiviteSeviyesi =
-            data['aktiviteSeviyesi'] as String? ??
-            'orta'; // Firebase'deki alan adı
+      // Firebase Service'deki calculateGoals fonksiyonunu kullan
+      final goalsData = await _firebaseService.calculateGoals();
 
-        // Verilerin geçerli olup olmadığını kontrol et
-        if (boy > 0 && kilo > 0 && yas > 0) {
-          // Hesaplamaları yap
-          final suHedefi = gunlukSuIhtiyaci(kilo);
-          final kaloriHedefi = gunlukKaloriIhtiyaci(
-            kilo,
-            boy: boy,
-            yas: yas,
-            cinsiyet: cinsiyet,
-            aktiviteLevel: aktiviteSeviyesi,
-          );
-          final adimHedefi = gunlukAdimHedefi(yas);
+      if (goalsData != null && mounted) {
+        setState(() {
+          personalizedSu = goalsData['su'] ?? 2.5;
+          personalizedKalori = goalsData['kalori'] ?? 2000;
+          personalizedAdim = goalsData['adim'] ?? 10000;
+          hasUserData = true;
+          isLoading = false;
+        });
 
-          setState(() {
-            personalizedSu = suHedefi;
-            personalizedKalori = kaloriHedefi;
-            personalizedAdim = adimHedefi;
-            hasUserData = true;
-            isLoading = false;
-          });
-
-          print('Hesaplanan hedefler:');
-          print('Su: $suHedefi');
-          print('Kalori: $kaloriHedefi');
-          print('Adım: $adimHedefi');
-        } else {
-          setState(() {
-            hasUserData = false;
-            isLoading = false;
-          });
-          print(
-            'Kullanıcı verileri eksik veya geçersiz: boy=$boy, kilo=$kilo, yas=$yas',
-          );
-        }
+        print('Hesaplanan hedefler:');
+        print('Su: ${personalizedSu}L');
+        print('Kalori: $personalizedKalori kcal');
+        print('Adım: $personalizedAdim adım');
       } else {
         setState(() {
           hasUserData = false;
@@ -401,44 +373,47 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Row(
       children: [
         Expanded(
-          child: MinimalGoalCard(
+          child: PersonalizedGoalCard(
             title: 'Su İçme',
-            value: personalizedSu,
-            progress: 0.6,
+            value: '${personalizedSu.toStringAsFixed(1)}L',
+            progress: 0.4, // Bu değeri gerçek verilerle güncelleyebilirsiniz
             icon: Icons.water_drop,
             gradient: const LinearGradient(
-              colors: [Color(0xFFe0f2fe), Color(0xFFb3e5fc)],
+              colors: [Color(0xFFe0f7fa), Color(0xFF80deea)],
             ),
-            textColor: const Color(0xFF0277bd),
-            progressColor: const Color(0xFF0277bd),
+            textColor: const Color(0xFF00838f),
+            progressColor: const Color(0xFF00acc1),
+            subtitle: 'Günlük hedef',
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 12),
         Expanded(
-          child: MinimalGoalCard(
+          child: PersonalizedGoalCard(
             title: 'Kalori',
-            value: personalizedKalori,
-            progress: 0.75,
+            value: '${personalizedKalori.toString()}',
+            progress: 0.6, // Bu değeri gerçek verilerle güncelleyebilirsiniz
             icon: Icons.local_fire_department,
             gradient: const LinearGradient(
               colors: [Color(0xFFfff3e0), Color(0xFFffcc02)],
             ),
             textColor: const Color(0xFFe65100),
-            progressColor: const Color(0xFFe65100),
+            progressColor: const Color(0xFFff9800),
+            subtitle: 'kcal/gün',
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 12),
         Expanded(
-          child: MinimalGoalCard(
+          child: PersonalizedGoalCard(
             title: 'Adım',
-            value: personalizedAdim,
-            progress: 0.4,
+            value: '${(personalizedAdim / 1000).toStringAsFixed(0)}K',
+            progress: 0.3, // Bu değeri gerçek verilerle güncelleyebilirsiniz
             icon: Icons.directions_walk,
             gradient: const LinearGradient(
-              colors: [Color(0xFFe8f5e8), Color(0xFFc8e6c9)],
+              colors: [Color(0xFFe8f5e8), Color(0xFFa5d6a7)],
             ),
             textColor: const Color(0xFF2e7d32),
-            progressColor: const Color(0xFF2e7d32),
+            progressColor: const Color(0xFF4caf50),
+            subtitle: 'Günlük hedef',
           ),
         ),
       ],
@@ -494,19 +469,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 }
 
-class MinimalGoalCard extends StatelessWidget {
+// Kişiselleştirilmiş Hedef Kartı Widget'ı
+class PersonalizedGoalCard extends StatelessWidget {
   final String title;
   final String value;
+  final String subtitle;
   final double progress;
   final IconData icon;
   final Gradient gradient;
   final Color textColor;
   final Color progressColor;
 
-  const MinimalGoalCard({
+  const PersonalizedGoalCard({
     super.key,
     required this.title,
     required this.value,
+    required this.subtitle,
     required this.progress,
     required this.icon,
     required this.gradient,
@@ -521,9 +499,10 @@ class MinimalGoalCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: gradient,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: textColor.withOpacity(0.2), width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: textColor.withOpacity(0.15),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -533,20 +512,27 @@ class MinimalGoalCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withOpacity(0.9),
               borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: textColor.withOpacity(0.1),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: Icon(icon, size: 28, color: textColor),
+            child: Icon(icon, size: 24, color: textColor),
           ),
           const SizedBox(height: 12),
           Text(
             title,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: textColor,
+              color: textColor.withOpacity(0.8),
             ),
           ),
           const SizedBox(height: 4),
@@ -558,14 +544,19 @@ class MinimalGoalCard extends StatelessWidget {
               color: textColor,
             ),
           ),
+          const SizedBox(height: 2),
+          Text(
+            subtitle,
+            style: TextStyle(fontSize: 10, color: textColor.withOpacity(0.7)),
+          ),
           const SizedBox(height: 8),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
               value: progress,
-              backgroundColor: Colors.white.withOpacity(0.6),
+              backgroundColor: Colors.white.withOpacity(0.4),
               valueColor: AlwaysStoppedAnimation<Color>(progressColor),
-              minHeight: 4,
+              minHeight: 3,
             ),
           ),
         ],
