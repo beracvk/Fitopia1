@@ -215,7 +215,7 @@ class _AyarlarScreenState extends State<AyarlarScreen> {
           _buildGoalItem(
             Icons.fitness_center,
             'Kilo Kaybı',
-            '8 kg kalmış',
+            '4 kg kalmış',
             Colors.purple,
           ),
           
