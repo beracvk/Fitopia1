@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, non_constant_identifier_names, use_super_parameters
 
-
+import 'package:fitopia2/services/firebase_service.dart';
+import 'package:fitopia2/utils/hesaplama.dart';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/deneme_screen.dart';
 import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
 import 'package:fitopia2/screens/porsiyon_analizi_page.dart';
@@ -25,11 +26,16 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+
+  // Firebase service ve kullanıcı hedefleri için değişkenler
+  final FirebaseService _firebaseService = FirebaseService();
+  String su = '';
+  String kalori = '';
+  String adim = '';
 
   @override
   void initState() {
@@ -39,23 +45,44 @@ class _HomeScreenState extends State<HomeScreen>
       vsync: this,
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
 
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.3),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
 
     _animationController.forward();
+    _loadUserGoals();
+  }
+
+  Future<void> _loadUserGoals() async {
+    try {
+      final userId = _firebaseService.auth.currentUser?.uid;
+      if (userId == null) return;
+
+      final data = await _firebaseService.getUserPreferences(userId);
+      if (data != null && mounted) {
+        final boy = (data['boy'] as num?)?.toDouble() ?? 0.0;
+        final kilo = (data['kilo'] as num?)?.toDouble() ?? 0.0;
+        final yas = (data['yas'] as num?)?.toInt() ?? 0;
+
+        if (boy > 0 && kilo > 0 && yas > 0) {
+          setState(() {
+            su = gunlukSuIhtiyaci(kilo);
+            kalori = gunlukKaloriIhtiyaci(kilo);
+            adim = gunlukAdimHedefi(yas);
+          });
+        }
+      }
+    } catch (e) {
+      // Hata durumunda sessizce devam et
+      print('Hedefler yüklenemedi: $e');
+    }
   }
 
   @override
@@ -73,11 +100,7 @@ class _HomeScreenState extends State<HomeScreen>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFf8fafc),
-              Color(0xFFe2e8f0),
-              Color(0xFFcbd5e1),
-            ],
+            colors: [Color(0xFFf8fafc), Color(0xFFe2e8f0), Color(0xFFcbd5e1)],
             stops: [0.0, 0.5, 1.0],
           ),
         ),
@@ -99,10 +122,46 @@ class _HomeScreenState extends State<HomeScreen>
                     _buildGoalCards(),
                     const SizedBox(height: 32),
 
+                    // Firebase'den gelen hedefler (varsa göster)
+                    if (su.isNotEmpty && kalori.isNotEmpty && adim.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Günlük Hedefleriniz',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF1e293b),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildGoalCard('💧 Su Hedefi', su),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _buildGoalCard(
+                                    '🔥 Kalori Hedefi',
+                                    kalori,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _buildGoalCard('👟 Adım Hedefi', adim),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
                     // Action Buttons
-                    Expanded(
-                      child: _buildActionButtons(),
-                    ),
+                    Expanded(child: _buildActionButtons()),
                   ],
                 ),
               ),
@@ -113,16 +172,52 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  Widget _buildGoalCard(String title, String value) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.black.withOpacity(0.1), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF64748b),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF1e293b),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.black.withOpacity(0.1),
-          width: 1,
-        ),
+        border: Border.all(color: Colors.black.withOpacity(0.1), width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -167,11 +262,11 @@ class _HomeScreenState extends State<HomeScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Hoş geldin',
                   style: TextStyle(
                     fontSize: 16,
-                    color: const Color(0xFF64748b),
+                    color: Color(0xFF64748b),
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -332,11 +427,7 @@ class MinimalGoalCard extends StatelessWidget {
               color: Colors.white.withOpacity(0.8),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              icon,
-              size: 28,
-              color: textColor,
-            ),
+            child: Icon(icon, size: 28, color: textColor),
           ),
           const SizedBox(height: 12),
           Text(
@@ -405,10 +496,7 @@ class _MinimalActionButtonState extends State<MinimalActionButton>
     _scaleAnimation = Tween<double>(
       begin: 1.0,
       end: 0.95,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override

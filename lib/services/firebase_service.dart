@@ -5,6 +5,8 @@ class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  get auth => null;
+
   // 🔐 Kullanıcı Kaydı
   Future<String> registerUser(String email, String password) async {
     try {
@@ -29,17 +31,17 @@ class FirebaseService {
     }
   }
 
-  // 💾 Simülasyon Veritabanı Kaydı (örnek)
+  // 🔄 Örnek veritabanı kaydı (simülasyon)
   Future<String> registerDb(String email, String password) async {
     try {
-      await Future.delayed(Duration(seconds: 2)); // Simulated DB interaction
+      await Future.delayed(Duration(seconds: 2)); // Simülasyon
       return 'Veritabanı kaydı başarılı';
     } catch (e) {
       return 'Veritabanı kaydında hata oluştu: $e';
     }
   }
 
-  // 📄 Firestore'dan Kullanıcı Tercihlerini Alma
+  // 🔍 Firestore'dan kullanıcı tercihlerini alma
   Future<Map<String, dynamic>?> getUserPreferences(String userId) async {
     try {
       final docSnapshot =
