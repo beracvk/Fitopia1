@@ -124,7 +124,7 @@ class _AyarlarScreenState extends State<AyarlarScreen> {
           Row(
             children: [
               Expanded(
-                child: _buildStatItem('Mevcut Kilo', '62', 'kg', Colors.blue),
+                child: _buildStatItem('Mevcut Kilo', '58', 'kg', Colors.blue),
               ),
               const SizedBox(width: 16),
               Expanded(
