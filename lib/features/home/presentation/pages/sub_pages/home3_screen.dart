@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import, non_constant_identifier_names, use_super_parameters
 
+import 'package:fitopia2/screens/screens/ayarlar_screen.dart';
 import 'package:fitopia2/services/firebase_service.dart';
 import 'package:fitopia2/utils/hesaplama.dart';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/deneme_screen.dart';
@@ -232,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const DenemeScreen()),
+                MaterialPageRoute(builder: (context) => const AyarlarScreen()),
               );
             },
             child: Container(
