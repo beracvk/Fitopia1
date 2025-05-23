@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Cuma, 14 Şubat',
+                  'Cuma, 23 Mayıs',
                   style: TextStyle(
                     fontFamily: 'SourceSerif',
                     color: Color(0xFF196F3D),
