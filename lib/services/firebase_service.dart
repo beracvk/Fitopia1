@@ -5,7 +5,8 @@ class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  get auth => null;
+  // Auth getter'ı düzeltildi
+  FirebaseAuth get auth => _auth;
 
   // 🔐 Kullanıcı Kaydı
   Future<String> registerUser(String email, String password) async {
@@ -41,7 +42,7 @@ class FirebaseService {
     }
   }
 
-  // 🔍 Firestore'dan kullanıcı tercihlerini alma
+  // 🔍 Firestore'dan kullanıcı tercihlerini alma (preferences koleksiyonu için)
   Future<Map<String, dynamic>?> getUserPreferences(String userId) async {
     try {
       final docSnapshot =
@@ -55,15 +56,16 @@ class FirebaseService {
       if (docSnapshot.exists) {
         return docSnapshot.data();
       } else {
-        return null;
+        // Eğer preferences yoksa ana users koleksiyonundan dene
+        return await getUserData();
       }
     } catch (e) {
-      print('Hata: $e');
+      print('Preferences alma hatası: $e');
       return null;
     }
   }
 
-  // ✅ Yeni: Kullanıcının temel bilgilerini al
+  // ✅ Kullanıcının temel bilgilerini al (ana users koleksiyonundan)
   Future<Map<String, dynamic>?> getUserData() async {
     try {
       final user = _auth.currentUser;
@@ -77,28 +79,174 @@ class FirebaseService {
     }
   }
 
-  // ✅ Yeni: Su, kalori ve adım hedeflerini hesapla
+  // ✅ Kullanıcı verilerini güncelle
+  Future<bool> updateUserData(String userId, Map<String, dynamic> data) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .set(data, SetOptions(merge: true));
+      return true;
+    } catch (e) {
+      print('Kullanıcı verileri güncellenemedi: $e');
+      return false;
+    }
+  }
+
+  // ✅ İlk kayıt sırasında kullanıcı bilgilerini kaydet
+  Future<bool> saveUserProfile({
+    required String userId,
+    required String name,
+    required double boy,
+    required double kilo,
+    required int yas,
+    required String cinsiyet,
+    String? hedef,
+    String? aktiviteSeviyesi,
+  }) async {
+    try {
+      Map<String, dynamic> userData = {
+        'name': name,
+        'boy': boy,
+        'kilo': kilo,
+        'yas': yas,
+        'cinsiyet': cinsiyet,
+        'hedef': hedef ?? 'koruma',
+        'aktiviteSeviyesi': aktiviteSeviyesi ?? 'orta',
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .set(userData, SetOptions(merge: true));
+
+      return true;
+    } catch (e) {
+      print('Kullanıcı profili kaydedilemedi: $e');
+      return false;
+    }
+  }
+
+  // ✅ Su, kalori ve adım hedeflerini hesapla (geliştirilmiş versiyon)
   Future<Map<String, dynamic>?> calculateGoals() async {
     final userData = await getUserData();
     if (userData == null) return null;
 
-    final kilo = userData['kilo'] ?? 70;
-    final boy = userData['boy'] ?? 170;
-    final yas = userData['yas'] ?? 30;
-    final cinsiyet = userData['cinsiyet']?.toLowerCase() ?? 'erkek';
+    final kilo = (userData['kilo'] as num?)?.toDouble() ?? 70.0;
+    final boy = (userData['boy'] as num?)?.toDouble() ?? 170.0;
+    final yas = (userData['yas'] as num?)?.toInt() ?? 30;
+    final cinsiyet =
+        (userData['cinsiyet'] as String?)?.toLowerCase() ?? 'erkek';
+    final hedef = userData['hedef'] as String? ?? 'koruma';
+    final aktiviteSeviyesi = userData['aktiviteSeviyesi'] as String? ?? 'orta';
 
-    double su = (kilo * 0.033); // litre
-    int kalori =
-        cinsiyet == 'erkek'
-            ? (kilo * 24 * 1.3).toInt()
-            : (kilo * 22 * 1.3).toInt();
-    int adim =
-        yas < 30
-            ? 10000
-            : yas <= 50
-            ? 8000
-            : 6000;
+    // Su hesaplama (geliştirilmiş)
+    double suMiktari = kilo * 35; // ml cinsinden
+    switch (aktiviteSeviyesi) {
+      case 'düşük':
+        suMiktari *= 1.0;
+        break;
+      case 'orta':
+        suMiktari *= 1.2;
+        break;
+      case 'yüksek':
+        suMiktari *= 1.5;
+        break;
+    }
+    double su = suMiktari / 1000; // Litre cinsinden
 
-    return {'su': su, 'kalori': kalori, 'adim': adim};
+    // Kalori hesaplama (BMR + aktivite)
+    double bmr;
+    if (cinsiyet == 'erkek') {
+      bmr = 88.362 + (13.397 * kilo) + (4.799 * boy) - (5.677 * yas);
+    } else {
+      bmr = 447.593 + (9.247 * kilo) + (3.098 * boy) - (4.330 * yas);
+    }
+
+    double gunlukKalori = bmr * 1.375; // Hafif aktif yaşam tarzı
+
+    // Hedefe göre kalori ayarlama
+    switch (hedef) {
+      case 'verme':
+        gunlukKalori -= 500;
+        break;
+      case 'alma':
+        gunlukKalori += 500;
+        break;
+      case 'koruma':
+      default:
+        break;
+    }
+
+    // Adım hedefi yaşa göre
+    int adim;
+    if (yas < 18) {
+      adim = 12000;
+    } else if (yas <= 30) {
+      adim = 10000;
+    } else if (yas <= 50) {
+      adim = 8000;
+    } else if (yas <= 65) {
+      adim = 6000;
+    } else {
+      adim = 4000;
+    }
+
+    return {'su': su, 'kalori': gunlukKalori.round(), 'adim': adim};
+  }
+
+  // ✅ Günlük takip verilerini kaydet (opsiyonel - ileride kullanım için)
+  Future<bool> saveDailyProgress({
+    required String userId,
+    required String date, // YYYY-MM-DD formatında
+    double? suMiktari,
+    int? kaloriAlimi,
+    int? adimSayisi,
+  }) async {
+    try {
+      Map<String, dynamic> progressData = {
+        'date': date,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      if (suMiktari != null) progressData['su'] = suMiktari;
+      if (kaloriAlimi != null) progressData['kalori'] = kaloriAlimi;
+      if (adimSayisi != null) progressData['adim'] = adimSayisi;
+
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('daily_progress')
+          .doc(date)
+          .set(progressData, SetOptions(merge: true));
+
+      return true;
+    } catch (e) {
+      print('Günlük progress kaydedilemedi: $e');
+      return false;
+    }
+  }
+
+  // ✅ Günlük takip verilerini al
+  Future<Map<String, dynamic>?> getDailyProgress(
+    String userId,
+    String date,
+  ) async {
+    try {
+      final doc =
+          await _firestore
+              .collection('users')
+              .doc(userId)
+              .collection('daily_progress')
+              .doc(date)
+              .get();
+
+      return doc.exists ? doc.data() : null;
+    } catch (e) {
+      print('Günlük progress alınamadı: $e');
+      return null;
+    }
   }
 }

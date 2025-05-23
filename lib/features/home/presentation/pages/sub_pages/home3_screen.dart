@@ -34,14 +34,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   // Firebase service ve kullanıcı hedefleri için değişkenler
   final FirebaseService _firebaseService = FirebaseService();
-  String su = '';
-  String kalori = '';
-  String adim = '';
 
-  // Kişiselleştirilmiş hedefler için varsayılan değerler
+  // Hesaplanmış hedefler
   String personalizedSu = '2.5L';
   String personalizedKalori = '2000';
   String personalizedAdim = '10K';
+
+  // Yükleme durumu
+  bool isLoading = true;
+  bool hasUserData = false;
 
   @override
   void initState() {
@@ -68,35 +69,75 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Future<void> _loadUserGoals() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
+
       final userId = _firebaseService.auth.currentUser?.uid;
-      if (userId == null) return;
+      if (userId == null) {
+        setState(() {
+          isLoading = false;
+          hasUserData = false;
+        });
+        return;
+      }
 
       final data = await _firebaseService.getUserPreferences(userId);
       if (data != null && mounted) {
         final boy = (data['boy'] as num?)?.toDouble() ?? 0.0;
         final kilo = (data['kilo'] as num?)?.toDouble() ?? 0.0;
         final yas = (data['yas'] as num?)?.toInt() ?? 0;
+        final cinsiyet = data['cinsiyet'] as String? ?? 'erkek';
+        final aktiviteSeviyesi =
+            data['aktiviteSeviyesi'] as String? ??
+            'orta'; // Firebase'deki alan adı
 
+        // Verilerin geçerli olup olmadığını kontrol et
         if (boy > 0 && kilo > 0 && yas > 0) {
-          setState(() {
-            su = gunlukSuIhtiyaci(kilo);
-            kalori = gunlukKaloriIhtiyaci(
-              kilo,
-              boy: boy,
-              yas: yas,
-              cinsiyet: data['cinsiyet'] ?? 'erkek',
-            );
-            adim = gunlukAdimHedefi(yas);
+          // Hesaplamaları yap
+          final suHedefi = gunlukSuIhtiyaci(kilo);
+          final kaloriHedefi = gunlukKaloriIhtiyaci(
+            kilo,
+            boy: boy,
+            yas: yas,
+            cinsiyet: cinsiyet,
+            aktiviteLevel: aktiviteSeviyesi,
+          );
+          final adimHedefi = gunlukAdimHedefi(yas);
 
-            // Kişiselleştirilmiş hedefleri güncelle
-            personalizedSu = su;
-            personalizedKalori = kalori;
-            personalizedAdim = adim;
+          setState(() {
+            personalizedSu = suHedefi;
+            personalizedKalori = kaloriHedefi;
+            personalizedAdim = adimHedefi;
+            hasUserData = true;
+            isLoading = false;
           });
+
+          print('Hesaplanan hedefler:');
+          print('Su: $suHedefi');
+          print('Kalori: $kaloriHedefi');
+          print('Adım: $adimHedefi');
+        } else {
+          setState(() {
+            hasUserData = false;
+            isLoading = false;
+          });
+          print(
+            'Kullanıcı verileri eksik veya geçersiz: boy=$boy, kilo=$kilo, yas=$yas',
+          );
         }
+      } else {
+        setState(() {
+          hasUserData = false;
+          isLoading = false;
+        });
+        print('Kullanıcı verileri bulunamadı');
       }
     } catch (e) {
-      // Hata durumunda sessizce devam et
+      setState(() {
+        isLoading = false;
+        hasUserData = false;
+      });
       print('Hedefler yüklenemedi: $e');
     }
   }
@@ -134,47 +175,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _buildHeader(),
                     const SizedBox(height: 32),
 
-                    // Goal Cards (Kişiselleştirilmiş hedefler ile)
-                    _buildGoalCards(),
-                    const SizedBox(height: 32),
+                    // Yükleme durumu veya hedef kartları
+                    if (isLoading)
+                      _buildLoadingCards()
+                    else if (!hasUserData)
+                      _buildNoDataMessage()
+                    else
+                      _buildGoalCards(),
 
-                    // Firebase'den gelen hedefler (varsa göster)
-                    if (su.isNotEmpty && kalori.isNotEmpty && adim.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Günlük Hedefleriniz',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF1e293b),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _buildGoalCard('💧 Su Hedefi', su),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _buildGoalCard(
-                                    '🔥 Kalori Hedefi',
-                                    kalori,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: _buildGoalCard('👟 Adım Hedefi', adim),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    const SizedBox(height: 32),
 
                     // Action Buttons
                     Expanded(child: _buildActionButtons()),
@@ -188,39 +197,106 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildGoalCard(String title, String value) {
+  Widget _buildLoadingCards() {
+    return Row(
+      children: [
+        Expanded(child: _buildLoadingCard()),
+        const SizedBox(width: 16),
+        Expanded(child: _buildLoadingCard()),
+        const SizedBox(width: 16),
+        Expanded(child: _buildLoadingCard()),
+      ],
+    );
+  }
+
+  Widget _buildLoadingCard() {
     return Container(
+      height: 140,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withOpacity(0.1), width: 1),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF64748b),
+          CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              const Color(0xFF64748b).withOpacity(0.6),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
-            value,
-            style: const TextStyle(
-              fontSize: 16,
+            'Yükleniyor...',
+            style: TextStyle(
+              fontSize: 12,
+              color: const Color(0xFF64748b).withOpacity(0.8),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoDataMessage() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.orange.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.orange.withOpacity(0.3), width: 1),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.info_outline,
+            size: 48,
+            color: Colors.orange.withOpacity(0.8),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Kişiselleştirilmiş Hedefler',
+            style: TextStyle(
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Color(0xFF1e293b),
             ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Kişisel hedeflerinizi görmek için profil bilgilerinizi (yaş, kilo, boy, cinsiyet) tamamlayın.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, color: Color(0xFF64748b)),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AyarlarScreen()),
+              ).then((_) {
+                // Sayfa geri döndüğünde hedefleri yeniden yükle
+                _loadUserGoals();
+              });
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text('Profili Tamamla'),
           ),
         ],
       ),
@@ -249,7 +325,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AyarlarScreen()),
-              );
+              ).then((_) {
+                // Sayfa geri döndüğünde hedefleri yeniden yükle
+                _loadUserGoals();
+              });
             },
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -297,6 +376,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ],
             ),
           ),
+          if (!isLoading)
+            GestureDetector(
+              onTap: _loadUserGoals,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFf1f5f9),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.refresh,
+                  size: 20,
+                  color: Color(0xFF64748b),
+                ),
+              ),
+            ),
         ],
       ),
     );
