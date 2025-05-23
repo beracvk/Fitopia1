@@ -3,8 +3,21 @@ String gunlukSuIhtiyaci(double kilo) {
   return '${litre.toStringAsFixed(1)} L';
 }
 
-String gunlukKaloriIhtiyaci(double kilo) {
-  final kalori = kilo * 30; // Basit BMR formülü
+String gunlukKaloriIhtiyaci(
+  double kiloParam, {
+  required double boy,
+  required int yas,
+  required String cinsiyet,
+}) {
+  double bmr;
+
+  if (cinsiyet.toLowerCase() == 'erkek') {
+    bmr = 10 * kiloParam + 6.25 * boy - 5 * yas + 5;
+  } else {
+    bmr = 10 * kiloParam + 6.25 * boy - 5 * yas - 161;
+  }
+
+  final kalori = bmr * 1.3; // Hafif aktif
   return '${kalori.toStringAsFixed(0)} kcal';
 }
 

@@ -38,6 +38,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String kalori = '';
   String adim = '';
 
+  // Kişiselleştirilmiş hedefler için varsayılan değerler
+  String personalizedSu = '2.5L';
+  String personalizedKalori = '2000';
+  String personalizedAdim = '10K';
+
   @override
   void initState() {
     super.initState();
@@ -75,8 +80,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         if (boy > 0 && kilo > 0 && yas > 0) {
           setState(() {
             su = gunlukSuIhtiyaci(kilo);
-            kalori = gunlukKaloriIhtiyaci(kilo);
+            kalori = gunlukKaloriIhtiyaci(
+              kilo,
+              boy: boy,
+              yas: yas,
+              cinsiyet: data['cinsiyet'] ?? 'erkek',
+            );
             adim = gunlukAdimHedefi(yas);
+
+            // Kişiselleştirilmiş hedefleri güncelle
+            personalizedSu = su;
+            personalizedKalori = kalori;
+            personalizedAdim = adim;
           });
         }
       }
@@ -119,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _buildHeader(),
                     const SizedBox(height: 32),
 
-                    // Goal Cards
+                    // Goal Cards (Kişiselleştirilmiş hedefler ile)
                     _buildGoalCards(),
                     const SizedBox(height: 32),
 
@@ -293,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Expanded(
           child: MinimalGoalCard(
             title: 'Su İçme',
-            value: '2.5L',
+            value: personalizedSu,
             progress: 0.6,
             icon: Icons.water_drop,
             gradient: const LinearGradient(
@@ -307,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Expanded(
           child: MinimalGoalCard(
             title: 'Kalori',
-            value: '2000',
+            value: personalizedKalori,
             progress: 0.75,
             icon: Icons.local_fire_department,
             gradient: const LinearGradient(
@@ -321,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Expanded(
           child: MinimalGoalCard(
             title: 'Adım',
-            value: '10K',
+            value: personalizedAdim,
             progress: 0.4,
             icon: Icons.directions_walk,
             gradient: const LinearGradient(

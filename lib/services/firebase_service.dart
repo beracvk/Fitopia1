@@ -62,4 +62,43 @@ class FirebaseService {
       return null;
     }
   }
+
+  // ✅ Yeni: Kullanıcının temel bilgilerini al
+  Future<Map<String, dynamic>?> getUserData() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) return null;
+
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+      return doc.exists ? doc.data() : null;
+    } catch (e) {
+      print('Kullanıcı verisi alma hatası: $e');
+      return null;
+    }
+  }
+
+  // ✅ Yeni: Su, kalori ve adım hedeflerini hesapla
+  Future<Map<String, dynamic>?> calculateGoals() async {
+    final userData = await getUserData();
+    if (userData == null) return null;
+
+    final kilo = userData['kilo'] ?? 70;
+    final boy = userData['boy'] ?? 170;
+    final yas = userData['yas'] ?? 30;
+    final cinsiyet = userData['cinsiyet']?.toLowerCase() ?? 'erkek';
+
+    double su = (kilo * 0.033); // litre
+    int kalori =
+        cinsiyet == 'erkek'
+            ? (kilo * 24 * 1.3).toInt()
+            : (kilo * 22 * 1.3).toInt();
+    int adim =
+        yas < 30
+            ? 10000
+            : yas <= 50
+            ? 8000
+            : 6000;
+
+    return {'su': su, 'kalori': kalori, 'adim': adim};
+  }
 }
