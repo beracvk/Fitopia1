@@ -7,16 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/home3_screen.dart';
 
 class SixthScreen extends StatelessWidget {
-  const SixthScreen({super.key});
+  final String username;
+  const SixthScreen({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
-    return const UserInputScreen();
+    return UserInputScreen(username: username); // ✅ const kaldırıldı, username gönderildi
   }
 }
 
+
 class UserInputScreen extends StatefulWidget {
-  const UserInputScreen({super.key});
+  const UserInputScreen({super.key, required username});
 
   @override
   UserInputScreenState createState() => UserInputScreenState();
@@ -46,10 +48,10 @@ class UserInputScreenState extends State<UserInputScreen> {
           double.tryParse(targetWeightController.text.trim()) ?? 0.0;
 
       final data = {
-        'cinsiyet': gender,
-        'yas': age,
-        'boy': height,
-        'kilo': weight,
+        'gender': gender,
+        'age': age,
+        'height': height,
+        'currentWeight': weight,
         'hedefKilo': targetWeight,
         'aktiviteSeviyesi': 'orta',
         'createdAt': FieldValue.serverTimestamp(),

@@ -1,11 +1,10 @@
 /// Günlük su ihtiyacını hesaplar (L cinsinden)
-String gunlukSuIhtiyaci(double kilo) {
-  double suMiktari = (kilo * 35) / 1000;
-  return '${suMiktari.toStringAsFixed(1)}L';
+double gunlukSuIhtiyaci(double kilo) {
+  return (kilo * 35) / 1000; // Örn: 2.5 litre
 }
 
-/// BMR (Bazal Metabolizma Hızı) ve günlük kalori ihtiyacını hesaplar
-String gunlukKaloriIhtiyaci(
+/// Günlük kalori ihtiyacını hesaplar (BMR + aktivite katsayısı)
+int gunlukKaloriIhtiyaci(
   double kilo, {
   required double boy,
   required int yas,
@@ -32,27 +31,20 @@ String gunlukKaloriIhtiyaci(
       katsayi = 1.375; // orta
   }
 
-  double gunlukKalori = bmr * katsayi;
-  return '${gunlukKalori.round()}';
+  return (bmr * katsayi).round();
 }
 
-/// Yaşa göre günlük adım hedefini hesaplar
-String gunlukAdimHedefi(int yas) {
-  if (yas < 18) {
-    return '12K';
-  } else if (yas <= 30) {
-    return '10K';
-  } else if (yas <= 50) {
-    return '8K';
-  } else if (yas <= 65) {
-    return '6K';
-  } else {
-    return '4K';
-  }
+/// Yaşa göre günlük adım hedefi (sayı cinsinden)
+int gunlukAdimHedefi(int yas) {
+  if (yas < 18) return 12000;
+  if (yas <= 30) return 10000;
+  if (yas <= 50) return 8000;
+  if (yas <= 65) return 6000;
+  return 4000;
 }
 
-/// Kiloya göre detaylı su hesaplama (aktivite seviyesi dahil)
-String detayliSuIhtiyaci(double kilo, {String aktiviteSeviyesi = 'orta'}) {
+/// Aktiviteye göre detaylı su ihtiyacı (L)
+double detayliSuIhtiyaci(double kilo, {String aktiviteSeviyesi = 'orta'}) {
   double baseAmount = kilo * 35;
 
   switch (aktiviteSeviyesi.toLowerCase()) {
@@ -67,11 +59,11 @@ String detayliSuIhtiyaci(double kilo, {String aktiviteSeviyesi = 'orta'}) {
       break;
   }
 
-  return '${(baseAmount / 1000).toStringAsFixed(1)}L';
+  return (baseAmount / 1000); // litre
 }
 
-/// Kilo hedefine göre kalori hesaplama
-String kaloriHedefiHesapla(
+/// Kalori hedefi hesaplama (kilo verme/alma/koruma)
+int kaloriHedefiHesapla(
   double kilo, {
   required double boy,
   required int yas,
@@ -86,19 +78,18 @@ String kaloriHedefiHesapla(
     bmr = 447.593 + (9.247 * kilo) + (3.098 * boy) - (4.330 * yas);
   }
 
-  double gunlukKalori = bmr * 1.375;
+  double kalori = bmr * 1.375;
 
   switch (hedef.toLowerCase()) {
     case 'verme':
-      gunlukKalori -= 500;
+      kalori -= 500;
       break;
     case 'alma':
-      gunlukKalori += 500;
+      kalori += 500;
       break;
-    case 'koruma':
     default:
       break;
   }
 
-  return '${gunlukKalori.round()}';
+  return kalori.round();
 }

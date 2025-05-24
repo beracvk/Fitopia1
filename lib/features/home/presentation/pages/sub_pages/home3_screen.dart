@@ -90,9 +90,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           final adim = gunlukAdimHedefi(yas);
 
           setState(() {
-            personalizedSu = su as double;
-            personalizedKalori = kalori as int;
-            personalizedAdim = adim as int;
+            personalizedSu = su ;
+            personalizedKalori = kalori;
+            personalizedAdim = adim ;
             hasUserData = true;
             isLoading = false;
           });
@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AyarlarScreen()),
+                MaterialPageRoute(builder: (context) => SettingsPage()),
               ).then((_) {
                 // Sayfa geri döndüğünde hedefleri yeniden yükle
                 _loadUserGoals();
@@ -298,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AyarlarScreen()),
+                MaterialPageRoute(builder: (context) =>  SettingsPage()),
               ).then((_) {
                 // Sayfa geri döndüğünde hedefleri yeniden yükle
                 _loadUserGoals();
@@ -392,7 +392,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         Expanded(
           child: PersonalizedGoalCard(
             title: 'Kalori',
-            value: '${personalizedKalori.toString()}',
+            value: personalizedKalori.toString(),
             progress: 0.6, // Bu değeri gerçek verilerle güncelleyebilirsiniz
             icon: Icons.local_fire_department,
             gradient: const LinearGradient(

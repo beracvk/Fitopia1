@@ -31,60 +31,60 @@ class _ThirdScreenState extends State<ThirdScreen> {
   //final String correctPassword = "123456";
 
   // Giriş doğrulama
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        final userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim(),
-            );
+void _login() async {
+  if (_formKey.currentState!.validate()) {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          );
 
-        if (!mounted) return;
+      if (!mounted) return;
 
-        // Kullanıcı UID’sini al
-        final userId = userCredential.user!.uid;
+      final userId = userCredential.user!.uid;
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
 
-        // Firestore'dan kullanıcı verisini al
-        final userDoc =
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(userId)
-                .get();
+      final username = userDoc.data()?['fullName'] ?? 'Kullanıcı';
 
-        final username = userDoc.data()?['fullName'] ?? 'Kullanıcı';
+      if (!mounted) return;
 
-        // Ana sayfaya yönlendir
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const UserInputScreen()),
-        );
-      } on FirebaseAuthException catch (e) {
-        String message;
-        switch (e.code) {
-          case 'user-not-found':
-            message = 'Kullanıcı bulunamadı.';
-            break;
-          case 'wrong-password':
-            message = 'Hatalı şifre.';
-            break;
-          case 'invalid-email':
-            message = 'Geçersiz e-posta adresi.';
-            break;
-          case 'network-request-failed':
-            message = 'İnternet bağlantısı yok.';
-            break;
-          default:
-            message = 'Giriş yapılamadı. Hata: ${e.message}';
-        }
-
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(message)));
+      // 🔥 BURASI ÖNEMLİ: required 'username' parametresi gönderiliyor
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SixthScreen(username: username),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      String message;
+      switch (e.code) {
+        case 'user-not-found':
+          message = 'Kullanıcı bulunamadı.';
+          break;
+        case 'wrong-password':
+          message = 'Hatalı şifre.';
+          break;
+        case 'invalid-email':
+          message = 'Geçersiz e-posta adresi.';
+          break;
+        case 'network-request-failed':
+          message = 'İnternet bağlantısı yok.';
+          break;
+        default:
+          message = 'Giriş yapılamadı. Hata: ${e.message}';
       }
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

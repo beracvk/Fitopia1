@@ -2,14 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final String username;
+  final String? username; // nullable hale getirildi
 
-  const ProfileWidget({required this.username, super.key});
+  const ProfileWidget({this.username, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final formattedName = username.isNotEmpty
-        ? username[0].toUpperCase() + username.substring(1)
+    final formattedName = (username != null && username!.isNotEmpty)
+        ? username![0].toUpperCase() + username!.substring(1)
         : 'Kullanıcı';
 
     return ClipRRect(
@@ -26,11 +26,11 @@ class ProfileWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Icon(
-                Icons.person, // İkon burada (dilersen değiştir: Icons.face, Icons.star vb.)
+                Icons.person,
                 color: Colors.white,
                 size: 28,
               ),
-              const SizedBox(width: 8), // İkonla yazı arası boşluk
+              const SizedBox(width: 8),
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(

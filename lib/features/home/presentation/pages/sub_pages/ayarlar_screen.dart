@@ -2,13 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitopia2/utils/hesaplama.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPageState extends State<SettingsPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -55,12 +57,35 @@ class _SettingsPageState extends State<SettingsPage> {
         }
       }
     } catch (e) {
-      print('Veri yükleme hatası: $e');
+      debugPrint('Veri yükleme hatası: $e');
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Veriler yüklenirken hata oluştu')),
       );
     } finally {
       setState(() => isLoading = false);
+      final double boy = userInfo['height']?.toDouble() ?? 0.0;
+      final double kilo = userInfo['currentWeight']?.toDouble() ?? 0.0;
+      final int yas = userInfo['age']?.toInt() ?? 0;
+      final String cinsiyet = userInfo['gender'] ?? 'erkek';
+
+      // hesaplama.dart fonksiyonları
+      final double su = gunlukSuIhtiyaci(kilo);
+      final int kalori = gunlukKaloriIhtiyaci(
+        kilo,
+        boy: boy,
+        yas: yas,
+        cinsiyet: cinsiyet,
+        aktiviteSeviyesi: 'orta',
+      );
+      final int adim = gunlukAdimHedefi(yas);
+
+      // verileri güncelle
+      setState(() {
+        userInfo['dailySteps'] = adim;
+        userInfo['waterIntake'] = su.toStringAsFixed(1); // metin olarak göster
+        userInfo['calorieGoal'] = kalori;
+      });
     }
   }
 
@@ -81,13 +106,13 @@ class _SettingsPageState extends State<SettingsPage> {
           userInfo = Map<String, dynamic>.from(editedInfo);
           isEditing = false;
         });
-
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bilgiler başarıyla kaydedildi')),
         );
       }
     } catch (e) {
-      print('Kaydetme hatası: $e');
+      debugPrint('Kaydetme hatası: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Bilgiler kaydedilirken hata oluştu')),
       );
