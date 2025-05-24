@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart'; // debugPrint için
+import 'package:flutter/foundation.dart';
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -40,36 +40,52 @@ class FirebaseService {
     }
   }
 
-  Future<Map<String, dynamic>?> getUserPreferences(String userId) async {
+  // ANA DÜZELTME: Kullanıcı verilerini direkt users koleksiyonundan çek
+  Future<Map<String, dynamic>?> getUserData() async {
     try {
-      final docSnapshot = await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('preferences')
-          .doc('main')
-          .get();
+      final user = _auth.currentUser;
+      if (user == null) {
+        debugPrint('❌ Kullanıcı oturumu yok');
+        return null;
+      }
 
-      if (docSnapshot.exists) {
-        return docSnapshot.data();
+      debugPrint('🔍 Kullanıcı verileri çekiliyor: ${user.uid}');
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+
+      if (doc.exists) {
+        final data = doc.data();
+        debugPrint('✅ Kullanıcı verileri bulundu: $data');
+        return data;
       } else {
-        return await getUserData();
+        debugPrint('❌ Kullanıcı verisi bulunamadı');
+        return null;
       }
     } catch (e) {
-      debugPrint('Preferences alma hatası: $e');
+      debugPrint('❌ Kullanıcı verisi alma hatası: $e');
       return null;
     }
   }
 
-  Future<Map<String, dynamic>?> getUserData() async {
+  // Preferences için ayrı bir fonksiyon (isteğe bağlı)
+  Future<Map<String, dynamic>?> getUserPreferences(String userId) async {
     try {
-      final user = _auth.currentUser;
-      if (user == null) return null;
+      final docSnapshot =
+          await _firestore
+              .collection('users')
+              .doc(userId)
+              .collection('preferences')
+              .doc('main')
+              .get();
 
-      final doc = await _firestore.collection('users').doc(user.uid).get();
-      return doc.exists ? doc.data() : null;
+      if (docSnapshot.exists) {
+        return docSnapshot.data();
+      } else {
+        // Preferences yoksa ana kullanıcı verisini döndür
+        return await getUserData();
+      }
     } catch (e) {
-      debugPrint('Kullanıcı verisi alma hatası: $e');
-      return null;
+      debugPrint('Preferences alma hatası: $e');
+      return await getUserData(); // Fallback olarak ana veriyi döndür
     }
   }
 
@@ -79,9 +95,10 @@ class FirebaseService {
           .collection('users')
           .doc(userId)
           .set(data, SetOptions(merge: true));
+      debugPrint('✅ Kullanıcı verileri güncellendi');
       return true;
     } catch (e) {
-      debugPrint('Kullanıcı verileri güncellenemedi: $e');
+      debugPrint('❌ Kullanıcı verileri güncellenemedi: $e');
       return false;
     }
   }
@@ -114,74 +131,141 @@ class FirebaseService {
           .doc(userId)
           .set(userData, SetOptions(merge: true));
 
+      debugPrint('✅ Kullanıcı profili kaydedildi');
       return true;
     } catch (e) {
-      debugPrint('Kullanıcı profili kaydedilemedi: $e');
+      debugPrint('❌ Kullanıcı profili kaydedilemedi: $e');
       return false;
     }
   }
 
+  // DÜZELTİLMİŞ: Hesaplama fonksiyonu - null kontrolü ve hata yönetimi iyileştirildi
   Future<Map<String, dynamic>?> calculateGoals() async {
-    final userData = await getUserData();
-    if (userData == null) return null;
+    try {
+      final userData = await getUserData();
+      if (userData == null) {
+        debugPrint('❌ Kullanıcı verisi bulunamadı - hesaplama yapılamadı');
+        return null;
+      }
 
-    final kilo = (userData['kilo'] as num?)?.toDouble() ?? 70.0;
-    final boy = (userData['boy'] as num?)?.toDouble() ?? 170.0;
-    final yas = (userData['yas'] as num?)?.toInt() ?? 30;
-    final cinsiyet =
-        (userData['cinsiyet'] as String?)?.toLowerCase() ?? 'erkek';
-    final hedef = userData['hedef'] as String? ?? 'koruma';
-    final aktiviteSeviyesi = userData['aktiviteSeviyesi'] as String? ?? 'orta';
+      debugPrint('📊 Hesaplama yapılıyor: $userData');
 
-    double suMiktari = kilo * 35;
-    switch (aktiviteSeviyesi) {
-      case 'düşük':
-        suMiktari *= 1.0;
-        break;
-      case 'orta':
-        suMiktari *= 1.2;
-        break;
-      case 'yüksek':
-        suMiktari *= 1.5;
-        break;
+      // Verileri güvenli şekilde çek
+      final kilo = _getDoubleValue(userData, 'kilo', 70.0);
+      final boy = _getDoubleValue(userData, 'boy', 170.0);
+      final yas = _getIntValue(userData, 'yas', 30);
+      final cinsiyet = _getStringValue(userData, 'cinsiyet', 'erkek');
+      final hedef = _getStringValue(userData, 'hedef', 'koruma');
+      final aktiviteSeviyesi = _getStringValue(
+        userData,
+        'aktiviteSeviyesi',
+        'orta',
+      );
+
+      debugPrint('📊 Hesaplama değerleri - Kilo: $kilo, Boy: $boy, Yaş: $yas');
+
+      // Su miktarı hesaplama
+      double suMiktari = kilo * 35;
+      switch (aktiviteSeviyesi.toLowerCase()) {
+        case 'düşük':
+          suMiktari *= 1.0;
+          break;
+        case 'orta':
+          suMiktari *= 1.2;
+          break;
+        case 'yüksek':
+          suMiktari *= 1.5;
+          break;
+      }
+      double su = suMiktari / 1000;
+
+      // BMR hesaplama
+      double bmr;
+      if (cinsiyet.toLowerCase() == 'erkek') {
+        bmr = 88.362 + (13.397 * kilo) + (4.799 * boy) - (5.677 * yas);
+      } else {
+        bmr = 447.593 + (9.247 * kilo) + (3.098 * boy) - (4.330 * yas);
+      }
+
+      // Günlük kalori hesaplama
+      double gunlukKalori = bmr * 1.375;
+      switch (hedef.toLowerCase()) {
+        case 'verme':
+          gunlukKalori -= 500;
+          break;
+        case 'alma':
+          gunlukKalori += 500;
+          break;
+        case 'koruma':
+        default:
+          break;
+      }
+
+      // Adım hedefi
+      int adim;
+      if (yas < 18) {
+        adim = 12000;
+      } else if (yas <= 30) {
+        adim = 10000;
+      } else if (yas <= 50) {
+        adim = 8000;
+      } else if (yas <= 65) {
+        adim = 6000;
+      } else {
+        adim = 4000;
+      }
+
+      final result = {
+        'su': double.parse(su.toStringAsFixed(1)),
+        'kalori': gunlukKalori.round(),
+        'adim': adim,
+      };
+
+      debugPrint('✅ Hesaplama tamamlandı: $result');
+      return result;
+    } catch (e) {
+      debugPrint('❌ Hesaplama hatası: $e');
+      return null;
     }
-    double su = suMiktari / 1000;
+  }
 
-    double bmr;
-    if (cinsiyet == 'erkek') {
-      bmr = 88.362 + (13.397 * kilo) + (4.799 * boy) - (5.677 * yas);
-    } else {
-      bmr = 447.593 + (9.247 * kilo) + (3.098 * boy) - (4.330 * yas);
+  // Yardımcı fonksiyonlar - güvenli veri çekme
+  double _getDoubleValue(
+    Map<String, dynamic> data,
+    String key,
+    double defaultValue,
+  ) {
+    final value = data[key];
+    if (value is num) {
+      return value.toDouble();
     }
-
-    double gunlukKalori = bmr * 1.375;
-
-    switch (hedef) {
-      case 'verme':
-        gunlukKalori -= 500;
-        break;
-      case 'alma':
-        gunlukKalori += 500;
-        break;
-      case 'koruma':
-      default:
-        break;
+    if (value is String) {
+      return double.tryParse(value) ?? defaultValue;
     }
+    return defaultValue;
+  }
 
-    int adim;
-    if (yas < 18) {
-      adim = 12000;
-    } else if (yas <= 30) {
-      adim = 10000;
-    } else if (yas <= 50) {
-      adim = 8000;
-    } else if (yas <= 65) {
-      adim = 6000;
-    } else {
-      adim = 4000;
+  int _getIntValue(Map<String, dynamic> data, String key, int defaultValue) {
+    final value = data[key];
+    if (value is num) {
+      return value.toInt();
     }
+    if (value is String) {
+      return int.tryParse(value) ?? defaultValue;
+    }
+    return defaultValue;
+  }
 
-    return {'su': su, 'kalori': gunlukKalori.round(), 'adim': adim};
+  String _getStringValue(
+    Map<String, dynamic> data,
+    String key,
+    String defaultValue,
+  ) {
+    final value = data[key];
+    if (value is String) {
+      return value.toLowerCase().trim();
+    }
+    return defaultValue;
   }
 
   Future<bool> saveDailyProgress({
@@ -220,16 +304,17 @@ class FirebaseService {
     String date,
   ) async {
     try {
-      final doc = await _firestore
-          .collection('users')
-          .doc(userId)
-          .collection('daily_progress')
-          .doc(date)
-          .get();
+      final doc =
+          await _firestore
+              .collection('users')
+              .doc(userId)
+              .collection('daily_progress')
+              .doc(date)
+              .get();
 
       return doc.exists ? doc.data() : null;
     } catch (e) {
-      debugPrint('Günlük progress alınamadı: $e');
+      debugPrint('Günlük progress alınamادı: $e');
       return null;
     }
   }
