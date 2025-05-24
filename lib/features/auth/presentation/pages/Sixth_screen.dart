@@ -2,7 +2,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitopia2/features/onboarding/presentation/pages/Fourth_screen.dart';
-import 'package:fitopia2/screens/Home2-screen.dart';
 import 'package:fitopia2/features/auth/presentation/pages/Seventh_screen.dart';
 import 'package:fitopia2/features/auth/presentation/pages/Eighth_screen.dart';
 import 'package:flutter/material.dart';
