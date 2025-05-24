@@ -10,7 +10,7 @@ import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart'; //
 import 'package:fitopia2/services/auth_service.dart';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/home3_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fitopia2/features/home/presentation/pages/sub_pages/Fifth_screen.dart';
+import 'package:fitopia2/features/home/presentation/pages/sub_pages/fifth_screen.dart';
 
 class ThirdScreen extends StatefulWidget {
   const ThirdScreen({super.key});
@@ -57,9 +57,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
 
         // Ana sayfaya yönlendir
         Navigator.pushReplacement(
-          // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (_) => FifthScreen()),
+          MaterialPageRoute(builder: (_) => const UserInputScreen()),
         );
       } on FirebaseAuthException catch (e) {
         String message;

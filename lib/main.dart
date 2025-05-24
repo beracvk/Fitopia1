@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitopia2/services/firebase_options.dart';
 import 'package:fitopia2/features/home/presentation/pages/sub_pages/home3_screen.dart';

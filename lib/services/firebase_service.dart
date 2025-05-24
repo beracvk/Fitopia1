@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart'; // debugPrint için
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Auth getter'ı düzeltildi
   FirebaseAuth get auth => _auth;
 
-  // 🔐 Kullanıcı Kaydı
   Future<String> registerUser(String email, String password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
@@ -32,40 +31,35 @@ class FirebaseService {
     }
   }
 
-  // 🔄 Örnek veritabanı kaydı (simülasyon)
   Future<String> registerDb(String email, String password) async {
     try {
-      await Future.delayed(Duration(seconds: 2)); // Simülasyon
+      await Future.delayed(Duration(seconds: 2));
       return 'Veritabanı kaydı başarılı';
     } catch (e) {
       return 'Veritabanı kaydında hata oluştu: $e';
     }
   }
 
-  // 🔍 Firestore'dan kullanıcı tercihlerini alma (preferences koleksiyonu için)
   Future<Map<String, dynamic>?> getUserPreferences(String userId) async {
     try {
-      final docSnapshot =
-          await _firestore
-              .collection('users')
-              .doc(userId)
-              .collection('preferences')
-              .doc('main')
-              .get();
+      final docSnapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('preferences')
+          .doc('main')
+          .get();
 
       if (docSnapshot.exists) {
         return docSnapshot.data();
       } else {
-        // Eğer preferences yoksa ana users koleksiyonundan dene
         return await getUserData();
       }
     } catch (e) {
-      print('Preferences alma hatası: $e');
+      debugPrint('Preferences alma hatası: $e');
       return null;
     }
   }
 
-  // ✅ Kullanıcının temel bilgilerini al (ana users koleksiyonundan)
   Future<Map<String, dynamic>?> getUserData() async {
     try {
       final user = _auth.currentUser;
@@ -74,12 +68,11 @@ class FirebaseService {
       final doc = await _firestore.collection('users').doc(user.uid).get();
       return doc.exists ? doc.data() : null;
     } catch (e) {
-      print('Kullanıcı verisi alma hatası: $e');
+      debugPrint('Kullanıcı verisi alma hatası: $e');
       return null;
     }
   }
 
-  // ✅ Kullanıcı verilerini güncelle
   Future<bool> updateUserData(String userId, Map<String, dynamic> data) async {
     try {
       await _firestore
@@ -88,12 +81,11 @@ class FirebaseService {
           .set(data, SetOptions(merge: true));
       return true;
     } catch (e) {
-      print('Kullanıcı verileri güncellenemedi: $e');
+      debugPrint('Kullanıcı verileri güncellenemedi: $e');
       return false;
     }
   }
 
-  // ✅ İlk kayıt sırasında kullanıcı bilgilerini kaydet
   Future<bool> saveUserProfile({
     required String userId,
     required String name,
@@ -124,12 +116,11 @@ class FirebaseService {
 
       return true;
     } catch (e) {
-      print('Kullanıcı profili kaydedilemedi: $e');
+      debugPrint('Kullanıcı profili kaydedilemedi: $e');
       return false;
     }
   }
 
-  // ✅ Su, kalori ve adım hedeflerini hesapla (geliştirilmiş versiyon)
   Future<Map<String, dynamic>?> calculateGoals() async {
     final userData = await getUserData();
     if (userData == null) return null;
@@ -142,8 +133,7 @@ class FirebaseService {
     final hedef = userData['hedef'] as String? ?? 'koruma';
     final aktiviteSeviyesi = userData['aktiviteSeviyesi'] as String? ?? 'orta';
 
-    // Su hesaplama (geliştirilmiş)
-    double suMiktari = kilo * 35; // ml cinsinden
+    double suMiktari = kilo * 35;
     switch (aktiviteSeviyesi) {
       case 'düşük':
         suMiktari *= 1.0;
@@ -155,9 +145,8 @@ class FirebaseService {
         suMiktari *= 1.5;
         break;
     }
-    double su = suMiktari / 1000; // Litre cinsinden
+    double su = suMiktari / 1000;
 
-    // Kalori hesaplama (BMR + aktivite)
     double bmr;
     if (cinsiyet == 'erkek') {
       bmr = 88.362 + (13.397 * kilo) + (4.799 * boy) - (5.677 * yas);
@@ -165,9 +154,8 @@ class FirebaseService {
       bmr = 447.593 + (9.247 * kilo) + (3.098 * boy) - (4.330 * yas);
     }
 
-    double gunlukKalori = bmr * 1.375; // Hafif aktif yaşam tarzı
+    double gunlukKalori = bmr * 1.375;
 
-    // Hedefe göre kalori ayarlama
     switch (hedef) {
       case 'verme':
         gunlukKalori -= 500;
@@ -180,7 +168,6 @@ class FirebaseService {
         break;
     }
 
-    // Adım hedefi yaşa göre
     int adim;
     if (yas < 18) {
       adim = 12000;
@@ -197,10 +184,9 @@ class FirebaseService {
     return {'su': su, 'kalori': gunlukKalori.round(), 'adim': adim};
   }
 
-  // ✅ Günlük takip verilerini kaydet (opsiyonel - ileride kullanım için)
   Future<bool> saveDailyProgress({
     required String userId,
-    required String date, // YYYY-MM-DD formatında
+    required String date,
     double? suMiktari,
     int? kaloriAlimi,
     int? adimSayisi,
@@ -224,28 +210,26 @@ class FirebaseService {
 
       return true;
     } catch (e) {
-      print('Günlük progress kaydedilemedi: $e');
+      debugPrint('Günlük progress kaydedilemedi: $e');
       return false;
     }
   }
 
-  // ✅ Günlük takip verilerini al
   Future<Map<String, dynamic>?> getDailyProgress(
     String userId,
     String date,
   ) async {
     try {
-      final doc =
-          await _firestore
-              .collection('users')
-              .doc(userId)
-              .collection('daily_progress')
-              .doc(date)
-              .get();
+      final doc = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('daily_progress')
+          .doc(date)
+          .get();
 
       return doc.exists ? doc.data() : null;
     } catch (e) {
-      print('Günlük progress alınamadı: $e');
+      debugPrint('Günlük progress alınamadı: $e');
       return null;
     }
   }

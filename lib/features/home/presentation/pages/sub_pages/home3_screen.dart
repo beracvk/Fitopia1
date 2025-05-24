@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             boy: boy,
             yas: yas,
             cinsiyet: cinsiyet,
-            aktiviteLevel: aktiviteSeviyesi,
+            aktiviteSeviyesi: aktiviteSeviyesi,
           );
           final adimHedefi = gunlukAdimHedefi(yas);
 
@@ -113,16 +113,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             isLoading = false;
           });
 
-          print('Hesaplanan hedefler:');
-          print('Su: $suHedefi');
-          print('Kalori: $kaloriHedefi');
-          print('Adım: $adimHedefi');
+          debugPrint('Hesaplanan hedefler:');
+          debugPrint('Su: $suHedefi');
+          debugPrint('Kalori: $kaloriHedefi');
+          debugPrint('Adım: $adimHedefi');
         } else {
           setState(() {
             hasUserData = false;
             isLoading = false;
           });
-          print(
+          debugPrint(
             'Kullanıcı verileri eksik veya geçersiz: boy=$boy, kilo=$kilo, yas=$yas',
           );
         }
@@ -131,14 +131,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           hasUserData = false;
           isLoading = false;
         });
-        print('Kullanıcı verileri bulunamadı');
+        debugPrint('Kullanıcı verileri bulunamadı');
       }
     } catch (e) {
       setState(() {
         isLoading = false;
         hasUserData = false;
       });
-      print('Hedefler yüklenemedi: $e');
+      debugPrint('Hedefler yüklenemedi: $e');
     }
   }
 

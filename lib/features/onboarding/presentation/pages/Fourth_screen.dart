@@ -1,5 +1,5 @@
 // ignore_for_file: file_names, depend_on_referenced_packages, unused_import
-import 'package:fitopia2/features/home/presentation/pages/sub_pages/Fifth_screen.dart';
+import 'package:fitopia2/features/home/presentation/pages/sub_pages/fifth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
 
@@ -77,7 +77,7 @@ class OnboardingScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SixthScreen()),
+                        MaterialPageRoute(builder: (context) => ThirdScreen()),
                       );
                     },
                     child: const Icon(Icons.arrow_forward, color: Colors.white),

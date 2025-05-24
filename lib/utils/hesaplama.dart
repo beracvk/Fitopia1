@@ -12,7 +12,7 @@ String gunlukKaloriIhtiyaci(
   double kilo, {
   required double boy,
   required int yas,
-  required String cinsiyet,
+  required String cinsiyet, required String aktiviteSeviyesi,
 }) {
   double bmr;
 
