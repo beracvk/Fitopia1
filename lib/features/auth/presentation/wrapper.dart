@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:fitopia2/screens/screens/home3_screen.dart';
-import 'package:fitopia2/shared/firebase_home_screen.dart';
+import 'package:fitopia2/services/firebase_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fitopia2/features/onboarding/presentation/pages/home_screen.dart';
 import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';

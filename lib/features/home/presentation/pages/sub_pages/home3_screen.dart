@@ -1,7 +1,7 @@
 // 📄 home3_screen.dart (Güncellenmiş)
 
 import 'package:fitopia2/screens/porsiyon_analizi_page.dart';
-import 'package:fitopia2/screens/screens/ayarlar_screen.dart';
+import 'package:fitopia2/features/home/presentation/pages/sub_pages/ayarlar_screen.dart';
 import 'package:fitopia2/services/firebase_service.dart';
 import 'package:fitopia2/utils/hesaplama.dart';
 import 'package:flutter/material.dart';
