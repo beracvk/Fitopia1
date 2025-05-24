@@ -220,12 +220,12 @@ class _ThirdScreenState extends State<ThirdScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SeventhScreen(),
+                            builder: (context) => ThirdScreen(),
                           ),
                         );
                       },
                       child: const Text(
-                        "Hesap aç",
+                        "Çıkış yap",
                         style: TextStyle(color: Colors.red, fontSize: 18.0),
                       ),
                     ),

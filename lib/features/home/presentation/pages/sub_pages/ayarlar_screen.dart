@@ -1,3 +1,4 @@
+import 'package:fitopia2/features/auth/presentation/pages/Sixth_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -396,18 +397,25 @@ class _AyarlarScreenState extends State<AyarlarScreen> {
           foregroundColor: const Color(0xFFE53E3E),
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
         ),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.logout, size: 20),
-            SizedBox(width: 8),
-            Text(
-              'Çıkış Yap',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            const Icon(Icons.logout, size: 20),
+            const SizedBox(width: 8),
+            TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ThirdScreen(),
+                          ),
+                        );
+                      },
+                      child:  const Text(
+                        "Hesap aç",
+                        style: TextStyle(color: Colors.red, fontSize: 18.0),
+                      ),
+                    ),
           ],
         ),
       ),
