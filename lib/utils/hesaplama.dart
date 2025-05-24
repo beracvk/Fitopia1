@@ -1,9 +1,6 @@
-// utils/hesaplama.dart
-
 /// Günlük su ihtiyacını hesaplar (L cinsinden)
 String gunlukSuIhtiyaci(double kilo) {
-  // Genel formül: Kilo x 35ml
-  double suMiktari = (kilo * 35) / 1000; // Litre cinsinden
+  double suMiktari = (kilo * 35) / 1000;
   return '${suMiktari.toStringAsFixed(1)}L';
 }
 
@@ -12,47 +9,51 @@ String gunlukKaloriIhtiyaci(
   double kilo, {
   required double boy,
   required int yas,
-<<<<<<< HEAD
-  required String cinsiyet, required String aktiviteSeviyesi,
-=======
   required String cinsiyet,
-  required String aktiviteLevel,
->>>>>>> f8aa813a90c3ecc754f45a5924ad90a8aea80c3c
+  required String aktiviteSeviyesi,
 }) {
   double bmr;
 
-  // Harris-Benedict formülü
   if (cinsiyet.toLowerCase() == 'erkek') {
     bmr = 88.362 + (13.397 * kilo) + (4.799 * boy) - (5.677 * yas);
   } else {
     bmr = 447.593 + (9.247 * kilo) + (3.098 * boy) - (4.330 * yas);
   }
 
-  // Hafif aktif yaşam tarzı için BMR x 1.375
-  // (Haftada 1-3 gün hafif egzersiz)
-  double gunlukKalori = bmr * 1.375;
+  double katsayi;
+  switch (aktiviteSeviyesi.toLowerCase()) {
+    case 'yüksek':
+      katsayi = 1.725;
+      break;
+    case 'düşük':
+      katsayi = 1.2;
+      break;
+    default:
+      katsayi = 1.375; // orta
+  }
 
+  double gunlukKalori = bmr * katsayi;
   return '${gunlukKalori.round()}';
 }
 
 /// Yaşa göre günlük adım hedefini hesaplar
 String gunlukAdimHedefi(int yas) {
   if (yas < 18) {
-    return '12K'; // Gençler için daha yüksek
+    return '12K';
   } else if (yas <= 30) {
-    return '10K'; // Genç yetişkinler
+    return '10K';
   } else if (yas <= 50) {
-    return '8K'; // Orta yaş
+    return '8K';
   } else if (yas <= 65) {
-    return '6K'; // Yaşlı yetişkinler
+    return '6K';
   } else {
-    return '4K'; // 65+ yaş
+    return '4K';
   }
 }
 
-/// Kiloya göre daha detaylı su hesaplama (aktivite seviyesi dahil)
+/// Kiloya göre detaylı su hesaplama (aktivite seviyesi dahil)
 String detayliSuIhtiyaci(double kilo, {String aktiviteSeviyesi = 'orta'}) {
-  double baseAmount = kilo * 35; // ml cinsinden
+  double baseAmount = kilo * 35;
 
   switch (aktiviteSeviyesi.toLowerCase()) {
     case 'düşük':
@@ -69,13 +70,13 @@ String detayliSuIhtiyaci(double kilo, {String aktiviteSeviyesi = 'orta'}) {
   return '${(baseAmount / 1000).toStringAsFixed(1)}L';
 }
 
-/// Kilo hedefine göre kalori hesaplama (kilo verme/alma/koruma)
+/// Kilo hedefine göre kalori hesaplama
 String kaloriHedefiHesapla(
   double kilo, {
   required double boy,
   required int yas,
   required String cinsiyet,
-  required String hedef, // 'koruma', 'verme', 'alma'
+  required String hedef,
 }) {
   double bmr;
 
@@ -85,18 +86,17 @@ String kaloriHedefiHesapla(
     bmr = 447.593 + (9.247 * kilo) + (3.098 * boy) - (4.330 * yas);
   }
 
-  double gunlukKalori = bmr * 1.375; // Hafif aktif
+  double gunlukKalori = bmr * 1.375;
 
   switch (hedef.toLowerCase()) {
     case 'verme':
-      gunlukKalori -= 500; // Günde 500 kalori eksik = haftada 0.5kg
+      gunlukKalori -= 500;
       break;
     case 'alma':
-      gunlukKalori += 500; // Günde 500 kalori fazla = haftada 0.5kg
+      gunlukKalori += 500;
       break;
     case 'koruma':
     default:
-      // Mevcut kalori miktarı korunur
       break;
   }
 

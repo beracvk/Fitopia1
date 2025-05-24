@@ -1,22 +1,12 @@
-// ignore_for_file: unused_import, non_constant_identifier_names, use_super_parameters
+// 📄 home3_screen.dart (Güncellenmiş)
 
+import 'package:fitopia2/screens/porsiyon_analizi_page.dart';
 import 'package:fitopia2/screens/screens/ayarlar_screen.dart';
 import 'package:fitopia2/services/firebase_service.dart';
 import 'package:fitopia2/utils/hesaplama.dart';
-import 'package:fitopia2/features/home/presentation/pages/sub_pages/deneme_screen.dart';
-import 'package:fitopia2/features/meals/presentations/Ogle_screen.dart';
-import 'package:fitopia2/screens/porsiyon_analizi_page.dart';
 import 'package:flutter/material.dart';
-import '../../../../../widgets/profile_widget.dart';
-import 'goal_card.dart';
-import '../../../../../widgets/action_card.dart';
-import '../../../../meals/presentations/widgets/action_card.dart'
-    show ActionCard;
 import 'diyetplani.dart';
-import 'porsiyon_sayfasi.dart';
 import 'egzersiz_planim.dart';
-import 'motivasyon_page.dart';
-import 'package:fitopia2/widgets/profile_widget.dart' show ProfileWidget;
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -32,15 +22,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
-  // Firebase service
   final FirebaseService _firebaseService = FirebaseService();
 
-  // Hesaplanmış hedefler
   double personalizedSu = 2.5;
   int personalizedKalori = 2000;
   int personalizedAdim = 10000;
 
-  // Yükleme durumu
   bool isLoading = true;
   bool hasUserData = false;
 
@@ -82,72 +69,50 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         return;
       }
 
-      // Firebase Service'deki calculateGoals fonksiyonunu kullan
-      final goalsData = await _firebaseService.calculateGoals();
+      final data = await _firebaseService.getUserPreferences(userId);
 
-<<<<<<< HEAD
-        // Verilerin geçerli olup olmadığını kontrol et
+      if (data != null) {
+        final boy = (data['boy'] as num?)?.toDouble() ?? 0.0;
+        final kilo = (data['kilo'] as num?)?.toDouble() ?? 0.0;
+        final yas = (data['yas'] as num?)?.toInt() ?? 0;
+        final cinsiyet = data['cinsiyet'] as String? ?? 'erkek';
+        final aktiviteSeviyesi = data['aktiviteSeviyesi'] as String? ?? 'orta';
+
         if (boy > 0 && kilo > 0 && yas > 0) {
-          // Hesaplamaları yap
-          final suHedefi = gunlukSuIhtiyaci(kilo);
-          final kaloriHedefi = gunlukKaloriIhtiyaci(
+          final su = gunlukSuIhtiyaci(kilo);
+          final kalori = gunlukKaloriIhtiyaci(
             kilo,
             boy: boy,
             yas: yas,
             cinsiyet: cinsiyet,
             aktiviteSeviyesi: aktiviteSeviyesi,
           );
-          final adimHedefi = gunlukAdimHedefi(yas);
+          final adim = gunlukAdimHedefi(yas);
 
           setState(() {
-            personalizedSu = suHedefi;
-            personalizedKalori = kaloriHedefi;
-            personalizedAdim = adimHedefi;
+            personalizedSu = su as double;
+            personalizedKalori = kalori as int;
+            personalizedAdim = adim as int;
             hasUserData = true;
             isLoading = false;
           });
-
-          debugPrint('Hesaplanan hedefler:');
-          debugPrint('Su: $suHedefi');
-          debugPrint('Kalori: $kaloriHedefi');
-          debugPrint('Adım: $adimHedefi');
         } else {
           setState(() {
             hasUserData = false;
             isLoading = false;
           });
-          debugPrint(
-            'Kullanıcı verileri eksik veya geçersiz: boy=$boy, kilo=$kilo, yas=$yas',
-          );
         }
-=======
-      if (goalsData != null && mounted) {
-        setState(() {
-          personalizedSu = goalsData['su'] ?? 2.5;
-          personalizedKalori = goalsData['kalori'] ?? 2000;
-          personalizedAdim = goalsData['adim'] ?? 10000;
-          hasUserData = true;
-          isLoading = false;
-        });
-
-        print('Hesaplanan hedefler:');
-        print('Su: ${personalizedSu}L');
-        print('Kalori: $personalizedKalori kcal');
-        print('Adım: $personalizedAdim adım');
->>>>>>> f8aa813a90c3ecc754f45a5924ad90a8aea80c3c
       } else {
         setState(() {
           hasUserData = false;
           isLoading = false;
         });
-        debugPrint('Kullanıcı verileri bulunamadı');
       }
     } catch (e) {
       setState(() {
         isLoading = false;
         hasUserData = false;
       });
-      debugPrint('Hedefler yüklenemedi: $e');
     }
   }
 
