@@ -220,12 +220,12 @@ void _login() async {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ThirdScreen(),
+                            builder: (context) => SeventhScreen(),
                           ),
                         );
                       },
                       child: const Text(
-                        "Çıkış yap",
+                        "Hesap Aç",
                         style: TextStyle(color: Colors.red, fontSize: 18.0),
                       ),
                     ),
