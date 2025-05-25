@@ -18,7 +18,7 @@ class SettingsPageState extends State<SettingsPage> {
   bool isLoading = true;
 
   Map<String, dynamic> userInfo = {
-    'name': '',
+    'name': 'bera',
     'age': 25,
     'gender': 'Erkek',
     'height': 175,
@@ -42,18 +42,95 @@ class SettingsPageState extends State<SettingsPage> {
     try {
       User? user = _auth.currentUser;
       if (user != null) {
-        DocumentSnapshot doc =
-            await _firestore.collection('users').doc(user.uid).get();
+        final docRef = _firestore.collection('users').doc(user.uid);
+        DocumentSnapshot doc = await docRef.get();
 
         if (doc.exists) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+          // Türkçe alan adlarını İngilizce karşılıklarına dönüştür
+          data['age'] = data['age'] ?? data['yas'];
+          data['gender'] = data['gender'] ?? data['cinsiyet'];
+          data['height'] = data['height'] ?? data['boy'];
+          data['currentWeight'] = data['currentWeight'] ?? data['kilo'];
+          data['name'] =
+              data['name'] ??
+              data['fullName'] ??
+              user.displayName ??
+              'Kullanıcı';
+
+          // Eksik değerleri sıfır olarak kabul et
+          final double boy = (data['height']?.toDouble() ?? 0.0);
+          final double kilo = (data['currentWeight']?.toDouble() ?? 0.0);
+          final int yas = (data['age']?.toInt() ?? 0);
+          final String cinsiyet =
+              data['gender']?.toString().toLowerCase() ?? 'erkek';
+
+          // Hesaplamaları yap
+          final double su = gunlukSuIhtiyaci(kilo);
+          final int kalori = gunlukKaloriIhtiyaci(
+            kilo,
+            boy: boy,
+            yas: yas,
+            cinsiyet: cinsiyet,
+            aktiviteSeviyesi: 'orta',
+          );
+          final int adim = gunlukAdimHedefi(yas);
+
+          // Eksik hedef alanlarını tamamlama
+          data['dailySteps'] = data['dailySteps'] ?? adim;
+          data['waterIntake'] = data['waterIntake'] ?? su.toStringAsFixed(1);
+          data['calorieGoal'] = data['calorieGoal'] ?? kalori;
+
+          // Geri firestore’a düzgün alan adlarıyla yaz
+          await docRef.set({
+            'name': data['name'],
+            'age': data['age'],
+            'gender': data['gender'],
+            'height': data['height'],
+            'currentWeight': data['currentWeight'],
+            'dailySteps': data['dailySteps'],
+            'waterIntake': data['waterIntake'],
+            'calorieGoal': data['calorieGoal'],
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+
+          // UI'ı güncelle
           setState(() {
-            userInfo = doc.data() as Map<String, dynamic>;
-            editedInfo = Map<String, dynamic>.from(userInfo);
+            userInfo = data;
+            editedInfo = Map<String, dynamic>.from(data);
           });
         } else {
-          // İlk kez giriş yapan kullanıcı için varsayılan veriler
-          userInfo['name'] = user.displayName ?? 'Kullanıcı';
-          editedInfo = Map<String, dynamic>.from(userInfo);
+          // Yeni kullanıcı için varsayılan değerler
+          final double kilo = 70;
+          final double boy = 170;
+          final int yas = 25;
+          final String cinsiyet = 'Erkek';
+
+          final defaultData = {
+            'name': user.displayName ?? 'Kullanıcı',
+            'age': yas,
+            'gender': cinsiyet,
+            'height': boy,
+            'currentWeight': kilo,
+            'dailySteps': gunlukAdimHedefi(yas),
+            'waterIntake': gunlukSuIhtiyaci(kilo).toStringAsFixed(1),
+            'calorieGoal': gunlukKaloriIhtiyaci(
+              kilo,
+              boy: boy,
+              yas: yas,
+              cinsiyet: cinsiyet.toLowerCase(),
+              aktiviteSeviyesi: 'orta',
+            ),
+            'createdAt': FieldValue.serverTimestamp(),
+          };
+
+          await docRef.set(defaultData);
+
+          setState(() {
+            userInfo = defaultData;
+            editedInfo = Map<String, dynamic>.from(defaultData);
+          });
         }
       }
     } catch (e) {
@@ -64,28 +141,6 @@ class SettingsPageState extends State<SettingsPage> {
       );
     } finally {
       setState(() => isLoading = false);
-      final double boy = userInfo['height']?.toDouble() ?? 0.0;
-      final double kilo = userInfo['currentWeight']?.toDouble() ?? 0.0;
-      final int yas = userInfo['age']?.toInt() ?? 0;
-      final String cinsiyet = userInfo['gender'] ?? 'erkek';
-
-      // hesaplama.dart fonksiyonları
-      final double su = gunlukSuIhtiyaci(kilo);
-      final int kalori = gunlukKaloriIhtiyaci(
-        kilo,
-        boy: boy,
-        yas: yas,
-        cinsiyet: cinsiyet,
-        aktiviteSeviyesi: 'orta',
-      );
-      final int adim = gunlukAdimHedefi(yas);
-
-      // verileri güncelle
-      setState(() {
-        userInfo['dailySteps'] = adim;
-        userInfo['waterIntake'] = su.toStringAsFixed(1); // metin olarak göster
-        userInfo['calorieGoal'] = kalori;
-      });
     }
   }
 
@@ -95,17 +150,30 @@ class SettingsPageState extends State<SettingsPage> {
     try {
       User? user = _auth.currentUser;
       if (user != null) {
-        editedInfo['updatedAt'] = FieldValue.serverTimestamp();
+        // Uyumlu ve düzgün alan adlarıyla yaz
+        final updatedData = {
+          'name': editedInfo['name'] ?? user.displayName ?? 'Kullanıcı',
+          'age': editedInfo['age'],
+          'gender': editedInfo['gender'],
+          'height': editedInfo['height'],
+          'currentWeight': editedInfo['currentWeight'],
+          'dailySteps': editedInfo['dailySteps'],
+          'waterIntake': editedInfo['waterIntake'],
+          'calorieGoal': editedInfo['calorieGoal'],
+          'updatedAt': FieldValue.serverTimestamp(),
+        };
 
         await _firestore
             .collection('users')
             .doc(user.uid)
-            .set(editedInfo, SetOptions(merge: true));
+            .set(updatedData, SetOptions(merge: true));
 
         setState(() {
-          userInfo = Map<String, dynamic>.from(editedInfo);
+          userInfo = Map<String, dynamic>.from(updatedData);
+          editedInfo = Map<String, dynamic>.from(updatedData);
           isEditing = false;
         });
+
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Bilgiler başarıyla kaydedildi')),

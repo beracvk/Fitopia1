@@ -72,10 +72,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       final data = await _firebaseService.getUserPreferences(userId);
 
       if (data != null) {
-        final boy = (data['boy'] as num?)?.toDouble() ?? 0.0;
-        final kilo = (data['kilo'] as num?)?.toDouble() ?? 0.0;
-        final yas = (data['yas'] as num?)?.toInt() ?? 0;
-        final cinsiyet = data['cinsiyet'] as String? ?? 'erkek';
+        final boy =
+            ((data['boy'] ?? data['height']) as num?)?.toDouble() ?? 0.0;
+        final kilo =
+            ((data['kilo'] ?? data['currentWeight']) as num?)?.toDouble() ??
+            0.0;
+        final yas = ((data['yas'] ?? data['age']) as num?)?.toInt() ?? 0;
+        final cinsiyet =
+            (data['cinsiyet'] ?? data['gender']) as String? ?? 'erkek';
         final aktiviteSeviyesi = data['aktiviteSeviyesi'] as String? ?? 'orta';
 
         if (boy > 0 && kilo > 0 && yas > 0) {
@@ -90,9 +94,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           final adim = gunlukAdimHedefi(yas);
 
           setState(() {
-            personalizedSu = su ;
+            personalizedSu = su;
             personalizedKalori = kalori;
-            personalizedAdim = adim ;
+            personalizedAdim = adim;
             hasUserData = true;
             isLoading = false;
           });
@@ -298,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  SettingsPage()),
+                MaterialPageRoute(builder: (context) => SettingsPage()),
               ).then((_) {
                 // Sayfa geri döndüğünde hedefleri yeniden yükle
                 _loadUserGoals();
