@@ -32,6 +32,7 @@ flutter:
   uses-material-design: true
 
   assets:
+   - .env
    - assets/images/alev5.webp
    - assets/images/fitopia.jpg
    - assets/images/background.png
