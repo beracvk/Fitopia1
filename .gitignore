@@ -49,4 +49,9 @@ app.*.map.json
 
 # Ignore Gradle build output directory
 build
+# Ignore Gradle build output directory
+build
 .env
+.env.*
+!.env.example
+local.properties
